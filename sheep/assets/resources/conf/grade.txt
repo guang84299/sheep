@@ -1,0 +1,17 @@
+[
+{"ID":"1","condition":"0"},
+{"ID":"2","condition":"10"},
+{"ID":"3","condition":"30"},
+{"ID":"4","condition":"60"},
+{"ID":"5","condition":"100"},
+{"ID":"6","condition":"150"},
+{"ID":"7","condition":"210"},
+{"ID":"8","condition":"280"},
+{"ID":"9","condition":"360"},
+{"ID":"10","condition":"450"},
+{"ID":"11","condition":"550"},
+{"ID":"12","condition":"660"},
+{"ID":"13","condition":"780"},
+{"ID":"14","condition":"910"},
+{"ID":"15","condition":"1050"}
+]
