@@ -120,11 +120,6 @@ module.exports = {
     setCoin: function(coin)
     {
         cc.sys.localStorage.setItem(this.pfix+"coin",Math.floor(coin));
-
-        //if(coin>=900000)
-        //{
-        //    this.addMyCarIds(10);
-        //}
     },
 
     getCoin: function()
@@ -138,6 +133,26 @@ module.exports = {
     {
         var datas = {};
         datas.coin = this.getCoin();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setToalCoin: function(coin)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"toalcoin",Math.floor(coin));
+    },
+
+    getToalCoin: function()
+    {
+        var coin = cc.sys.localStorage.getItem(this.pfix+"toalcoin");
+        coin = coin ? coin : 0;
+        return Number(coin);
+    },
+
+    uploadToalCoin: function()
+    {
+        var datas = {};
+        datas.coin = this.getToalCoin();
         var data = JSON.stringify(datas);
         cc.qianqista.uploaddatas(data);
     },
@@ -164,6 +179,26 @@ module.exports = {
         var time = cc.sys.localStorage.getItem(this.pfix+"choujiang_time");
         time = time ? time : 0;
         return Number(time);
+    },
+
+    setChoujiangToalNum: function(num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"choujiangtoal_num",num);
+    },
+
+    getChoujiangToalNum: function()
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"choujiangtoal_num");
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    uploadChoujiangToalNum: function()
+    {
+        var datas = {};
+        datas.choujiangtoal_num = this.getChoujiangToalNum();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
     },
 
     setLevel: function(type,lv)
@@ -226,6 +261,100 @@ module.exports = {
         cc.qianqista.uploaddatas(data);
     },
 
+    setRankUp: function(rankup)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"rankup",rankup);
+    },
+
+    addRankUp: function(id)
+    {
+        if(!this.isRankUp(id))
+        {
+            var rankup = this.getRankUp();
+            rankup.push(id);
+            cc.sys.localStorage.setItem(this.pfix+"rankup",JSON.stringify(rankup));
+        }
+    },
+
+    isRankUp: function(id)
+    {
+        var rankup = this.getRankUp();
+        var b = false;
+        for(var i=0;i<rankup.length;i++)
+        {
+            if(rankup[i] == id)
+            {
+                b = true;
+                break;
+            }
+        }
+        return b;
+    },
+
+    getRankUp: function()
+    {
+        var rankup = cc.sys.localStorage.getItem(this.pfix+"rankup");
+        rankup = rankup ? rankup : "[]";
+        return JSON.parse(rankup);
+    },
+
+    uploadRankUp: function()
+    {
+        var datas = {};
+        datas.rankup = this.getRankUp();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setYesRank: function(num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"yesrank",num);
+    },
+
+    getYesRank: function()
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"yesrank");
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    setMaxRank: function(num)
+    {
+        var max = this.getMaxRank();
+        if(max == 0 || num<max)
+        {
+            cc.sys.localStorage.setItem(this.pfix+"maxrank",num);
+            this.uploadMaxRank();
+        }
+    },
+
+    getMaxRank: function()
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"maxrank");
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    uploadMaxRank: function()
+    {
+        var datas = {};
+        datas.maxrank = this.getMaxRank();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setYesRankTime: function(time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"yesrank_time",time);
+    },
+
+    getYesRankTime: function()
+    {
+        var time = cc.sys.localStorage.getItem(this.pfix+"yesrank_time");
+        time = time ? time : 0;
+        return Number(time);
+    },
+
 
     setLoginTime: function(time)
     {
@@ -239,6 +368,14 @@ module.exports = {
         return Number(time);
     },
 
+    uploadLoginTime: function()
+    {
+        var datas = {};
+        datas.login_time = this.getLoginTime();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
     setLoginDay: function(day)
     {
         cc.sys.localStorage.setItem(this.pfix+"login_day",day);
@@ -249,6 +386,14 @@ module.exports = {
         var day = cc.sys.localStorage.getItem(this.pfix+"login_day");
         day = day ? day : 0;
         return Number(day);
+    },
+
+    uploadLoginDay: function()
+    {
+        var datas = {};
+        datas.login_day = this.getLoginDay();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
     },
 
     setLixianTime: function(time)
@@ -269,6 +414,97 @@ module.exports = {
         datas.lixian_time = this.getLixianTime();
         var data = JSON.stringify(datas);
         cc.qianqista.uploaddatas(data);
+    },
+
+    setQianDaoNum: function(num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"qiandao_num",num);
+    },
+
+    getQianDaoNum: function()
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"qiandao_num");
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    uploadQianDaoNum: function()
+    {
+        var datas = {};
+        datas.qiandao_num = this.getQianDaoNum();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+
+    setAddSpeedTime: function(time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"addspeed_time",time);
+    },
+
+    getAddSpeedTime: function()
+    {
+        var time = cc.sys.localStorage.getItem(this.pfix+"addspeed_time");
+        time = time ? time : 0;
+        return Number(time);
+    },
+
+    setAddRateTime: function(time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"addrate_time",time);
+    },
+
+    getAddRateTime: function()
+    {
+        var time = cc.sys.localStorage.getItem(this.pfix+"addrate_time");
+        time = time ? time : 0;
+        return Number(time);
+    },
+
+    addAddSpeedTask: function(task)
+    {
+        var tasks = this.getAddSpeedTask();
+        if(tasks.length == 0) this.setAddSpeedTime(new Date().getTime());
+        tasks.push(task);
+        cc.sys.localStorage.setItem(this.pfix+"addspeed_task",JSON.stringify(tasks));
+    },
+
+    removeAddSpeedTask: function()
+    {
+        var tasks = this.getAddSpeedTask();
+        if(tasks.length>0) tasks.splice(0,1);
+        if(tasks.length > 0) this.setAddSpeedTime(new Date().getTime());
+        cc.sys.localStorage.setItem(this.pfix+"addspeed_task",JSON.stringify(tasks));
+    },
+
+    getAddSpeedTask: function()
+    {
+        var task = cc.sys.localStorage.getItem(this.pfix+"addspeed_task");
+        task = task ? task : "[]";
+        return JSON.parse(task);
+    },
+
+    addAddRateTask: function(task)
+    {
+        var tasks = this.getAddRateTask();
+        if(tasks.length == 0) this.setAddRateTime(new Date().getTime());
+        tasks.push(task);
+        cc.sys.localStorage.setItem(this.pfix+"addrate_task",JSON.stringify(tasks));
+    },
+
+    removeAddRateTask: function()
+    {
+        var tasks = this.getAddRateTask();
+        if(tasks.length>0) tasks.splice(0,1);
+        if(tasks.length > 0) this.setAddRateTime(new Date().getTime());
+        cc.sys.localStorage.setItem(this.pfix+"addrate_task",JSON.stringify(tasks));
+    },
+
+    getAddRateTask: function()
+    {
+        var task = cc.sys.localStorage.getItem(this.pfix+"addrate_task");
+        task = task ? task : "[]";
+        return JSON.parse(task);
     },
 
 

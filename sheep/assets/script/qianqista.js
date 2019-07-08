@@ -38,7 +38,7 @@ module.exports = {
     session_key: "",
     power: 0,//授权状态
     url: "https://game.7q7q.top/sta/",
-    url2: "https://game.7q7q.top/car/",
+    url2: "https://game.7q7q.top/sheep/",
     avatarUrl: "",//头像
     state: 0, //0 未初始化 1已经初始化
     updatePower: false,
@@ -556,7 +556,8 @@ module.exports = {
     {
         if(this.state == 1)
         {
-            score = score > 10000000 ? 10000 : score;
+            //score = score > 10000000 ? 10000 : score;
+            score = Math.floor(score);
             this.sendRequest2("uploadScore",{openid:this.openid,score:score},function(res){
                 console.log("uploadScore:",res);
             });
@@ -570,6 +571,18 @@ module.exports = {
         {
             this.sendRequest2("rankScore",{openid:this.openid,rows:50},function(res){
                 console.log("rankScore:",res);
+                if(callback)
+                    callback(res);
+            });
+        }
+    },
+
+    rankSelf: function(callback)
+    {
+        if(this.state == 1)
+        {
+            this.sendRequest2("rankSelf",{openid:this.openid},function(res){
+                console.log("rankSelf:",res);
                 if(callback)
                     callback(res);
             });

@@ -148,7 +148,7 @@ module.exports = {
     {
         var self = this;
         this.videocallback = callback;
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(cc.sys.os == cc.sys.OS_ANDROID && cc.sys.os == cc.sys.OS_IOS)
         {
             this.rewardedVideoAd.show().catch(function(err){
                 self.rewardedVideoAd.load().then(function(){
@@ -175,7 +175,7 @@ module.exports = {
     showBanner: function(node,callback,isHide)
     {
         this.hideBanner();
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(cc.sys.os == cc.sys.OS_ANDROID && cc.sys.os == cc.sys.OS_IOS)
         {
             //var dpi = cc.view.getDevicePixelRatio();
             var s = cc.view.getFrameSize();
@@ -229,7 +229,7 @@ module.exports = {
 
     getBannerDis: function(node)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(cc.sys.os == cc.sys.OS_ANDROID && cc.sys.os == cc.sys.OS_IOS)
         {
             if(this.bannerAd && node)
             {
@@ -422,17 +422,17 @@ module.exports = {
 
             var s = cc.view.getFrameSize();
 
-            var pos = cc.v2(s.width/2, s.height/2);
+            var pos = cc.v2(s.width/2, s.height*0.7);
 
             var button = wx.createUserInfoButton({
                 type: 'text',
-                text: '获取用户信息',
+                text: '授权进入游戏',
                 style: {
                     left: pos.x-60,
-                    top: pos.y+15,
+                    top: pos.y+20,
                     width: 120,
-                    height: 30,
-                    lineHeight: 30,
+                    height: 40,
+                    lineHeight: 40,
                     backgroundColor: '#1779a6',
                     color: '#ffffff',
                     textAlign: 'center',
@@ -451,13 +451,14 @@ module.exports = {
                     cc.sdk.userInfo = res.userInfo;
                     cc.qianqista.login(true,res.userInfo);
                     wx.postMessage({ message: "loginSuccess",userInfo:res.userInfo });
-                    var score = storage.getLevel();
-                    cc.sdk.uploadScore(score);
+                    //var score = storage.getLevel();
+                    //cc.sdk.uploadScore(score);
                     if(callback) callback(true);
                     //if(cc.sdk.main.quanxiansc)
                     //    cc.sdk.main.quanxiansc.hide();
+                    button.destroy();
                 }
-                button.destroy();
+
             });
         }
     },

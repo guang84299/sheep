@@ -106,9 +106,7 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
 
-        this.awards = [{type:0,val:5},{type:1,val:0.5},
-            {type:0,val:4},{type:1,val:1},
-            {type:0,val:3},{type:1,val:1.5}];
+        this.awards = res.conf_choujiang;
 
 
         cc.qianqista.event("抽奖_打开");
@@ -134,26 +132,21 @@ cc.Class({
         var self = this;
         this.btn_choujiang.interactable = false;
         var ang = 360/this.awards.length;
-        var maxLv = storage.getLock();
         var awardIndex = 0;
-        if(maxLv<=6)
+
+        var r = Math.random()*100;
+        var weight = 0;
+        for(var i=this.awards.length-1;i>=0;i--)
         {
-            var r = Math.random();
-            if(r<0.7) awardIndex = 1;
-            else if(r>=0.7 && r<0.95) awardIndex = 3;
-            else if(r>=0.95) awardIndex = 5;
+            var award = this.awards[i];
+            weight += Number(award.weight);
+            if(r<=weight)
+            {
+                awardIndex = i;
+                break;
+            }
         }
-        else
-        {
-            var r = Math.random();
-            if(r<0.15) awardIndex = 1;
-            else if(r>=0.15 && r<0.45) awardIndex = 3;
-            else if(r>=0.45 && r<0.55) awardIndex = 5;
-            else if(r>=0.55 && r<0.85) awardIndex = 0;
-            else if(r>=0.85 && r<0.95) awardIndex = 2;
-            else if(r>=0.95) awardIndex = 4;
-        }
-        //var awardIndex = Math.floor(Math.random()*this.awards.length);
+
         var roatate = 360 - (ang*awardIndex + ang/2 - this.pan.angle%360);
         this.pan.runAction(cc.sequence(
             cc.rotateBy(3.5,-(360*4+roatate)).easing(cc.easeSineInOut()),
@@ -176,32 +169,39 @@ cc.Class({
         {
             storage.setChoujiangTime(new Date().getTime());
         }
+
+        storage.setChoujiangToalNum(storage.getChoujiangToalNum()+1);
+        storage.uploadChoujiangToalNum();
+
+        this.game.task.updateUI();
     },
 
     lingqu: function(isVedio)
     {
         var awardData = this.awards[this.awardIndex];
-        if(awardData.type == 0)
+        if(awardData.rewardType == "0")
         {
-            //var lv = storage.getMaxCarLv()-awardData.val;
-            //this.main.addcar(lv,true);
-            //if(isVedio)
-            //{
-            //    this.main.addcar(lv,true);
-            //    res.showToast("获得2辆"+lv+"等级车");
-            //}
-            //else
-            //    res.showToast("获得1辆"+lv+"等级车");
+            var award = this.game.getSecVal()*Number(awardData.reward);
+            if(isVedio) award*=2;
+            this.game.addCoin(award);
+            res.showToast("金币+"+storage.castNum(award));
         }
-        else
+        else if(awardData.rewardType == "1")
         {
-            //var award = this.main.getSecVal()*awardData.val;
-            //if(isVedio) award*=2;
-            //storage.setCoin(storage.getCoin()+award);
-            //res.showToast("金币+"+storage.castNum(award));
-        }
+            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time)};
+            storage.addAddSpeedTask(task);
+            this.game.initShouYi();
 
-        //this.main.uploadData();
+            res.showToast(awardData.tips);
+        }
+        else if(awardData.rewardType == "2")
+        {
+            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time)};
+            storage.addAddRateTask(task);
+            this.game.initShouYi();
+
+            res.showToast(awardData.tips);
+        }
 
         this.btn_choujiang.interactable = true;
         this.btn_vedio_lingqu.node.active = false;

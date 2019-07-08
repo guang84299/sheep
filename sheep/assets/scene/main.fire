@@ -946,7 +946,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -252.87,
+      "x": -259.906,
       "y": 0,
       "z": 0
     },
@@ -1098,7 +1098,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 102.24,
+      "width": 110,
       "height": 25.2
     },
     "_anchorPoint": {
@@ -1108,7 +1108,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -214,
+      "x": -221.036,
       "y": 10,
       "z": 0
     },
@@ -1152,10 +1152,10 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
+    "_N$overflow": 2,
     "_N$cacheMode": 0,
     "_id": "87qiuZuXpEh5rYGaCeGTiR"
   },
@@ -1185,7 +1185,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 78,
+      "width": 110,
       "height": 32.76
     },
     "_anchorPoint": {
@@ -1195,7 +1195,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -214,
+      "x": -221.036,
       "y": -10,
       "z": 0
     },
@@ -1239,10 +1239,10 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
+    "_N$overflow": 2,
     "_N$cacheMode": 0,
     "_id": "7bVUcT4INFDo/xXP6wHBm3"
   },
@@ -3000,7 +3000,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -320,
-      "y": 270.36,
+      "y": 202.2,
       "z": 0
     },
     "_scale": {
@@ -3587,7 +3587,7 @@
     "_alignFlags": 9,
     "_left": 0,
     "_right": 0,
-    "_top": 0.24,
+    "_top": 0.3,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,

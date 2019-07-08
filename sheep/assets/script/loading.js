@@ -57,6 +57,10 @@ cc.Class({
             "conf/ranch",
             "conf/grade",
             "conf/task",
+            "conf/rankAward",
+            "conf/rankUp",
+            "conf/qiandao",
+            "conf/choujiang",
 
             "prefab/sheep",
             "prefab/buoy",
@@ -75,6 +79,8 @@ cc.Class({
             "prefab/ui/lixian",
             "prefab/ui/setting",
             "prefab/ui/choujiang",
+            "prefab/ui/rank",
+            "prefab/ui/qiandao",
 
             //"prefab/particle/suijinbi",
             //"scene/game1"
@@ -177,7 +183,18 @@ cc.Class({
     {
         if(!this.loadNode.active && this.progressBar.progress >= 1)
         {
-            cc.director.loadScene("main");
+            this.progressBar.node.active = false;
+            if(sdk.judgePower())
+                cc.director.loadScene("main");
+            else
+            {
+                sdk.openSetting(function(res2){
+                    if(res2)
+                        cc.director.loadScene("main");
+                    else
+                        res.showToast("允许授权进入游戏");
+                });
+            }
         }
 
     },
@@ -220,9 +237,9 @@ cc.Class({
             self.loadNode.active = false;
             self.startGame();
         });
-        //qianqista.pdatas(function(res){
-        //    self.updateLocalData2(res);
-        //});
+        qianqista.pdatas(function(res){
+            self.updateLocalData2(res);
+        });
         //qianqista.rankScore(function(res){
         //    self.worldrank = res.data;
         //});
@@ -275,8 +292,21 @@ cc.Class({
             if(datas.hasOwnProperty("task"))
                 storage.setTask(Number(datas.task));
 
-            if(datas.hasOwnProperty("login_time"))
-                storage.setLoginTime(Number(datas.login_time));
+            if(datas.hasOwnProperty("maxrank"))
+                storage.setMaxRank(Number(datas.maxrank));
+
+            if(datas.hasOwnProperty("rankup"))
+                storage.setRankUp(datas.rankup);
+
+            if(datas.hasOwnProperty("qiandao_num"))
+                storage.setQianDaoNum(Number(datas.qiandao_num));
+
+            if(datas.hasOwnProperty("choujiangtoal_num"))
+                storage.setChoujiangToalNum(Number(datas.choujiangtoal_num));
+
+            //if(datas.hasOwnProperty("login_time"))
+            //    storage.setLoginTime(Number(datas.login_time));
+
             if(datas.hasOwnProperty("login_day"))
                 storage.setLoginDay(Number(datas.login_day));
             if(datas.hasOwnProperty("game_num"))
@@ -292,6 +322,22 @@ cc.Class({
 
 
             console.log("datas:",datas);
+
+            var now = new Date().getTime();
+            if(datas.hasOwnProperty("login_time"))
+                cc.login_time = Number(datas.login_time);
+            else
+                cc.login_time = now;
+            storage.setLoginTime(now);
+            storage.uploadLoginTime();
+
+            if(res.isRestTime(cc.login_time,now))
+            {
+                storage.setYesRank(storage.getMaxRank());
+
+                storage.setLoginDay(parseInt(datas.login_day)+1);
+                storage.uploadLoginDay();
+            }
         }
         else
         {
@@ -305,10 +351,10 @@ cc.Class({
         if(res.state == 1)
         {
             qianqista.paddUser(function(res){
-                qianqista.rankScore(function(res2){
-                    self.worldrank = res2.data;
-                });
-            },storage.getCoin());
+                //qianqista.rankScore(function(res2){
+                //    self.worldrank = res2.data;
+                //});
+            },storage.getToalCoin());
         }
         else
         {

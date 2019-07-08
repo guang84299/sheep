@@ -84,6 +84,21 @@ cc.Class({
         this.holdTime = this.conf.growSpeed;
     },
 
+    updateGrowSpeed: function()
+    {
+        if(this.game.shouYiSpeed == undefined)
+        {
+            this.holdTime = this.conf.growSpeed;
+        }
+        else
+        {
+            this.holdTime = this.conf.growSpeed*this.game.shouYiSpeed;
+            var speedLimit = 0.5;
+            if(this.holdTime<speedLimit)
+                this.holdTime = speedLimit;
+        }
+    },
+
 
     update: function(dt)
     {
@@ -98,6 +113,7 @@ cc.Class({
                     if(this.holdTimeDt>this.holdTime)
                     {
                         this.holdTimeDt = 0;
+                        this.updateGrowSpeed();
                         this.playGrowAni1();
                     }
                 }

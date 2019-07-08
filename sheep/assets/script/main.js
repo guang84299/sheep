@@ -64,13 +64,16 @@ cc.Class({
     {
         this.lastY = 0;
         this.coin = storage.getCoin();
+        this.toalcoin = storage.getToalCoin();
         this.updateCoinDt = 0;
         this.saveCoinDt = 0;
         this.updateCoinTime = Math.random();
         this.uploadCoinDt = 0;
-
+        this.shouyiDt = 0;
 
         qianqista.onshowmaincallback = this.updateLixian.bind(this);
+
+        this.initShouYi();
     },
 
     initUI: function()
@@ -89,6 +92,10 @@ cc.Class({
         this.nextName = cc.find("top/bg/nextName",this.node_main).getComponent(cc.Label);
 
         this.task = cc.find("task",this.node_main).getComponent("task");
+
+        this.headIcon = cc.find("top/bg/mask/headIcon",this.node_main);
+
+        res.loadPic(qianqista.avatarUrl,this.headIcon);
 
         for(var i=0;i<3;i++)
         {
@@ -125,13 +132,11 @@ cc.Class({
             tlv += storage.getLevel(i);
         }
 
-        var lock2 = lock+1;
-        if(lock2>res.conf_achievement.length)
-            lock2 = res.conf_achievement.length;
+        var nextPro = this.getNextNikePro(tlv);
 
         this.totalLv.string = "牧场总等级 "+tlv;
-        this.pro.progress = tlv/parseInt(res.conf_achievement[lock2-1].condition);
-        this.pro_num.string = tlv+"/"+parseInt(res.conf_achievement[lock2-1].condition);
+        this.pro.progress = tlv/parseInt(nextPro);
+        this.pro_num.string = tlv+"/"+parseInt(nextPro);
 
         this.currName.string = this.getNikeName(tlv);
         this.nextName.string = this.getNextNikeName(tlv);
@@ -172,12 +177,24 @@ cc.Class({
         return res.conf_achievement[n].name;
     },
 
-    addCoin: function(coin)
+    getNextNikePro: function(tlv)
+    {
+        var n = -1;
+        for(var i=0;i<res.conf_achievement.length;i++)
+        {
+            if(parseInt(res.conf_achievement[i].condition)>tlv)
+            {
+                n = i;
+                break;
+            }
+        }
+        if(n == -1) n = res.conf_achievement.length-1;
+        return res.conf_achievement[n].condition;
+    },
+
+    addCoin: function(coin,rate)
     {
         var add = Number(coin);
-        this.coin += add;
-        this.coin_label.string = storage.castNum(this.coin);
-
         if(add>0)
         {
             if(!this.coin_pos)
@@ -185,8 +202,19 @@ cc.Class({
                 var coinbg = cc.find("top/coinbg/num",this.node_main);
                 this.coin_pos = coinbg.convertToWorldSpace(coinbg.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
             }
-            res.showCoin("+"+storage.castNum(add),this.coin_pos);
+
+            var str = "+"+storage.castNum(add);
+            if(rate)
+            {
+                add *= rate;
+                str = "+"+storage.castNum(add) + "x" + rate;
+            }
+
+            res.showCoin(str,this.coin_pos,this.node_main);
+            this.toalcoin += add;
         }
+        this.coin += add;
+        this.coin_label.string = storage.castNum(this.coin);
     },
 
     uploadData: function()
@@ -361,10 +389,9 @@ cc.Class({
     {
         this.updateCoinDt += dt;
 
-
         if(this.updateCoinDt>this.updateCoinTime && this.totalLvNum>=10)
         {
-            this.addCoin(this.getSecVal()*this.updateCoinDt);
+            this.addCoin(this.getSecVal()*this.updateCoinDt,this.shouYiRate);
             this.updateCoinDt = 0;
             this.updateCoinTime = Math.random();
             if(this.updateCoinTime<0.2) this.updateCoinTime = 0.2;
@@ -376,6 +403,7 @@ cc.Class({
         {
             this.saveCoinDt = 0;
             storage.setCoin(this.coin);
+            storage.setToalCoin(this.toalcoin);
         }
 
         this.uploadCoinDt += dt;
@@ -383,8 +411,17 @@ cc.Class({
         {
             this.uploadCoinDt = 0;
             storage.uploadCoin();
+            storage.uploadToalCoin();
+
             storage.setLixianTime(new Date().getTime());
             storage.uploadLixianTime();
+
+            qianqista.uploadScore(this.toalcoin);
+
+            qianqista.rankSelf(function(res2){
+                var rankNum = res2.data;
+                storage.setMaxRank(rankNum);
+            });
         }
     },
 
@@ -398,6 +435,73 @@ cc.Class({
             storage.setLixianTime(now);
             var val = this.getSecVal()*t;
             res.openUI("lixian",null,val);
+        }
+    },
+
+    initShouYi: function()
+    {
+        var rateTasks = storage.getAddRateTask();
+        if(rateTasks.length>0)
+        {
+            this.rateTask = rateTasks[0];
+            this.rateTaskTime = storage.getAddRateTime();
+        }
+        else
+        {
+            this.rateTask = undefined;
+        }
+
+        var speedTasks = storage.getAddSpeedTask();
+        if(speedTasks.length>0)
+        {
+            this.speedTask = speedTasks[0];
+            this.speedTaskTime = storage.getAddSpeedTime();
+        }
+        else
+        {
+            this.speedTask = undefined;
+        }
+    },
+
+    updateShouYi: function(dt)
+    {
+        this.shouyiDt += dt;
+        if(this.shouyiDt>1)
+        {
+            this.shouyiDt = 0;
+
+            if(this.rateTask)
+            {
+                var now = new Date().getTime();
+                var time = this.rateTaskTime+this.rateTask.time*60*60*1000;
+                if(now<time)
+                {
+                    this.shouYiRate = this.rateTask.reward;
+                }
+                else
+                {
+                    this.shouYiRate = undefined;
+                    storage.removeAddRateTask();
+                    this.initShouYi();
+                }
+            }
+
+            if(this.speedTask)
+            {
+                var now = new Date().getTime();
+                var time = this.speedTaskTime+this.speedTask.time*60*60*1000;
+                if(now<time)
+                {
+                    this.shouYiSpeed = this.speedTask.reward;
+                }
+                else
+                {
+                    this.shouYiSpeed = undefined;
+                    storage.removeAddSpeedTask();
+                    this.initShouYi();
+                }
+            }
+
         }
     },
 
@@ -438,26 +542,13 @@ cc.Class({
         {
             res.openUI("choujiang");
         }
+        else if(data == "qiandao")
+        {
+            res.openUI("qiandao");
+        }
         else if(data == "rank")
         {
-            if(sdk.judgePower())
-                res.openUI("rank");
-            else
-            {
-                res.openUI("power");
-                sdk.openSetting(function(r){
-                    res.closeUI("power");
-                    if(r){
-                        res.showToast("成功获取权限！");
-                        cc.qianqista.event("授权_允许");
-                    }
-                    else
-                    {
-                        res.showToast("请允许授权！");
-                        cc.qianqista.event("授权_拒绝");
-                    }
-                });
-            }
+            res.openUI("rank");
         }
         else if(data == "share")
         {
@@ -490,6 +581,7 @@ cc.Class({
 
 
     update: function(dt) {
-       this.updateCoin(dt);
+        this.updateCoin(dt);
+        this.updateShouYi(dt);
     }
 });

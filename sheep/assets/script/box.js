@@ -78,7 +78,7 @@ cc.Class({
                 //sheep.zIndex = 2;
                 box.addChild(sheep);
 
-                if(i%2 == 1) sheep.scaleX = -1;
+                if(Math.random()>0.5) sheep.scaleX = -1;
 
                 this.sheeps.push(sheep);
             }
@@ -163,9 +163,10 @@ cc.Class({
         this.lock_sheepIcon = cc.find("box/lock/sheepIcon",this.node);
 
         var conf = cc.res.conf_ranch[this.index-1];
+        this.unLockCost = this.getUnlockCost();
         this.lock_name.string = conf.name;
         this.lock_desc.string = conf.tips;
-        this.lock_cost.string = cc.storage.castNum(parseInt(conf.cost)*this.game.getSecVal());
+        this.lock_cost.string = cc.storage.castNum(this.unLockCost);
 
         var icon = parseInt((this.index-1)/3)+1;
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+icon,this.lock_sheepIcon);
@@ -173,7 +174,7 @@ cc.Class({
 
     unlock: function()
     {
-        var cost = Number(cc.res.conf_ranch[this.index-1].cost)*this.game.getSecVal();
+        var cost = this.unLockCost;
         if(this.game.coin>=cost)
         {
             this.game.addCoin(-cost);
@@ -203,6 +204,25 @@ cc.Class({
                 this.game.addBox();
             }
         }
+    },
+
+    getUnlockCost: function()
+    {
+        var conf = cc.res.conf_ranch[this.index-1];
+        var cost = 0;
+        for(var i=1;i<=14;i++)
+        {
+            var c = parseInt(conf["cost"+i]);
+            if(c == 0) break;
+            else
+            {
+                var pirce = Number(cc.res.conf_price[c-1]["price"+i]);
+                var speed = Number(cc.res.conf_base[c-1].growSpeed);
+                cost += pirce/speed;
+            }
+        }
+        cost = cost*48*parseInt(conf.time);
+        return cost;
     },
 
     click: function(event,data)

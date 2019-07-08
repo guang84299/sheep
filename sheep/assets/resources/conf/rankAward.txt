@@ -1,0 +1,10 @@
+[
+{"id":"1","sort":"","front":"1","back":"1","head":"昨日排名第1奖励","reward1":"400","title1":"4小时金币","reward2":"4","title2":"1小时4倍收益","time1":"1","reward3":"0.8","title3":"1小时3倍加速","time2":"1","speedLimit":"0.5"},
+{"id":"2","sort":"","front":"2","back":"2","head":"昨日排名第2奖励","reward1":"200","title1":"2小时金币","reward2":"4","title2":"1小时4倍收益","time1":"1","reward3":"0.8","title3":"1小时3倍加速","time2":"1","speedLimit":"0.5"},
+{"id":"3","sort":"","front":"3","back":"3","head":"昨日排名第3奖励","reward1":"200","title1":"2小时金币","reward2":"3","title2":"1小时3倍收益","time1":"1","reward3":"0.8","title3":"1小时3倍加速","time2":"1","speedLimit":"0.5"},
+{"id":"4","sort":"","front":"4","back":"6","head":"昨日排名第4-6奖励","reward1":"100","title1":"1小时金币","reward2":"3","title2":"1小时3倍收益","time1":"1","reward3":"0.8","title3":"1小时3倍加速","time2":"1","speedLimit":"0.5"},
+{"id":"5","sort":"","front":"7","back":"10","head":"昨日排名第7-10奖励","reward1":"100","title1":"1小时金币","reward2":"2","title2":"1小时2倍收益","time1":"1","reward3":"0.8","title3":"1小时3倍加速","time2":"1","speedLimit":"0.5"},
+{"id":"6","sort":"","front":"11","back":"20","head":"昨日排名第11-20奖励","reward1":"100","title1":"1小时金币","reward2":"2","title2":"1小时2倍收益","time1":"1","reward3":"0.9","title3":"1小时2倍加速","time2":"1","speedLimit":"0.5"},
+{"id":"7","sort":"","front":"21","back":"30","head":"昨日排名第21-30奖励","reward1":"50","title1":"0.5小时金币","reward2":"2","title2":"1小时2倍收益","time1":"1","reward3":"0.9","title3":"0.5小时2倍加速","time2":"0.5","speedLimit":"0.5"},
+{"id":"8","sort":"","front":"31","back":"50","head":"昨日排名第31-50奖励","reward1":"50","title1":"0.5小时金币","reward2":"2","title2":"0.5小时2倍收益","time1":"0.5","reward3":"0.9","title3":"0.5小时2倍加速","time2":"0.5","speedLimit":"0.5"}
+]

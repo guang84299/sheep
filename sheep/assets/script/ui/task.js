@@ -70,12 +70,18 @@ cc.Class({
         //签到
         else if(this.task.type == "3")
         {
-
+            if(storage.getQianDaoNum() >= parseInt(this.task.signIn))
+            {
+                return true;
+            }
         }
         //转盘
-        else if(this.task.type == "3")
+        else if(this.task.type == "4")
         {
-
+            if(storage.getChoujiangToalNum() >= parseInt(this.task.turntable))
+            {
+                return true;
+            }
         }
         return false;
     },
@@ -103,6 +109,9 @@ cc.Class({
                 break;
             }
         }
+        var len = res.conf_achievement.length-1;
+        if(tlv>=parseInt(res.conf_achievement[len].condition))
+            n = len+1;
         return n;
     },
 
