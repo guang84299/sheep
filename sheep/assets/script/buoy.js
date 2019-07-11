@@ -25,7 +25,7 @@ cc.Class({
         this.dir = cc.v2(0,-1).normalize();
 
         this.type = type;
-        cc.res.setSpriteFrame("images/buoy/buoy"+type,this.node);
+        cc.res.setSpriteFrame("images/buoy/buoy"+this.box.knifeType+"_"+type,this.node);
 
         this.conf = this.box.conf;
         this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;

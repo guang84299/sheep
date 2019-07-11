@@ -44,7 +44,7 @@ cc.Class({
         this.title.string = "牧场"+this.index+"等级"+lv;
 
         var nexlLv = this.findNextBuoy(lv);
-        res.setSpriteFrame("images/buoy/buoyIcon"+res.conf_base[nexlLv-1].buoyNum,this.buoyIcon);
+        res.setSpriteFrame("images/buoy/buoyIcon"+this.index+"_"+res.conf_base[nexlLv-1].buoyNum,this.buoyIcon);
 
         this.pro.progress = lv/nexlLv;
         this.buoyDesc.string = "下次增加剪刀要达到"+nexlLv+"级";

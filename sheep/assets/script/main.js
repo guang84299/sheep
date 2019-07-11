@@ -27,6 +27,7 @@ cc.Class({
         this.initUI();
         this.updateUI();
 
+        this.addBox();
         this.addListener();
 
         this.updateLixian();
@@ -65,6 +66,7 @@ cc.Class({
         this.lastY = 0;
         this.coin = storage.getCoin();
         this.toalcoin = storage.getToalCoin();
+        this.faccoin = storage.getFacCoin();
         this.updateCoinDt = 0;
         this.saveCoinDt = 0;
         this.updateCoinTime = Math.random();
@@ -95,14 +97,25 @@ cc.Class({
 
         this.headIcon = cc.find("top/bg/mask/headIcon",this.node_main);
 
+        this.car = cc.find("car",this.scrollContent).getComponent("car");
+        this.car2 = cc.find("car2",this.scrollContent).getComponent("car2");
+
+        this.faccoin_label = cc.find("head/factory/coin",this.scrollContent).getComponent(cc.Label);
+
         res.loadPic(qianqista.avatarUrl,this.headIcon);
 
-        for(var i=0;i<3;i++)
-        {
-            var box = cc.instantiate(cc.res["prefab_box"]);
-            box.getComponent("box").init(i+1);
-            this.scrollContent.addChild(box);
-        }
+        this.boxs = [];
+        //for(var i=0;i<3;i++)
+        //{
+        //    var box = cc.instantiate(cc.res["prefab_box"]);
+        //    box.getComponent("box").init(i+1);
+        //    this.scrollContent.addChild(box);
+        //    this.scrollContent.height = box.height*(i+1);
+        //    box.y = -box.height*i-100;
+        //
+        //    this.boxs.push(box);
+        //}
+
 
         if(sdk.is_iphonex())
         {
@@ -124,6 +137,7 @@ cc.Class({
     updateUI: function()
     {
         this.coin_label.string = storage.castNum(this.coin);
+        this.faccoin_label.string = storage.castNum(this.faccoin);
 
         var tlv = 0;
         var lock = storage.getLock();
@@ -134,7 +148,7 @@ cc.Class({
 
         var nextPro = this.getNextNikePro(tlv);
 
-        this.totalLv.string = "牧场总等级 "+tlv;
+        this.totalLv.string = tlv;
         this.pro.progress = tlv/parseInt(nextPro);
         this.pro_num.string = tlv+"/"+parseInt(nextPro);
 
@@ -217,6 +231,13 @@ cc.Class({
         this.coin_label.string = storage.castNum(this.coin);
     },
 
+    addFacCoin: function(coin)
+    {
+        var add = Number(coin);
+        this.faccoin += add;
+        this.faccoin_label.string = storage.castNum(this.faccoin);
+    },
+
     uploadData: function()
     {
         var datas = {};
@@ -296,16 +317,28 @@ cc.Class({
 
     addBox: function()
     {
-        if(this.scrollContent.childrenCount<15)
+        if(this.boxs.length<15)
         {
             var lock = this.unLock;
-            if(this.scrollContent.childrenCount < lock+1)
+            if(this.boxs.length < lock+1 || this.boxs.length<3)
             {
                 var box = cc.instantiate(cc.res["prefab_box"]);
-                box.getComponent("box").init(this.scrollContent.childrenCount+1);
+                box.getComponent("box").init(this.boxs.length+1);
                 this.scrollContent.addChild(box);
 
-                cc.log(this.scrollContent.childrenCount);
+                box.y = -box.height*this.boxs.length-320;
+
+                this.boxs.push(box);
+                this.scrollContent.height = box.height*this.boxs.length+320;
+                cc.log(this.boxs.length);
+
+                this.updateBox();
+                this.scheduleOnce(this.addBox.bind(this),0.1);
+            }
+            else
+            {
+                if(!this.car.isRun)
+                    this.car.run();
             }
         }
 
@@ -313,11 +346,11 @@ cc.Class({
 
     lvupBox: function(index)
     {
-        var box = this.scrollContent.children[index-1];
+        var box = this.boxs[index-1];
         box.getComponent("box").lvup();
         this.updateUI();
 
-        var boxs = this.scrollContent.children;
+        var boxs = this.boxs;
 
         for(var i=0;i<boxs.length;i++)
         {
@@ -328,6 +361,18 @@ cc.Class({
                     box.toUnlock();
             }
         }
+    },
+
+    carvup: function()
+    {
+        this.car.lvup();
+        this.task.updateUI();
+    },
+
+    carhup: function()
+    {
+        this.car2.lvup();
+        this.task.updateUI();
     },
 
     judgeUnLock: function(lv)
@@ -349,7 +394,7 @@ cc.Class({
 
     getSecVal: function()
     {
-        var boxs = this.scrollContent.children;
+        var boxs = this.boxs;
 
         var val = 0;
         for(var i=0;i<boxs.length;i++)
@@ -360,7 +405,7 @@ cc.Class({
                val += box.pice*(1/box.growSpeed);
             }
         }
-        return val*48;
+        return val*36;
     },
 
     updateBox: function()
@@ -368,35 +413,37 @@ cc.Class({
         var h = this.scroll.node.height;
         var y = this.scroll.getScrollOffset().y;
 
-        var boxs = this.scrollContent.children;
+        var boxs = this.boxs;
 
-        var s = "";
+        //var s = "";
         for(var i=0;i<boxs.length;i++)
         {
             var box = boxs[i];
             if(box.y>h-y-box.height || -box.y-y>h)
             {
                 box.sc.changeUpdate(false);
+                //s += i+":";
             }
             else
             {
                 box.sc.changeUpdate(true);
             }
         }
+        //cc.log(s);
     },
 
     updateCoin: function(dt)
     {
-        this.updateCoinDt += dt;
-
-        if(this.updateCoinDt>this.updateCoinTime && this.totalLvNum>=10)
-        {
-            this.addCoin(this.getSecVal()*this.updateCoinDt,this.shouYiRate);
-            this.updateCoinDt = 0;
-            this.updateCoinTime = Math.random();
-            if(this.updateCoinTime<0.2) this.updateCoinTime = 0.2;
-            else if(this.updateCoinTime>0.5) this.updateCoinTime = 0.5;
-        }
+        //this.updateCoinDt += dt;
+        //
+        //if(this.updateCoinDt>this.updateCoinTime && this.totalLvNum>=10)
+        //{
+        //    this.addCoin(this.getSecVal()*this.updateCoinDt,this.shouYiRate);
+        //    this.updateCoinDt = 0;
+        //    this.updateCoinTime = Math.random();
+        //    if(this.updateCoinTime<0.2) this.updateCoinTime = 0.2;
+        //    else if(this.updateCoinTime>0.5) this.updateCoinTime = 0.5;
+        //}
 
         this.saveCoinDt += dt;
         if(this.saveCoinDt>3)
@@ -404,6 +451,7 @@ cc.Class({
             this.saveCoinDt = 0;
             storage.setCoin(this.coin);
             storage.setToalCoin(this.toalcoin);
+            storage.setFacCoin(this.faccoin);
         }
 
         this.uploadCoinDt += dt;
@@ -412,6 +460,7 @@ cc.Class({
             this.uploadCoinDt = 0;
             storage.uploadCoin();
             storage.uploadToalCoin();
+            storage.uploadFacCoin();
 
             storage.setLixianTime(new Date().getTime());
             storage.uploadLixianTime();
@@ -554,6 +603,14 @@ cc.Class({
         {
             sdk.share(null,"main");
             cc.qianqista.event("分享有礼_打开");
+        }
+        else if(data == "carhup")
+        {
+            res.openUI("carhup");
+        }
+        else if(data == "carvup")
+        {
+            res.openUI("carvup");
         }
         storage.playSound(res.audio_button);
         cc.log(data);

@@ -22,10 +22,14 @@ cc.Class({
         this.game = cc.find("Canvas").getComponent("main");
         this.index = index;
         this.lv = cc.storage.getLevel(index);
+        this.coin = cc.storage.getLevelCoin(index);
         this.conf = cc.res.conf_base[this.lv-1];
         this.pice = cc.res.conf_price[this.lv-1]["price"+index];
+        this.knifeType = cc.res.conf_grade[index-1].knifeType;
         this.growSpeed = this.conf.growSpeed;
         this.isUnLock = false;
+        this.upDt = 0;
+        this.saveDt = 0;
         var lock = cc.storage.getLock();
         if(index<=lock)
         {
@@ -56,7 +60,7 @@ cc.Class({
 
     updateUI: function()
     {
-        this.lv_label.string = "lv."+this.lv;
+        this.lv_label.string = this.lv;
     },
 
     initSheep: function()
@@ -68,13 +72,13 @@ cc.Class({
         cc.find("lock2",box).active = false;
 
         this.sheeps = [];
-        for(var i=0;i<8;i++)
+        for(var i=0;i<6;i++)
         {
             for(var j=0;j<6;j++)
             {
                 var sheep = cc.instantiate(cc.res["prefab_sheep"]);
-                sheep.x = (i-4)*70 + 30;
-                sheep.y = -50*j -30;
+                sheep.x = (i-3)*60 + 30;
+                sheep.y = -50*j -40;
                 //sheep.zIndex = 2;
                 box.addChild(sheep);
 
@@ -97,7 +101,21 @@ cc.Class({
             this.buoys.push(buoy);
         }
 
+        this.mao = cc.find("box_lvup/mao",this.node);
+        this.coinnum = cc.find("box_lvup/coinbg/num",this.node).getComponent(cc.Label);
+        this.coinnum.string = cc.storage.castNum(this.coin);
+
+        this.proMao();
     },
+
+    proMao: function()
+    {
+        this.mao.destroyAllChildren();
+        var node = cc.res.playAnim("images/box/mao",4,1,1,null,false);
+        this.mao.addChild(node);
+    },
+
+
 
     changeUpdate: function(update)
     {
@@ -223,6 +241,46 @@ cc.Class({
         }
         cost = cost*48*parseInt(conf.time);
         return cost;
+    },
+
+    getCoin: function(coin)
+    {
+        var gcoin = 0;
+        if(coin>=this.coin)
+        {
+            gcoin = this.coin;
+            this.coin = 0;
+        }
+        else
+        {
+            gcoin = coin;
+            this.coin -= coin;
+        }
+        this.proMao();
+        return gcoin;
+    },
+
+    update: function(dt)
+    {
+        if(this.isUnLock)
+        {
+            this.upDt += dt;
+            this.saveDt += dt;
+            if(this.upDt>1)
+            {
+                this.upDt = 0;
+
+                this.coin += this.pice*36;
+                this.coinnum.string = cc.storage.castNum(this.coin);
+            }
+
+            if(this.saveDt>5)
+            {
+                this.saveDt = 0;
+                cc.storage.setLevelCoin(this.index,this.coin);
+            }
+        }
+
     },
 
     click: function(event,data)

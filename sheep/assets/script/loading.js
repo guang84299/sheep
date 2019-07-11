@@ -61,6 +61,8 @@ cc.Class({
             "conf/rankUp",
             "conf/qiandao",
             "conf/choujiang",
+            "conf/truckHor",
+            "conf/truckVic",
 
             "prefab/sheep",
             "prefab/buoy",
@@ -81,6 +83,8 @@ cc.Class({
             "prefab/ui/choujiang",
             "prefab/ui/rank",
             "prefab/ui/qiandao",
+            "prefab/ui/carhup",
+            "prefab/ui/carvup",
 
             //"prefab/particle/suijinbi",
             //"scene/game1"
@@ -279,6 +283,14 @@ cc.Class({
                 storage.setCoin(coin);
             }
 
+            if(datas.hasOwnProperty("faccoin"))
+            {
+                var coin = Number(datas.faccoin);
+                var coin2 = storage.getFacCoin();
+                if(coin2>coin) coin = coin2;
+                storage.setFacCoin(coin);
+            }
+
             if(datas.hasOwnProperty("lock"))
                 storage.setLock(Number(datas.lock));
 
@@ -286,8 +298,14 @@ cc.Class({
             for(var i=1;i<=lock;i++)
             {
                 if(datas.hasOwnProperty("level_"+i))
-                    storage.setLevel(1,Number(datas["level_"+i]));
+                    storage.setLevel(i,Number(datas["level_"+i]));
             }
+
+            if(datas.hasOwnProperty("carv_lv"))
+                storage.setCarVLv(Number(datas.carv_lv));
+
+            if(datas.hasOwnProperty("carh_lv"))
+                storage.setCarHLv(Number(datas.carh_lv));
 
             if(datas.hasOwnProperty("task"))
                 storage.setTask(Number(datas.task));

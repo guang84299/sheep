@@ -120,20 +120,19 @@ module.exports = {
         var self = this;
 
         var play = function(){
-            var i = 1;
+            var i = 0;
             if(isFlip) i = frameNum;
             sp.schedule(function(){
                self.setSpriteFrame(path+"/"+i,sp);
                 if(isFlip) i--;
                 else i++;
-            },time,frameNum);
+            },time,frameNum-1);
         };
 
         var num = 1;
         if(loop>0)
         {
             play();
-            num ++;
         }
         sp.schedule(function(){
             if(num>loop)
@@ -141,10 +140,10 @@ module.exports = {
                 if(callback) callback();
                 if(isRemove) node.destroy();
             }
-            else
+            else if(num>1)
                 play();
             num ++;
-        },time*(frameNum+1),loop);
+        },time*(frameNum+2),loop);
 
         return node;
     },
@@ -201,12 +200,12 @@ module.exports = {
         label.string = coin;
         //var outline = node.addComponent(cc.LabelOutline);
         if(pos)
-            node.position = cc.v2(0,pos.y-200);
+            node.position = cc.v2(200,pos.y-200);
         if(!parent)parent = cc.find("Canvas");
         parent.addChild(node,10000);
 
-        if(Math.random()>0.5) node.x = 200;
-        else node.x = -200;
+        //if(Math.random()>0.5) node.x = 200;
+        //else node.x = -200;
 
         node.opacity = 255;
         node.runAction(cc.sequence(

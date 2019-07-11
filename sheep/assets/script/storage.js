@@ -137,6 +137,26 @@ module.exports = {
         cc.qianqista.uploaddatas(data);
     },
 
+    setFacCoin: function(coin)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"faccoin",Math.floor(coin));
+    },
+
+    getFacCoin: function()
+    {
+        var coin = cc.sys.localStorage.getItem(this.pfix+"faccoin");
+        coin = coin ? coin : 0;
+        return Number(coin);
+    },
+
+    uploadFacCoin: function()
+    {
+        var datas = {};
+        datas.faccoin = this.getFacCoin();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
     setToalCoin: function(coin)
     {
         cc.sys.localStorage.setItem(this.pfix+"toalcoin",Math.floor(coin));
@@ -221,6 +241,18 @@ module.exports = {
         cc.qianqista.uploaddatas(data);
     },
 
+    setLevelCoin: function(index,coin)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"level_"+index+"_coin",coin);
+    },
+
+    getLevelCoin: function(index)
+    {
+        var coin = cc.sys.localStorage.getItem(this.pfix+"level_"+index+"_coin");
+        coin = coin ? coin : 0;
+        return Number(coin);
+    },
+
     setLock: function(lv)
     {
         cc.sys.localStorage.setItem(this.pfix+"lock",lv);
@@ -237,6 +269,46 @@ module.exports = {
     {
         var datas = {};
         datas.lock = this.getLock();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setCarVLv: function(lv)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"carv_lv",lv);
+    },
+
+    getCarVLv: function()
+    {
+        var lv = cc.sys.localStorage.getItem(this.pfix+"carv_lv");
+        lv = lv ? lv : 1;
+        return Number(lv);
+    },
+
+    uploadCarVLv: function()
+    {
+        var datas = {};
+        datas.carv_lv = this.getCarVLv();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setCarHLv: function(lv)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"carh_lv",lv);
+    },
+
+    getCarHLv: function()
+    {
+        var lv = cc.sys.localStorage.getItem(this.pfix+"carh_lv");
+        lv = lv ? lv : 1;
+        return Number(lv);
+    },
+
+    uploadCarHLv: function()
+    {
+        var datas = {};
+        datas.carh_lv = this.getCarHLv();
         var data = JSON.stringify(datas);
         cc.qianqista.uploaddatas(data);
     },
@@ -295,6 +367,8 @@ module.exports = {
     {
         var rankup = cc.sys.localStorage.getItem(this.pfix+"rankup");
         rankup = rankup ? rankup : "[]";
+        if(typeof rankup == "object")
+            return rankup;
         return JSON.parse(rankup);
     },
 

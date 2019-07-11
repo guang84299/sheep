@@ -83,6 +83,22 @@ cc.Class({
                 return true;
             }
         }
+        //采集车升级
+        else if(this.task.type == "5")
+        {
+            if(storage.getCarVLv() >= parseInt(this.task.transport1))
+            {
+                return true;
+            }
+        }
+        //运输车升级
+        else if(this.task.type == "6")
+        {
+            if(storage.getCarHLv() >= parseInt(this.task.transport2))
+            {
+                return true;
+            }
+        }
         return false;
     },
 

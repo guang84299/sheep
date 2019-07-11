@@ -16,6 +16,7 @@ cc.Class({
         this.anim = new cc.Node();
         this.anim.addComponent(cc.Sprite);
         this.node.addChild(this.anim);
+        this.anim.scale = 0.8;
 
         this.aniconfig = cc.config.sheepAnim[parseInt((this.box.index-1)/3)];
         this.conf = this.box.conf;
@@ -42,6 +43,7 @@ cc.Class({
             cc.moveTo(0.3,cc.v2(0,50)).easing(cc.easeSineIn()),
             cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeSineIn())
         ));
+        node.scale = 0.8;
 
         if(this.game.totalLvNum < 10)
             this.game.addCoin(this.box.pice);
