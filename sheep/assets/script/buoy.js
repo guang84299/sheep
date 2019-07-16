@@ -25,8 +25,10 @@ cc.Class({
         this.dir = cc.v2(0,-1).normalize();
 
         this.type = type;
-        cc.res.setSpriteFrame("images/buoy/buoy"+this.box.knifeType+"_"+type,this.node);
 
+        var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoy"+this.box.knifeType+"_"+type);
+        //cc.res.setSpriteFrame("images/buoy/buoy"+this.box.knifeType+"_"+type,this.node);
+        this.node.getComponent(cc.Sprite).spriteFrame = sp;
         this.conf = this.box.conf;
         this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
         this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;

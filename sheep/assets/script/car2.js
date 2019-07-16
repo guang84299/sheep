@@ -27,11 +27,14 @@ cc.Class({
         }
         this.cars = this.node.children;
 
-        this.run();
+        this.isRuning = false;
+        if(this.game.unLock>0)
+            this.run();
     },
 
     run: function()
     {
+        this.isRuning = true;
         var isRun = false;
         var runCar = null;
         for(var i=0;i<this.cars.length;i++)
@@ -42,6 +45,7 @@ cc.Class({
                 car.isRun = true;
                 car.coin = 0;
                 car.zIndex = this.cars.length-i;
+                car.index = i+1;
                 isRun = true;
                 runCar = car;
                 break;
@@ -60,6 +64,16 @@ cc.Class({
                     self.run();
                 })
             ));
+
+            runCar.lunzi1 = runCar.children[0];
+            runCar.lunzi2 = runCar.children[1];
+            runCar.coinsp = runCar.children[2];
+            runCar.lunzi1.runAction(cc.repeatForever(cc.rotateBy(1,360)));
+            runCar.lunzi2.runAction(cc.repeatForever(cc.rotateBy(1,360)));
+
+            runCar.coinsp.active = false;
+            runCar.lunzi1.active = false;
+            runCar.lunzi2.active = false;
         }
     },
 
@@ -72,6 +86,20 @@ cc.Class({
                 self.addCoin(car);
             })
         ));
+        car.lunzi1.active = true;
+        car.lunzi2.active = true;
+
+        if(this.isUp)
+        {
+            this.isUp = false;
+            var dt = Math.random()+Math.random();
+            this.node.runAction(cc.sequence(
+                cc.delayTime(dt),
+                cc.callFunc(function(){
+                    self.run();
+                })
+            ));
+        }
     },
 
     carBack: function(car)
@@ -83,19 +111,24 @@ cc.Class({
                 self.subCoin(car);
             })
         ));
+        car.lunzi1.active = true;
+        car.lunzi2.active = true;
     },
 
     addCoin: function(car)
     {
-        car.scaleY = -1;
-        var coin = new cc.Node();
-        coin.addComponent(cc.Sprite);
+        car.scaleX = -1;
+        car.lunzi1.active = false;
+        car.lunzi2.active = false;
+
+        var coin = cc.instantiate(car.coinsp);
+        coin.active = true;
+        coin.scaleX = 1;
         coin.x = -270;
         coin.y = this.node.y;
         coin.zIndex = this.node.zIndex+1;
         this.node.parent.addChild(coin);
 
-        cc.res.setSpriteFrame("images/common/coin",coin);
 
         var capacity = Number(this.conf.capacity);
         if(capacity>this.game.faccoin)
@@ -113,15 +146,8 @@ cc.Class({
         coin.runAction(cc.sequence(
             cc.moveBy(0.3,cc.v2(100,0)).easing(cc.easeSineIn()),
             cc.callFunc(function(){
-                if(car.childrenCount==0)
-                {
-                    coin.position = cc.v2(0,0);
-                    coin.parent = car;
-                }
-                else
-                {
-                    coin.destroy();
-                }
+                coin.destroy();
+                car.coinsp.active = true;
                 self.carBack(car);
             })
         ));
@@ -129,20 +155,20 @@ cc.Class({
 
     subCoin: function(car)
     {
-        car.scaleY = 1;
-        if(car.childrenCount>0)
-        {
-            var coin = car.children[0];
-            coin.position = this.node.position.add(car.position);
-            coin.parent = this.node.parent;
+        car.scaleX = 1;
+        car.lunzi1.active = false;
+        car.lunzi2.active = false;
 
-            coin.runAction(cc.sequence(
-                cc.moveBy(0.3,cc.v2(0,100)).easing(cc.easeSineIn()),
-                cc.removeSelf()
-            ));
-        }
+        var coin = cc.instantiate(car.coinsp);
+        coin.position = this.node.position.add(car.position);
+        coin.parent = this.node.parent;
 
-        car.destroyAllChildren();
+        coin.runAction(cc.sequence(
+            cc.moveBy(0.3,cc.v2(0,100)).easing(cc.easeSineIn()),
+            cc.removeSelf()
+        ));
+
+        car.coinsp.active = false;
 
         var self = this;
         car.runAction(cc.sequence(
@@ -160,6 +186,26 @@ cc.Class({
         this.lv = cc.storage.getCarHLv();
         this.conf = cc.res.conf_truckHor[this.lv-1];
         this.speed = 10/Number(this.conf.speed);
+
+        if(this.cars.length<Number(this.conf.num))
+        {
+            var car = this.node.children[0];
+            for(var i=this.cars.length;i<Number(this.conf.num);i++)
+            {
+                var c = cc.instantiate(car);
+                c.x = 0;
+                c.isRun = false;
+                c.coin = 0;
+                c.scaleX = 1;
+                this.node.addChild(c);
+
+                this.isUp = true;
+            }
+
+            this.cars = this.node.children;
+
+        }
+
     },
 
     update: function(dt)

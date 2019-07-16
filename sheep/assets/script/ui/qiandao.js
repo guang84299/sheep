@@ -17,9 +17,12 @@ cc.Class({
     {
         this.bg = cc.find("bg",this.node);
 
-        this.items = cc.find("box/items",this.bg).children;
-        this.btn_lingqu = cc.find("box/lingqu",this.bg).getComponent(cc.Button);
-        this.btn_lingqu2 = cc.find("box/lingqu2",this.bg).getComponent(cc.Button);
+        this.items = cc.find("items",this.bg).children;
+        this.btn_lingqu = cc.find("btns/lingqu",this.bg).getComponent(cc.Button);
+        this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg).getComponent(cc.Button);
+
+        this.btn_lingqu.mcolor = this.btn_lingqu.node.color;
+        this.btn_lingqu2.mcolor = this.btn_lingqu2.node.color;
     },
 
     updateUI: function()
@@ -37,7 +40,9 @@ cc.Class({
         {
             var item = this.items[i];
             var award = cc.find("award",item).getComponent(cc.Label);
-            var desc = cc.find("desc",item).getComponent(cc.Label);
+            var desc = cc.find("desc",item);
+            var box = cc.find("box",item);
+            var mask = cc.find("mask",item);
 
             var data = res.conf_qiandao[i];
 
@@ -45,20 +50,44 @@ cc.Class({
             if(i==qiandaoNum)
             {
                 if(canSign)
-                    item.color = cc.color(0,255,0);
+                {
+                    box.active = false;
+                    mask.active = false;
+                    award.node.color = cc.color(196,124,30);
+                    desc.color = cc.color(196,124,30);
+                }
             }
             else if(i<qiandaoNum)
             {
-                item.color = cc.color(255,0,0);
+                box.active = true;
+                mask.active = true;
+                award.string = "已领取";
+                award.node.color = cc.color(124,121,114);
+                desc.color = cc.color(124,121,114);
             }
             else
             {
-                item.color = cc.color(180,180,180);
+                box.active = true;
+                mask.active = false;
+                award.node.color = cc.color(196,124,30);
+                desc.color = cc.color(124,121,114);
             }
         }
 
         this.btn_lingqu.interactable = canSign;
         this.btn_lingqu2.interactable = canSign;
+        if(canSign)
+        {
+            this.btn_lingqu.node.color = this.btn_lingqu.mcolor;
+            this.btn_lingqu2.node.color = this.btn_lingqu2.mcolor;
+        }
+        else
+        {
+            this.btn_lingqu.node.color = cc.color(180,180,180);
+            this.btn_lingqu2.node.color = cc.color(180,180,180);
+        }
+
+        this.btn_lingqu2.node.active = cc.GAME.share;
     },
 
     lingqu: function(x2)
@@ -96,6 +125,7 @@ cc.Class({
 
     hide: function()
     {
+        this.game.updateRed();
         //this.main.wxQuanState(true);
         var self = this;
         this.bg.runAction(cc.sequence(
@@ -121,12 +151,12 @@ cc.Class({
         else if(data == "lingqu2")
         {
             var self = this;
-            cc.sdk.showVedio(function(r){
+            cc.sdk.share(function(r){
                 if(r)
                 {
                     self.lingqu(true);
                 }
-            });
+            },"qiandao");
 
         }
         storage.playSound(res.audio_button);

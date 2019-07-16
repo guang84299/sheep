@@ -13,6 +13,7 @@ cc.Class({
         this.isUpdate = true;
 
         this.lv_label = cc.find("box_lvup/lv",this.node).getComponent(cc.Label);
+        this.index_label = cc.find("box_lvup/index",this.node).getComponent(cc.Label);
 
         this.updateUI();
     },
@@ -40,6 +41,7 @@ cc.Class({
             cc.find("box/lock",this.node).active = false;
             cc.find("box/lock2",this.node).active = true;
             cc.find("box_lvup",this.node).active = false;
+            cc.find("node_mao",this.node).active = false;
             if(this.game.judgeUnLock(index))
             {
                 this.toUnlock();
@@ -50,17 +52,28 @@ cc.Class({
                 cc.log("index=",index);
             }
         }
+
+        var icon = parseInt((this.index-1)/3)+1;
+
+        cc.res.setSpriteFrame("images/box/bg"+icon,this.node);
+        if(this.index%3==0)
+        {
+            this.boxbg2 =  cc.find("bg2",this.node);
+            cc.res.setSpriteFrame("images/box/bg2"+icon,this.boxbg2);
+            cc.find("node_hua",this.node).active = true;
+        }
     },
 
     initUnlock: function(lock)
     {
         var desc = cc.find("box/lock2/desc",this.node).getComponent(cc.Label);
-        desc.string = "牧场总等级"+cc.res.conf_grade[lock].condition+"级解锁";
+        desc.string = cc.res.conf_grade[lock].condition;
     },
 
     updateUI: function()
     {
         this.lv_label.string = this.lv;
+        this.index_label.string = this.index;
     },
 
     initSheep: function()
@@ -101,8 +114,9 @@ cc.Class({
             this.buoys.push(buoy);
         }
 
-        this.mao = cc.find("box_lvup/mao",this.node);
-        this.coinnum = cc.find("box_lvup/coinbg/num",this.node).getComponent(cc.Label);
+        cc.find("node_mao",this.node).active = true;
+        this.mao = cc.find("node_mao/mao",this.node);
+        this.coinnum = cc.find("node_mao/coinbg/num",this.node).getComponent(cc.Label);
         this.coinnum.string = cc.storage.castNum(this.coin);
 
         this.proMao();
@@ -111,7 +125,8 @@ cc.Class({
     proMao: function()
     {
         this.mao.destroyAllChildren();
-        var node = cc.res.playAnim("images/box/mao",4,1,1,null,false);
+        var icon = parseInt((this.index-1)/3)+1;
+        var node = cc.res.playAnim("images/box/mao"+icon,4,1,1,null,false);
         this.mao.addChild(node);
     },
 
@@ -175,19 +190,27 @@ cc.Class({
         cc.find("lock",box).active = true;
         cc.find("lock2",box).active = false;
 
-        this.lock_name = cc.find("box/lock/name",this.node).getComponent(cc.Label);
+        this.lock_name = cc.find("box/lock/name",this.node);
         this.lock_desc = cc.find("box/lock/desc",this.node).getComponent(cc.Label);
-        this.lock_cost = cc.find("box/lock/cost",this.node).getComponent(cc.Label);
+        this.lock_cost = cc.find("box/lock/coinbg/cost",this.node).getComponent(cc.Label);
         this.lock_sheepIcon = cc.find("box/lock/sheepIcon",this.node);
+        this.lock_saoguang = cc.find("box/lock/mask/saoguang",this.node);
 
         var conf = cc.res.conf_ranch[this.index-1];
         this.unLockCost = this.getUnlockCost();
-        this.lock_name.string = conf.name;
+
         this.lock_desc.string = conf.tips;
         this.lock_cost.string = cc.storage.castNum(this.unLockCost);
 
         var icon = parseInt((this.index-1)/3)+1;
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+icon,this.lock_sheepIcon);
+        cc.res.setSpriteFrame("images/box/title_"+icon,this.lock_name);
+
+        this.lock_saoguang.runAction(cc.repeatForever(cc.sequence(
+            cc.moveBy(0.6,630,0).easing(cc.easeSineIn()),
+            cc.moveBy(0,-630,0),
+            cc.delayTime(2)
+        )));
     },
 
     unlock: function()
@@ -220,7 +243,14 @@ cc.Class({
                 this.game.updateUI();
                 if(lock+1>=3)
                 this.game.addBox();
+
+                if(!this.game.car2.isRuning)
+                    this.game.car2.run();
             }
+        }
+        else
+        {
+            cc.res.showToast("金币不足！");
         }
     },
 
@@ -257,6 +287,8 @@ cc.Class({
             this.coin -= coin;
         }
         this.proMao();
+        this.upDt = 0;
+        this.coinnum.string = cc.storage.castNum(this.coin);
         return gcoin;
     },
 
@@ -266,11 +298,11 @@ cc.Class({
         {
             this.upDt += dt;
             this.saveDt += dt;
-            if(this.upDt>1)
+            if(this.upDt>2)
             {
                 this.upDt = 0;
 
-                this.coin += this.pice*36;
+                this.coin += this.pice*36*2;
                 this.coinnum.string = cc.storage.castNum(this.coin);
             }
 
@@ -293,6 +325,7 @@ cc.Class({
         {
             this.unlock();
         }
+        cc.storage.playSound(cc.res.audio_button);
         cc.log(data);
     }
 });

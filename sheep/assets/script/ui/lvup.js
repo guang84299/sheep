@@ -16,10 +16,11 @@ cc.Class({
     initUI: function()
     {
         this.bg = cc.find("bg",this.node);
-        this.title = cc.find("title",this.bg).getComponent(cc.Label);
-        this.buoyIcon = cc.find("box/buoyIcon",this.bg);
-        this.pro =  cc.find("box/pro",this.bg).getComponent(cc.ProgressBar);
-        this.buoyDesc = cc.find("box/buoyDesc",this.bg).getComponent(cc.Label);
+        this.title1 = cc.find("title/num1",this.bg).getComponent(cc.Label);
+        this.title2 = cc.find("title/num2",this.bg).getComponent(cc.Label);
+        this.buoyIcon = cc.find("buoyIcon",this.bg);
+        this.pro =  cc.find("pro",this.bg).getComponent(cc.ProgressBar);
+        this.buoyDesc = cc.find("buoyDesc",this.bg).getComponent(cc.Label);
 
         this.icon1_val = cc.find("box/icon1/val",this.bg).getComponent(cc.Label);
         this.icon1_val2 = cc.find("box/icon1/val2",this.bg).getComponent(cc.Label);
@@ -30,24 +31,30 @@ cc.Class({
         this.icon4_val = cc.find("box/icon4/val",this.bg).getComponent(cc.Label);
         this.icon4_val2 = cc.find("box/icon4/val2",this.bg).getComponent(cc.Label);
 
-        this.cost = cc.find("box/cost",this.bg).getComponent(cc.Label);
-        this.up_rate = cc.find("box/up/rate",this.bg).getComponent(cc.Label);
+        this.cost10 = cc.find("box/up10/costbg/cost",this.bg).getComponent(cc.Label);
+        this.up_rate10 = cc.find("box/up10/desc",this.bg).getComponent(cc.Label);
 
-        this.xrate = 1;
-        this.upcost = 0;
-        this.uplv = 0;
+        this.cost1 = cc.find("box/up1/costbg/cost",this.bg).getComponent(cc.Label);
+        this.up_rate1 = cc.find("box/up1/desc",this.bg).getComponent(cc.Label);
+
     },
 
     updateUI: function()
     {
         var lv = storage.getLevel(this.index);
-        this.title.string = "牧场"+this.index+"等级"+lv;
+        this.title1.string = this.index;
+        this.title2.string = lv;
 
         var nexlLv = this.findNextBuoy(lv);
-        res.setSpriteFrame("images/buoy/buoyIcon"+this.index+"_"+res.conf_base[nexlLv-1].buoyNum,this.buoyIcon);
+        var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoyIcon"+this.index+"_"+res.conf_base[nexlLv-1].buoyNum);
+        this.buoyIcon.getComponent(cc.Sprite).spriteFrame = sp;
+        //res.setSpriteFrame("images/buoy/buoyIcon"+this.index+"_"+res.conf_base[nexlLv-1].buoyNum,this.buoyIcon);
 
         this.pro.progress = lv/nexlLv;
-        this.buoyDesc.string = "下次增加剪刀要达到"+nexlLv+"级";
+        if(Math.abs(nexlLv-lv)<1)
+            this.buoyDesc.string = "剪刀数量已达最大值！";
+        else
+            this.buoyDesc.string = "下次增加剪刀要达到"+nexlLv+"级";
 
         var nlv = lv+1;
         if(nlv>res.conf_base.length) nlv = res.conf_base.length;
@@ -67,30 +74,14 @@ cc.Class({
         this.icon4_val.string = res.conf_base[lv-1].buoySpeed;
         this.icon4_val2.string = "+"+(Number(res.conf_base[nlv-1].buoySpeed)-Number(res.conf_base[lv-1].buoySpeed)).toFixed(2);
 
-        if(this.xrate == 1)
-        {
-            var costDate = this.getCost(lv,1);
-            this.cost.string = storage.castNum(costDate.cost);
-            this.up_rate.string = "升级X"+costDate.n;
-            this.upcost = costDate.cost;
-            this.uplv = costDate.n;
-        }
-        else if(this.xrate == 2)
-        {
-            var costDate = this.getCost(lv,10);
-            this.cost.string = storage.castNum(costDate.cost);
-            this.up_rate.string = "升级X"+costDate.n;
-            this.upcost = costDate.cost;
-            this.uplv = costDate.n;
-        }
-        else if(this.xrate == 3)
-        {
-            var costDate = this.getCost(lv,100);
-            this.cost.string = storage.castNum(costDate.cost);
-            this.up_rate.string = "升级X"+costDate.n;
-            this.upcost = costDate.cost;
-            this.uplv = costDate.n;
-        }
+        var costDate = this.getCost(lv,1);
+        this.cost1.string = storage.castNum(costDate.cost);
+        this.up_rate1.string = costDate.n;
+
+        var costDate = this.getCost(lv,10);
+        this.cost10.string = storage.castNum(costDate.cost);
+        this.up_rate10.string = costDate.n;
+
     },
 
     findNextBuoy: function(lv)
@@ -117,15 +108,8 @@ cc.Class({
             if(lv+i<res.conf_cost.length)
             {
                 var c = Number(res.conf_cost[lv+i]["ranch"+this.index]);
-                if(this.game.coin>=cost+c)
-                {
-                    cost += c;
-                    n++;
-                }
-                else
-                {
-                    break;
-                }
+                cost += c;
+                n++;
             }
             else
             break;
@@ -133,16 +117,30 @@ cc.Class({
         return {cost:cost,n:n};
     },
 
-    lvup: function()
+    lvup: function(rate)
     {
-        if(this.game.coin>=this.upcost && this.uplv>0)
+        var lv = storage.getLevel(this.index);
+        var costDate = this.getCost(lv,rate);
+
+        if(costDate.n<1)
         {
-            this.game.addCoin(-this.upcost);
-            var lv = storage.getLevel(this.index);
-            storage.setLevel(this.index,lv+this.uplv);
-            storage.uploadLevel(this.index);
-            this.updateUI();
-            this.game.lvupBox(this.index);
+            res.showToast("等级已满！");
+        }
+        else
+        {
+            if(this.game.coin>=costDate.cost)
+            {
+                this.game.addCoin(-costDate.cost);
+
+                storage.setLevel(this.index,lv+costDate.n);
+                storage.uploadLevel(this.index);
+                this.updateUI();
+                this.game.lvupBox(this.index);
+            }
+            else
+            {
+                res.showToast("金币不足！");
+            }
         }
     },
 
@@ -186,19 +184,13 @@ cc.Class({
         {
             this.hide();
         }
-        else if(data == "rate")
+        else if(data == "up10")
         {
-            if(event.target.name == "toggle1")
-                this.xrate = 1;
-            else if(event.target.name == "toggle2")
-                this.xrate = 2;
-            else
-                this.xrate = 3;
-            this.updateUI();
+            this.lvup(10);
         }
-        else if(data == "up")
+        else if(data == "up1")
         {
-            this.lvup();
+            this.lvup(1);
         }
         storage.playSound(res.audio_button);
         cc.log(data);

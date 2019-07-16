@@ -145,7 +145,7 @@ module.exports = {
                     //else if(cc.myscene == "main")
                     //    cc.storage.playMusic(cc.res.audio_bgm);
                     if(cc.myscene == "main")
-                        cc.storage.playMusic(cc.res.audio_bgm);
+                        cc.storage.playMusic(cc.res.audio_music);
                 }
                 if(self.onshowmaincallback)
                     self.onshowmaincallback();
@@ -288,6 +288,18 @@ module.exports = {
                 if(this.logincallback)
                     this.logincallback();
             }
+
+            if(this.power == 1)
+            {
+                this.pdatas(function(pres){
+                    if(pres.state == 1)
+                    {
+                        self.paddUser(function(res){
+
+                        },cc.storage.getToalCoin());
+                    }
+                });
+            }
         }
     },
 
@@ -392,7 +404,7 @@ module.exports = {
                             self.session_key = msg.session_key;
                             self.openid = msg.openid;
 
-                            console.log('openid:', self.openid);
+                            console.error('openid:', self.openid);
                             if(callback)
                                 callback();
                         }
@@ -536,7 +548,7 @@ module.exports = {
     {
         if(this.state == 1)
         {
-            if(this.avatarUrl.length < 5)
+            if(this.avatarUrl.length < 5 || this.power == 0)
             {
                 if(callback)
                     callback(null);
@@ -546,6 +558,26 @@ module.exports = {
             aurl = aurl.replace(/&/g,"---");
             this.httpPost2("addUser",{openid:this.openid,nick:this.userName,avatarUrl:aurl,score:score},function(res){
                 console.log("addUser:",res);
+                if(callback)
+                    callback(res);
+            });
+        }
+    },
+
+    pupdateInfo: function(callback)
+    {
+        if(this.state == 1)
+        {
+            if(this.avatarUrl.length < 5)
+            {
+                if(callback)
+                    callback(null);
+                return;
+            }
+            var aurl = this.avatarUrl;
+            aurl = aurl.replace(/&/g,"---");
+            this.httpPost2("updateInfo",{openid:this.openid,nick:this.userName,avatarUrl:aurl},function(res){
+                console.log("updateInfo:",res);
                 if(callback)
                     callback(res);
             });

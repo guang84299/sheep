@@ -261,7 +261,7 @@ module.exports = {
     getLock: function()
     {
         var lv = cc.sys.localStorage.getItem(this.pfix+"lock");
-        lv = lv ? lv : 1;
+        lv = lv ? lv : 0;
         return Number(lv);
     },
 

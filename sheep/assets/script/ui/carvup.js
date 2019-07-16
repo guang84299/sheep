@@ -16,28 +16,27 @@ cc.Class({
     initUI: function()
     {
         this.bg = cc.find("bg",this.node);
-        this.title = cc.find("title",this.bg).getComponent(cc.Label);
+        this.title = cc.find("title/num1",this.bg).getComponent(cc.Label);
         this.buoyIcon = cc.find("box/buoyIcon",this.bg);
         this.pro =  cc.find("box/pro",this.bg).getComponent(cc.ProgressBar);
         this.buoyDesc = cc.find("box/buoyDesc",this.bg).getComponent(cc.Label);
 
         this.icon1_val = cc.find("box/icon1/val",this.bg).getComponent(cc.Label);
         this.icon1_val2 = cc.find("box/icon1/val2",this.bg).getComponent(cc.Label);
-        this.icon3_val = cc.find("box/icon3/val",this.bg).getComponent(cc.Label);
-        this.icon3_val2 = cc.find("box/icon3/val2",this.bg).getComponent(cc.Label);
+        this.icon2_val = cc.find("box/icon2/val",this.bg).getComponent(cc.Label);
+        this.icon2_val2 = cc.find("box/icon2/val2",this.bg).getComponent(cc.Label);
 
-        this.cost = cc.find("box/cost",this.bg).getComponent(cc.Label);
-        this.up_rate = cc.find("box/up/rate",this.bg).getComponent(cc.Label);
+        this.cost10 = cc.find("box/up10/costbg/cost",this.bg).getComponent(cc.Label);
+        this.up_rate10 = cc.find("box/up10/desc",this.bg).getComponent(cc.Label);
 
-        this.xrate = 1;
-        this.upcost = 0;
-        this.uplv = 0;
+        this.cost1 = cc.find("box/up1/costbg/cost",this.bg).getComponent(cc.Label);
+        this.up_rate1 = cc.find("box/up1/desc",this.bg).getComponent(cc.Label);
     },
 
     updateUI: function()
     {
         var lv = storage.getCarVLv();
-        this.title.string = "装载车等级"+lv;
+        this.title.string = lv;
 
         //var nexlLv = this.findNextBuoy(lv);
         //
@@ -53,34 +52,17 @@ cc.Class({
         var pice = Number(res.conf_truckVic[lv-1].capacity);
         var pice2 = Number(res.conf_truckVic[nlv-1].capacity);
 
-        this.icon3_val.string = storage.castNum(pice);
-        this.icon3_val2.string = "+"+storage.castNum(pice2-pice);
+        this.icon2_val.string = storage.castNum(pice);
+        this.icon2_val2.string = "+"+storage.castNum(pice2-pice);
 
 
-        if(this.xrate == 1)
-        {
-            var costDate = this.getCost(lv,1);
-            this.cost.string = storage.castNum(costDate.cost);
-            this.up_rate.string = "升级X"+costDate.n;
-            this.upcost = costDate.cost;
-            this.uplv = costDate.n;
-        }
-        else if(this.xrate == 2)
-        {
-            var costDate = this.getCost(lv,10);
-            this.cost.string = storage.castNum(costDate.cost);
-            this.up_rate.string = "升级X"+costDate.n;
-            this.upcost = costDate.cost;
-            this.uplv = costDate.n;
-        }
-        else if(this.xrate == 3)
-        {
-            var costDate = this.getCost(lv,100);
-            this.cost.string = storage.castNum(costDate.cost);
-            this.up_rate.string = "升级X"+costDate.n;
-            this.upcost = costDate.cost;
-            this.uplv = costDate.n;
-        }
+        var costDate = this.getCost(lv,1);
+        this.cost1.string = storage.castNum(costDate.cost);
+        this.up_rate1.string = costDate.n;
+
+        var costDate = this.getCost(lv,10);
+        this.cost10.string = storage.castNum(costDate.cost);
+        this.up_rate10.string = costDate.n;
     },
 
     findNextBuoy: function(lv)
@@ -107,15 +89,8 @@ cc.Class({
             if(lv+i<res.conf_truckVic.length)
             {
                 var c = Number(res.conf_truckVic[lv+i].cost);
-                if(this.game.coin>=cost+c)
-                {
-                    cost += c;
-                    n++;
-                }
-                else
-                {
-                    break;
-                }
+                cost += c;
+                n++;
             }
             else
             break;
@@ -123,16 +98,30 @@ cc.Class({
         return {cost:cost,n:n};
     },
 
-    lvup: function()
+    lvup: function(rate)
     {
-        if(this.game.coin>=this.upcost && this.uplv>0)
+        var lv = storage.getCarVLv();
+        var costDate = this.getCost(lv,rate);
+
+        if(costDate.n<1)
         {
-            this.game.addCoin(-this.upcost);
-            var lv = storage.getCarVLv();
-            storage.setCarVLv(lv+this.uplv);
-            storage.uploadCarVLv();
-            this.updateUI();
-            this.game.carvup();
+            res.showToast("等级已满！");
+        }
+        else
+        {
+            if(this.game.coin>=costDate.cost)
+            {
+                this.game.addCoin(-costDate.cost);
+
+                storage.setCarVLv(lv+costDate.n);
+                storage.uploadCarVLv();
+                this.updateUI();
+                this.game.carvup();
+            }
+            else
+            {
+                res.showToast("金币不足！");
+            }
         }
     },
 
@@ -176,19 +165,13 @@ cc.Class({
         {
             this.hide();
         }
-        else if(data == "rate")
+        else if(data == "up10")
         {
-            if(event.target.name == "toggle1")
-                this.xrate = 1;
-            else if(event.target.name == "toggle2")
-                this.xrate = 2;
-            else
-                this.xrate = 3;
-            this.updateUI();
+            this.lvup(10);
         }
-        else if(data == "up")
+        else if(data == "up1")
         {
-            this.lvup();
+            this.lvup(1);
         }
         storage.playSound(res.audio_button);
         cc.log(data);

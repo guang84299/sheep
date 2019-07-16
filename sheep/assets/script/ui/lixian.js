@@ -18,12 +18,16 @@ cc.Class({
         this.bg = cc.find("bg",this.node);
         //this.title = cc.find("title",this.bg).getComponent(cc.Label);
 
-        this.coin_val = cc.find("box/coin",this.bg).getComponent(cc.Label);
+        this.coin_val = cc.find("coin",this.bg).getComponent(cc.Label);
+
+        this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg);
     },
 
     updateUI: function()
     {
         this.coin_val.string = storage.castNum(this.award);
+
+        this.btn_lingqu2.active = cc.GAME.share;
     },
 
     lingqu: function(x2)
@@ -80,12 +84,12 @@ cc.Class({
         else if(data == "lingqu2")
         {
             var self = this;
-            cc.sdk.showVedio(function(r){
+            cc.sdk.share(function(r){
                 if(r)
                 {
                     self.lingqu(true);
                 }
-            });
+            },"lixian");
 
         }
         storage.playSound(res.audio_button);

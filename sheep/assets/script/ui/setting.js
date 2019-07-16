@@ -16,13 +16,10 @@ cc.Class({
     initUI: function()
     {
         this.bg = cc.find("bg",this.node);
-        this.music_text = cc.find("box/music/text",this.bg).getComponent(cc.Label);
         this.music_toggle = cc.find("box/music/toggle",this.bg).getComponent(cc.Toggle);
 
-        this.sound_text = cc.find("box/sound/text",this.bg).getComponent(cc.Label);
         this.sound_toggle = cc.find("box/sound/toggle",this.bg).getComponent(cc.Toggle);
 
-        this.vibrate_text = cc.find("box/vibrate/text",this.bg).getComponent(cc.Label);
         this.vibrate_toggle = cc.find("box/vibrate/toggle",this.bg).getComponent(cc.Toggle);
     },
 
@@ -33,34 +30,28 @@ cc.Class({
         var vibrate = storage.getVibrate();
         if(music)
         {
-            this.music_text.string = "音乐：开";
             this.music_toggle.isChecked = true;
         }
         else
         {
-            this.music_text.string = "音乐：关";
             this.music_toggle.isChecked = false;
         }
 
         if(sound)
         {
-            this.sound_text.string = "音效：开";
             this.sound_toggle.check();
         }
         else
         {
-            this.sound_text.string = "音效：关";
             this.sound_toggle.uncheck();
         }
 
         if(vibrate)
         {
-            this.vibrate_text.string = "震动：开";
             this.vibrate_toggle.check();
         }
         else
         {
-            this.vibrate_text.string = "震动：关";
             this.vibrate_toggle.uncheck();
         }
     },
@@ -113,10 +104,10 @@ cc.Class({
         else if(data == "music")
         {
             this.updateCkState();
-            //if(storage.getMusic() == 0)
-            //    storage.stopMusic();
-            //else
-            //    storage.playMusic(res.audio_bgm);
+            if(storage.getMusic() == 0)
+                storage.stopMusic();
+            else
+                storage.playMusic(res.audio_music);
         }
         else if(data == "sound")
         {

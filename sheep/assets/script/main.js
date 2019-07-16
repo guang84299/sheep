@@ -31,6 +31,7 @@ cc.Class({
         this.addListener();
 
         this.updateLixian();
+        this.updateRed();
     },
 
     initPhysics: function()
@@ -90,8 +91,9 @@ cc.Class({
         this.totalLv = cc.find("top/bg/totalLv",this.node_main).getComponent(cc.Label);
         this.pro = cc.find("top/bg/pro",this.node_main).getComponent(cc.ProgressBar);
         this.pro_num = cc.find("top/bg/pro/num",this.node_main).getComponent(cc.Label);
-        this.currName = cc.find("top/bg/currName",this.node_main).getComponent(cc.Label);
-        this.nextName = cc.find("top/bg/nextName",this.node_main).getComponent(cc.Label);
+        this.currName = cc.find("top/bg/currName",this.node_main);
+        this.nextName = cc.find("top/bg/nextNamebg/nextName",this.node_main);
+        this.nextNamebg = cc.find("top/bg/nextNamebg",this.node_main);
 
         this.task = cc.find("task",this.node_main).getComponent("task");
 
@@ -102,7 +104,11 @@ cc.Class({
 
         this.faccoin_label = cc.find("head/factory/coin",this.scrollContent).getComponent(cc.Label);
 
-        res.loadPic(qianqista.avatarUrl,this.headIcon);
+        this.scrollControlUp = cc.find("scrollControl/up",this.node_main);
+        this.scrollControlDown = cc.find("scrollControl/down",this.node_main);
+        this.scrollControlUp.active = false;
+
+        //res.loadPic(qianqista.avatarUrl,this.headIcon);
 
         this.boxs = [];
         //for(var i=0;i<3;i++)
@@ -131,7 +137,7 @@ cc.Class({
             ));
         }
 
-        //this.updateUIControl();
+        this.updateUIControl();
     },
 
     updateUI: function()
@@ -152,8 +158,13 @@ cc.Class({
         this.pro.progress = tlv/parseInt(nextPro);
         this.pro_num.string = tlv+"/"+parseInt(nextPro);
 
-        this.currName.string = this.getNikeName(tlv);
-        this.nextName.string = this.getNextNikeName(tlv);
+        var nickName = this.getNikeName(tlv);
+        var nextNickName = this.getNextNikeName(tlv);
+        res.setSpriteFrame(nickName,this.currName);
+        if(nickName != nextNickName)
+            res.setSpriteFrame(nextNickName,this.nextName);
+        else
+            this.nextNamebg.active = false;
 
         this.unLock = lock;
         this.totalLvNum = tlv;
@@ -168,12 +179,12 @@ cc.Class({
         {
             if(parseInt(res.conf_achievement[i].condition)>tlv)
             {
-                n = i-1;
+                n = i;
                 break;
             }
         }
-        if(n == -1) n = res.conf_achievement.length-1;
-        return res.conf_achievement[n].name;
+        if(n == -1) n = res.conf_achievement.length;
+        return "images/name/"+n;
     },
 
     getNextNikeName: function(tlv)
@@ -183,12 +194,12 @@ cc.Class({
         {
             if(parseInt(res.conf_achievement[i].condition)>tlv)
             {
-                n = i;
+                n = i+1;
                 break;
             }
         }
-        if(n == -1) n = res.conf_achievement.length-1;
-        return res.conf_achievement[n].name;
+        if(n == -1) n = res.conf_achievement.length;
+        return "images/name/"+n;
     },
 
     getNextNikePro: function(tlv)
@@ -312,7 +323,7 @@ cc.Class({
 
         }
 
-        this.share_btn.active = cc.GAME.share;
+        //this.share_btn.active = cc.GAME.share;
     },
 
     addBox: function()
@@ -335,11 +346,7 @@ cc.Class({
                 this.updateBox();
                 this.scheduleOnce(this.addBox.bind(this),0.1);
             }
-            else
-            {
-                if(!this.car.isRun)
-                    this.car.run();
-            }
+
         }
 
     },
@@ -467,9 +474,11 @@ cc.Class({
 
             qianqista.uploadScore(this.toalcoin);
 
+            var self = this;
             qianqista.rankSelf(function(res2){
                 var rankNum = res2.data;
                 storage.setMaxRank(rankNum);
+                self.updateRed();
             });
         }
     },
@@ -483,7 +492,8 @@ cc.Class({
         {
             storage.setLixianTime(now);
             var val = this.getSecVal()*t;
-            res.openUI("lixian",null,val);
+            if(val>0)
+                res.openUI("lixian",null,val);
         }
     },
 
@@ -554,6 +564,79 @@ cc.Class({
         }
     },
 
+    updateRed: function()
+    {
+        //排行
+        var maxRank = storage.getMaxRank();
+        var showRank = false;
+        for(var i=0;i<res.conf_rankUp.length;i++)
+        {
+            var data = res.conf_rankUp[i];
+            if(!storage.isRankUp(data.id))
+            {
+                if(maxRank!=0 && maxRank<=parseInt(data.back))
+                {
+                    showRank = true;
+                }
+            }
+        }
+        if(!showRank)
+        {
+            var yesRank = storage.getYesRank();
+
+            var awardId = -1;
+            var yestime = storage.getYesRankTime();
+            var now = new Date().getTime();
+            if(yesRank != 0 && res.isRestTime(yestime,now))
+            {
+                for(var i=0;i<res.conf_rankAward.length;i++)
+                {
+                    var data = res.conf_rankAward[i];
+                    if(yesRank>=parseInt(data.front) &&
+                        yesRank<=parseInt(data.back) )
+                    {
+                        awardId = i;
+                        break;
+                    }
+                }
+            }
+            if(awardId != -1)
+                showRank = true;
+        }
+
+        //转盘
+        var showChoujiang = false;
+        var choujiangNum = storage.getChoujiangNum();
+        showChoujiang = choujiangNum>0 ? true : false;
+        if(!showChoujiang)
+        {
+            var choujiangTime = storage.getChoujiangTime();
+            var now = new Date().getTime();
+            if(choujiangNum < 5)
+            {
+                if(now - choujiangTime>5*60*1000)
+                {
+                    var num = Math.floor((now - choujiangTime)/(5*60*1000));
+                    choujiangNum += num;
+                    if(choujiangNum>5) choujiangNum = 5;
+                    showChoujiang = choujiangNum>0 ? true : false;
+                }
+            }
+        }
+
+        //签到
+        var showQiandao = false;
+        var loginDay = storage.getLoginDay();
+        var qiandaoNum = storage.getQianDaoNum();
+        if(loginDay>qiandaoNum && qiandaoNum<7)
+            showQiandao = true;
+
+
+        cc.find("top/buttons/rank/red",this.node_main).active = showRank;
+        cc.find("top/buttons/zhuanpan/red",this.node_main).active = showChoujiang;
+        cc.find("top/buttons/qiandao/red",this.node_main).active = showQiandao;
+    },
+
     scrollEvent: function(event,data)
     {
         var y = this.scroll.getScrollOffset().y;
@@ -568,8 +651,10 @@ cc.Class({
                 this.updateBox();
 
             this.lastY = y;
-        }
 
+            this.scrollControlUp.active = y<10?false:true;
+            this.scrollControlDown.active = h-y<10?false:true;
+        }
     },
 
 
@@ -597,7 +682,24 @@ cc.Class({
         }
         else if(data == "rank")
         {
-            res.openUI("rank");
+            if(sdk.judgePower())
+                res.openUI("rank");
+            else
+            {
+                res.openUI("power");
+                sdk.openSetting(function(r){
+                    res.closeUI("power");
+                    if(r){
+                        res.showToast("成功获取权限！");
+                        cc.qianqista.event("授权_允许");
+                    }
+                    else
+                    {
+                        res.showToast("请允许授权！");
+                        cc.qianqista.event("授权_拒绝");
+                    }
+                });
+            }
         }
         else if(data == "share")
         {
@@ -611,6 +713,22 @@ cc.Class({
         else if(data == "carvup")
         {
             res.openUI("carvup");
+        }
+        else if(data == "shouyi")
+        {
+            res.openUI("shouyi");
+        }
+        else if(data == "up")
+        {
+            this.scroll.scrollToTop(1);
+            this.scrollControlUp.active =false;
+            this.scrollControlDown.active =true;
+        }
+        else if(data == "down")
+        {
+            this.scroll.scrollToBottom(1);
+            this.scrollControlUp.active =true;
+            this.scrollControlDown.active =false;
         }
         storage.playSound(res.audio_button);
         cc.log(data);

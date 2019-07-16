@@ -117,13 +117,21 @@ cc.Class({
 
             var rank = cc.find("rank",item).getComponent(cc.Label);
             var name = cc.find("name",item).getComponent(cc.Label);
-            var score = cc.find("score",item).getComponent(cc.Label);
+            var score = cc.find("coinbg/score",item).getComponent(cc.Label);
             var icon = cc.find("icon",item);
+            var rankIcon = cc.find("rankIcon",item);
 
             rank.string = data.id;
             name.string = storage.getLabelStr(data.nick,8);
             score.string = storage.castNum(data.score);
             res.loadPic(data.avatarUrl,icon);
+
+            if(data.id<=3)
+            {
+                rankIcon.active = true;
+                rank.node.active = false;
+                res.setSpriteFrame("images/rank/rank"+data.id,rankIcon);
+            }
 
             this.content1.addChild(item);
 
@@ -143,16 +151,17 @@ cc.Class({
 
             var desc1 = cc.find("desc1",item).getComponent(cc.Label);
             var desc2 = cc.find("desc2",item).getComponent(cc.Label);
-            var state = cc.find("state",item).getComponent(cc.Label);
+            var state = cc.find("state",item);
             var lingqu = cc.find("lingqu",item);
             lingqu.tid = data.id;
 
             desc1.string = data.tips1;
             desc2.string = data.tips2;
-            state.string = "未完成";
+            //state.string = "未完成";
             if(storage.isRankUp(data.id))
             {
-                state.string = "已完成";
+                //state.string = "已完成";
+                res.setSpriteFrame("images/rank/btn_ylq",state);
             }
             else
             {
@@ -214,6 +223,7 @@ cc.Class({
 
     hide: function()
     {
+        this.game.updateRed();
         //this.main.wxQuanState(true);
         var self = this;
         this.bg.runAction(cc.sequence(
@@ -230,11 +240,11 @@ cc.Class({
     lingqu2: function(tid)
     {
         var item = this.content2.children[tid-1];
-        var state = cc.find("state",item).getComponent(cc.Label);
+        var state = cc.find("state",item);
         var lingqu = cc.find("lingqu",item);
 
         lingqu.active = false;
-        state.string = "已领取";
+        res.setSpriteFrame("images/rank/btn_ylq",state);
 
         var data = res.conf_rankUp[tid-1];
         var award = parseInt(data.reward)*this.game.getSecVal();
@@ -262,8 +272,8 @@ cc.Class({
 
         storage.setYesRankTime(new Date().getTime());
 
-        var task1 = {reward:parseInt(data.reward2),time:parseFloat(data.time1)};
-        var task2 = {reward:parseFloat(data.reward3),time:parseFloat(data.time2)};
+        var task1 = {reward:parseInt(data.reward2),time:parseFloat(data.time1),tip:data.title2};
+        var task2 = {reward:parseFloat(data.reward3),time:parseFloat(data.time2),tip:data.title3};
         storage.addAddRateTask(task1);
         storage.addAddSpeedTask(task2);
 

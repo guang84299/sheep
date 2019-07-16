@@ -19,6 +19,8 @@ cc.Class({
         this.desc = cc.find("desc",this.node).getComponent(cc.Label);
         this.num = cc.find("num",this.node).getComponent(cc.Label);
         this.node_lingqu = cc.find("lingqu",this.node);
+
+        this.awardCom = -1;
     },
 
     updateUI: function()
@@ -35,8 +37,11 @@ cc.Class({
                 this.task = res.conf_task[taskId-1];
                 this.desc.string = this.task.text;
                 this.award = Number(this.task.reward)*this.game.getSecVal();
+                if(this.awardCom>0) this.award = this.awardCom;
                 this.num.string = storage.castNum(this.award);
                 this.node_lingqu.active = this.judgeUnLock();
+
+                this.awardCom = this.award;
             }
         }
     },
@@ -109,6 +114,7 @@ cc.Class({
         storage.setTask(taskId+1);
         storage.uploadTask();
         res.showToast("金币+"+this.num.string);
+        this.awardCom = -1;
         this.updateUI();
     },
 
@@ -131,12 +137,38 @@ cc.Class({
         return n;
     },
 
+    go: function()
+    {
+        if(this.node_lingqu.active)
+        {
+            this.lingqu();
+            return;
+        }
+        //牧场解锁 //牧场升级
+        if(this.task.type == "0" || this.task.type == "1")
+        {
+            var ranchId = parseInt(this.task.ranchId)-2;
+            var h = this.game.boxs[0].height;
+            var y = h*ranchId+320;
+            this.game.scroll.scrollToOffset(cc.v2(0,y),1);
+        }
+        //采集车升级 //运输车升级
+        else if(this.task.type == "5" || this.task.type == "6")
+        {
+            this.game.click(null,"up");
+        }
+    },
+
 
     click: function(event,data)
     {
         if(data == "lingqu")
         {
             this.lingqu();
+        }
+        else if(data == "go")
+        {
+            this.go();
         }
 
         storage.playSound(res.audio_button);

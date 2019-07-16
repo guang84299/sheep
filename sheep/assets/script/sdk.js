@@ -38,6 +38,16 @@ module.exports = {
         }
     },
 
+    keepScreenOn: function()
+    {
+        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        {
+            wx.setKeepScreenOn({
+                keepScreenOn: true
+            });
+        }
+    },
+
     uploadScore: function(score,callback)
     {
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
@@ -260,8 +270,8 @@ module.exports = {
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
             var query = "fromid="+cc.qianqista.openid+"&channel="+channel;
-            var title = "我家的蛇动了凡心，让您贱笑了！";
-            var imageUrl = "https://game.7q7q.top/img/wxgame/2307c4c4fb1945dfa51e9ba7d2adb2f6.jpg";//cc.url.raw("resources/zhuanfa.jpg");
+            var title = "我一夜暴富的秘诀竟然是招聘了一群绵羊员工。。。";
+            var imageUrl = "https://game.7q7q.top/img/wxgame/c39395a760b9410482441ea6e92d72a0.jpg";//cc.url.raw("resources/zhuanfa.jpg");
             if(cc.GAME.shares.length>0)
             {
                 var i = Math.floor(Math.random()*cc.GAME.shares.length);
@@ -379,8 +389,8 @@ module.exports = {
                 return {
                     query:"channel=sharemenu",
                     withShareTicket: true,
-                    title: "我家的蛇动了凡心，让您贱笑了！",
-                    imageUrl: "https://game.7q7q.top/img/wxgame/2307c4c4fb1945dfa51e9ba7d2adb2f6.jpg"
+                    title: "我一夜暴富的秘诀竟然是招聘了一群绵羊员工。。。",
+                    imageUrl: "https://game.7q7q.top/img/wxgame/c39395a760b9410482441ea6e92d72a0.jpg"
                 }
             });
 
@@ -422,7 +432,7 @@ module.exports = {
 
             var s = cc.view.getFrameSize();
 
-            var pos = cc.v2(s.width/2, s.height*0.7);
+            var pos = cc.v2(s.width/2, s.height*0.5);
 
             var button = wx.createUserInfoButton({
                 type: 'text',
@@ -456,9 +466,9 @@ module.exports = {
                     if(callback) callback(true);
                     //if(cc.sdk.main.quanxiansc)
                     //    cc.sdk.main.quanxiansc.hide();
-                    button.destroy();
-                }
 
+                }
+                button.destroy();
             });
         }
     },

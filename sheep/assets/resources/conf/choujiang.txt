@@ -1,7 +1,7 @@
 [
-{"id":"1","tips":"大量金币","weight":"40.0 ","rewardType":"0","reward":"50","rate":"","time":""},
-{"id":"2","tips":"巨量金币","weight":"25.0 ","rewardType":"0","reward":"100","rate":"","time":""},
-{"id":"3","tips":"海量金币","weight":"15.0 ","rewardType":"0","reward":"150","rate":"","time":""},
+{"id":"1","tips":"大量金币","weight":"40.0 ","rewardType":"0","reward":"30","rate":"","time":""},
+{"id":"2","tips":"巨量金币","weight":"25.0 ","rewardType":"0","reward":"50","rate":"","time":""},
+{"id":"3","tips":"海量金币","weight":"15.0 ","rewardType":"0","reward":"70","rate":"","time":""},
 {"id":"4","tips":"1小时2倍加速","weight":"11.0 ","rewardType":"1","reward":"","rate":"2","time":"1"},
 {"id":"5","tips":"1小时3倍加速","weight":"5.5 ","rewardType":"1","reward":"","rate":"3","time":"1"},
 {"id":"6","tips":"1小时2倍收益","weight":"2.0 ","rewardType":"2","reward":"","rate":"2","time":"1"},

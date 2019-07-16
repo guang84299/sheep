@@ -9,6 +9,11 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad: function() {
+       this.init();
+    },
+
+    init: function()
+    {
         this.game = cc.find("Canvas").getComponent("main");
 
         this.node.sc = this;
@@ -23,41 +28,67 @@ cc.Class({
         this.speed = 10/Number(this.conf.speed);
         this.coin = 0;
         this.isRun = false;
+
+        this.maosp = this.node.children[0];
+        this.maosp.active = false;
+
+        this.scheduleOnce(this.run.bind(this),1);
+    },
+
+    back: function()
+    {
+        var self = this;
+        this.index = -1;
+        var num = this.game.unLock;
+        var t = this.speed*num;
+        var y = this.ny;
+        var dt = 0.5;
+        cc.res.setSpriteFrame("images/main/car_up",this.node);
+        this.node.runAction(cc.sequence(
+            cc.moveTo(t,cc.v2(this.node.x,y)),
+            cc.callFunc(function(){
+                self.subMao();
+            }),
+            cc.delayTime(dt),
+            cc.callFunc(this.run.bind(this))
+        ));
     },
 
     run: function()
     {
         this.isRun = true;
         var num = this.game.unLock;
+        if(this.game.boxs.length<num)
+        {
+            this.scheduleOnce(this.run.bind(this),1);
+            return;
+        }
         var h = this.game.boxs[0].height;
         var y = 0;
         var dt = 0.5;
         var t = this.speed;
-        if(this.dir == -1)
-        {
-            this.index = num;
-            t = this.speed*num;
-            this.dir = 1;
-            cc.res.setSpriteFrame("images/main/car_down",this.node);
-        }
-        else
-        {
-            this.index --;
-            if(this.index<0) this.dir = -1;
-            cc.res.setSpriteFrame("images/main/car_up",this.node);
+
+        this.index++;
+        if(this.index>=num){
+            this.back();
+            return;
         }
 
-        if(this.index == -1)
+        cc.res.setSpriteFrame("images/main/car_down",this.node);
+        //this.maosp.active = false;
+
+
+        if(num == 0)
         {
             y = this.ny;
         }
-        else if(this.index == num)
+        else if(this.index == 0)
         {
-            y = this.game.boxs[this.index-1].y-h/2;
+            t = t/2;
+            y = this.game.boxs[this.index].y-h/2;
         }
         else
         {
-            if(this.index == num-1) t = 0.5;
             y = this.game.boxs[this.index].y-h/2;
         }
 
@@ -65,24 +96,16 @@ cc.Class({
         this.node.runAction(cc.sequence(
             cc.moveTo(t,cc.v2(this.node.x,y)),
             cc.callFunc(function(){
-                if(self.dir == 1)
+                if(self.index < num && self.index>=0)
                 {
-                    if(self.index < num && self.index>=0)
+                    var box = self.game.boxs[self.index].getComponent("box");
+                    var coin = Number(self.conf.capacity)-self.coin;
+                    if(box.coin>0 && coin>0)
                     {
-                        var box = self.game.boxs[self.index].getComponent("box");
-                        var coin = Number(self.conf.capacity)-self.coin;
-                        if(box.coin>0 && coin>0)
-                        {
-                            coin = box.getCoin(coin);
-                            self.coin += coin;
-                            self.addMao(y);
-                        }
+                        coin = box.getCoin(coin);
+                        self.coin += coin;
+                        self.addMao(y);
                     }
-                }
-
-                if(self.index == -1)
-                {
-                    self.subMao();
                 }
 
             }),
@@ -93,38 +116,34 @@ cc.Class({
 
     addMao: function(h)
     {
+        var icon = parseInt((this.index)/3)+1;
+
         var mao = new cc.Node();
         mao.addComponent(cc.Sprite);
         mao.x = -170;
         mao.y = h;
         mao.zIndex = this.node.zIndex+1;
         this.node.parent.addChild(mao);
-
-        cc.res.setSpriteFrame("images/box/mao/3",mao);
+        cc.res.setSpriteFrame("images/main/car_mao"+icon,mao);
 
         var self = this;
         mao.runAction(cc.sequence(
             cc.moveTo(0.3,this.node.position).easing(cc.easeSineIn()),
             cc.callFunc(function(){
-                if(self.node.childrenCount==0)
-                {
-                    mao.position = cc.v2(0,0);
-                    mao.parent = self.node;
-                }
-                else
-                {
-                    mao.destroy();
-                }
+                self.maosp.active = true;
+                cc.res.setSpriteFrame("images/main/car_mao"+icon,self.maosp);
+                mao.destroy();
             })
         ));
     },
 
     subMao: function()
     {
-        if(this.node.childrenCount>0)
+        if(this.maosp.active)
         {
-            var mao = this.node.children[0];
+            var mao = cc.instantiate(this.maosp);
             mao.position = this.node.position;
+            mao.zIndex = this.node.zIndex+1;
             mao.parent = this.node.parent;
 
             var self = this;
@@ -138,7 +157,7 @@ cc.Class({
             ));
         }
 
-        this.node.destroyAllChildren();
+        this.maosp.active = false;
     },
 
     lvup: function()

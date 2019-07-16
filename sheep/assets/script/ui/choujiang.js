@@ -17,19 +17,64 @@ cc.Class({
     initUI: function()
     {
         this.bg = cc.find("bg",this.node);
-        this.txt_time = cc.find("box/txt_time/num",this.bg).getComponent("cc.Label");
-        this.txt_num = cc.find("box/txt_num/num",this.bg).getComponent("cc.Label");
-        this.pan = cc.find("box/panbg/pan",this.bg);
+        this.txt_time = cc.find("txt_time/num",this.bg).getComponent("cc.Label");
+        this.txt_num = cc.find("txt_num/num",this.bg).getComponent("cc.Label");
         this.btn_choujiang = cc.find("bg/box/choujiang",this.node).getComponent("cc.Button");
-        this.btn_vedio_lingqu = cc.find("bg/box/vedio_lingqu",this.node).getComponent("cc.Button");
-        this.btn_lingqu = cc.find("bg/box/lingqu",this.node).getComponent("cc.Button");
-        this.btn_lingqu_ban = cc.find("bg/box/lingqu/ban",this.node);
+        this.btn_vedio_lingqu = cc.find("bg/btns/lingqu2",this.node).getComponent("cc.Button");
+        this.btn_lingqu = cc.find("bg/btns/lingqu",this.node).getComponent("cc.Button");
+        this.btn_lingqu_ban = cc.find("bg/btns/lingqu",this.node);
+
+        this.deng1 = cc.find("box/deng1",this.bg);
+        this.deng2 = cc.find("box/deng2",this.bg);
+        this.deng3 = cc.find("box/deng3",this.bg);
+        this.deng4 = cc.find("box/deng4",this.bg);
+
+        this.btn_lingqu.node.active = false;
+        this.btn_vedio_lingqu.node.active = false;
+
+        this.boxs = cc.find("box/boxs",this.bg).children;
+        this.awards = res.conf_choujiang;
+
+        for(var i=0;i<this.boxs.length;i++)
+        {
+            var box = this.boxs[i];
+            var data = res.conf_choujiang[i];
+            box.guang = cc.find("guang",box);
+            box.mask = cc.find("mask",box);
+
+            box.guang.active = true;
+            box.guang.opacity = 0;
+            box.mask.active = true;
+            box.mask.opacity = 0;
+
+            var icon = cc.find("box/icon",box);
+            var desc = cc.find("box/desc",box).getComponent(cc.Label);
+            desc.string = data.tips;
+            icon.width = 40;
+            icon.height = 40;
+            if(data.rewardType == "0")
+            {
+                res.setSpriteFrame("images/common/coin",icon);
+                desc.node.color = cc.color(225,130,6);
+            }
+            else if(data.rewardType == "1")
+            {
+                res.setSpriteFrame("images/rank/quik",icon);
+                desc.node.color = cc.color(105,12,255);
+            }
+            else if(data.rewardType == "2")
+            {
+                res.setSpriteFrame("images/rank/up",icon);
+                desc.node.color = cc.color(189,43,7);
+            }
+        }
     },
 
-    updateUI: function()
+    updateUI: function(isAmin)
     {
         var choujiangNum = storage.getChoujiangNum();
         this.txt_num.string = choujiangNum+"/5";
+        if(!isAmin)
         this.btn_choujiang.interactable = choujiangNum>0 ? true : false;
 
         var choujiangTime = storage.getChoujiangTime();
@@ -43,6 +88,7 @@ cc.Class({
                 if(choujiangNum>5) choujiangNum = 5;
                 storage.setChoujiangNum(choujiangNum);
                 this.txt_num.string = choujiangNum+"/5";
+                if(!isAmin)
                 this.btn_choujiang.interactable = choujiangNum>0 ? true : false;
             }
 
@@ -97,6 +143,7 @@ cc.Class({
         //this.main.wxQuanState(false);
         this.game = cc.find("Canvas").getComponent("main");
         this.node.sc = this;
+
         this.initUI();
         this.updateUI();
 
@@ -106,7 +153,6 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
 
-        this.awards = res.conf_choujiang;
 
 
         cc.qianqista.event("抽奖_打开");
@@ -115,6 +161,7 @@ cc.Class({
 
     hide: function()
     {
+        this.game.updateRed();
         //this.main.wxQuanState(true);
         var self = this;
         this.bg.runAction(cc.sequence(
@@ -127,11 +174,79 @@ cc.Class({
         cc.sdk.hideBanner();
     },
 
+    choujiangAmin: function(num,awardIndex,callback)
+    {
+        var self = this;
+        var t = 0.1;
+        var dt = 0.05;
+        if(num>5)
+        {
+            dt = dt + (num-5)*0.05;
+        }
+
+        for(var i=0;i<this.boxs.length;i++)
+        {
+            var box = this.boxs[i];
+
+            var ac = cc.sequence(
+                cc.delayTime(dt*i),
+                cc.fadeIn(0),
+                cc.delayTime(t),
+                cc.fadeOut(0)
+            );
+
+            var ac2 = cc.sequence(
+                cc.delayTime(dt*i),
+                cc.fadeOut(0),
+                cc.delayTime(t),
+                cc.fadeIn(0)
+            );
+            if(num==1)
+                box.mask.opacity = 255;
+            box.mask.runAction(ac2);
+
+            if(i == this.boxs.length-1 || num == 8)
+            {
+                ac = cc.sequence(
+                    cc.delayTime(dt*i),
+                    cc.fadeIn(0),
+                    cc.delayTime(t),
+                    cc.fadeOut(0),
+                    cc.callFunc(function(){
+                        num++;
+                        if(num>8)
+                        {
+                            callback();
+                        }
+                        else
+                        {
+                            self.choujiangAmin(num,awardIndex,callback);
+                        }
+                    })
+                );
+
+            }
+
+            box.guang.runAction(ac);
+
+            if(num == 8)
+                break;
+        }
+
+        if(num < 8)
+        {
+            this.deng1.runAction(cc.blink(0.8,2));
+            this.deng2.runAction(cc.blink(0.8,3));
+            this.deng3.runAction(cc.blink(0.8,4));
+            this.deng4.runAction(cc.blink(0.8,5));
+        }
+
+    },
+
     choujiang: function()
     {
         var self = this;
         this.btn_choujiang.interactable = false;
-        var ang = 360/this.awards.length;
         var awardIndex = 0;
 
         var r = Math.random()*100;
@@ -147,21 +262,18 @@ cc.Class({
             }
         }
 
-        var roatate = 360 - (ang*awardIndex + ang/2 - this.pan.angle%360);
-        this.pan.runAction(cc.sequence(
-            cc.rotateBy(3.5,-(360*4+roatate)).easing(cc.easeSineInOut()),
-            cc.callFunc(function(){
-                //self.btn_choujiang.interactable = true;
-                self.btn_vedio_lingqu.node.active = true;
-                self.btn_lingqu.node.active = true;
-                self.updateUI();
-                cc.log(self.awards[awardIndex]);
-            }),
-            cc.delayTime(0.1),
-            cc.callFunc(function(){
-                self.btn_lingqu.node.y -= sdk.getBannerDis(self.btn_lingqu_ban);
-            })
-        ));
+        this.choujiangAmin(1,awardIndex,function(){
+            var box = self.boxs[awardIndex];
+            box.mask.opacity = 0;
+            box.guang.opacity = 255;
+
+            if(cc.GAME.share)
+            self.btn_vedio_lingqu.node.active = true;
+            self.btn_lingqu.node.active = true;
+            self.updateUI(true);
+        });
+
+
         this.awardIndex = awardIndex;
         var choujiangNum = storage.getChoujiangNum();
         storage.setChoujiangNum(choujiangNum-1);
@@ -188,7 +300,7 @@ cc.Class({
         }
         else if(awardData.rewardType == "1")
         {
-            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time)};
+            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time),tip:awardData.tips};
             storage.addAddSpeedTask(task);
             this.game.initShouYi();
 
@@ -196,7 +308,7 @@ cc.Class({
         }
         else if(awardData.rewardType == "2")
         {
-            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time)};
+            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time),tip:awardData.tips};
             storage.addAddRateTask(task);
             this.game.initShouYi();
 
@@ -228,12 +340,12 @@ cc.Class({
         else if(data == "vedio_lingqu")
         {
             var self = this;
-            sdk.showVedio(function(r){
+            sdk.share(function(r){
                 if(r)
                 {
                     self.lingqu(true);
                 }
-            });
+            },"choujiang");
             cc.qianqista.event("抽奖_2倍领取");
         }
 

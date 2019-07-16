@@ -15,6 +15,7 @@ cc.config = config;
 cc.myscene = "load";
 cc.res = res;
 cc.GAME = {};
+cc.GAME.control = [];
 
 cc.Class({
     extends: cc.Component,
@@ -68,6 +69,7 @@ cc.Class({
             "prefab/buoy",
             "prefab/box",
 
+            "images/sheep/buoy",
             "images/sheep/sheep1",
             "images/sheep/sheep2",
             "images/sheep/sheep3",
@@ -85,6 +87,8 @@ cc.Class({
             "prefab/ui/qiandao",
             "prefab/ui/carhup",
             "prefab/ui/carvup",
+            "prefab/ui/shouyi",
+            "prefab/ui/power",
 
             //"prefab/particle/suijinbi",
             //"scene/game1"
@@ -107,6 +111,7 @@ cc.Class({
         sdk.getUserInfo();
         //sdk.videoLoad();
         sdk.closeRank();
+        sdk.keepScreenOn();
 
 
         this.loadNode.runAction(cc.repeatForever(cc.rotateBy(1,180)));
@@ -188,17 +193,7 @@ cc.Class({
         if(!this.loadNode.active && this.progressBar.progress >= 1)
         {
             this.progressBar.node.active = false;
-            if(sdk.judgePower())
-                cc.director.loadScene("main");
-            else
-            {
-                sdk.openSetting(function(res2){
-                    if(res2)
-                        cc.director.loadScene("main");
-                    else
-                        res.showToast("允许授权进入游戏");
-                });
-            }
+            cc.director.loadScene("main");
         }
 
     },
@@ -218,6 +213,7 @@ cc.Class({
         else if(url.indexOf("conf/") != -1)
         {
             pifx = "conf_"+resource.name;
+            //console.error(url,cc.url.raw("resources/"+url));
             resource = JSON.parse(resource.text);
         }
 
@@ -232,18 +228,34 @@ cc.Class({
     initNet: function()
     {
         var self = this;
+        var httpDatas = false;
+        var httpControl = false;
         qianqista.datas(function(res){
             console.log('my datas:', res);
             if(res.state == 200)
             {
                 self.updateLocalData(res.data);
             }
-            self.loadNode.active = false;
-            self.startGame();
+            httpDatas = true;
+
+            if(httpDatas && httpControl)
+            {
+                self.loadNode.active = false;
+                self.startGame();
+            }
+
         });
-        qianqista.pdatas(function(res){
-            self.updateLocalData2(res);
-        });
+
+        //qianqista.pdatas(function(res){
+        //    self.updateLocalData2(res);
+        //    httpPdatas = true;
+        //
+        //    if(httpDatas && httpPdatas && httpControl)
+        //    {
+        //        self.loadNode.active = false;
+        //        self.startGame();
+        //    }
+        //});
         //qianqista.rankScore(function(res){
         //    self.worldrank = res.data;
         //});
@@ -253,6 +265,13 @@ cc.Class({
             if(res.state == 200)
             {
                 cc.GAME.control = res.data;
+            }
+            httpControl = true;
+
+            if(httpDatas && httpControl)
+            {
+                self.loadNode.active = false;
+                self.startGame();
             }
         });
 

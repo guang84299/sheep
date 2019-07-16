@@ -37,7 +37,7 @@ cc.Class({
             self.playHoldAni();
         });
         //同时播放掉落
-        var node = cc.res.playPlistAnim2(cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.dropAnim,this.aniconfig.dropframeNum,0.03,1,null,true);
+        var node = cc.res.playPlistAnim2(cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.dropAnim,this.aniconfig.dropframeNum,0.035,1,null,true);
         this.node.addChild(node);
         node.runAction(cc.sequence(
             cc.moveTo(0.3,cc.v2(0,50)).easing(cc.easeSineIn()),
@@ -45,8 +45,8 @@ cc.Class({
         ));
         node.scale = 0.8;
 
-        if(this.game.totalLvNum < 10)
-            this.game.addCoin(this.box.pice);
+        //if(this.game.totalLvNum < 10)
+        //    this.game.addCoin(this.box.pice);
     },
 
     playGrowAni1: function()
@@ -61,7 +61,7 @@ cc.Class({
     playGrowAni2: function()
     {
         this.state = "grow";
-        cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.growAnim2,this.aniconfig.growframeNum2,0.05,-1);
+        cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.growAnim2,this.aniconfig.growframeNum2,0.08,-1);
     },
 
     playHoldAni: function()

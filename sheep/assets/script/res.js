@@ -238,10 +238,11 @@ module.exports = {
         if(!parent) parent = cc.find("Canvas");
         if(parent)
         {
-            var node = parent.getChildByName(name);
+            var node = parent.getChildByName("ui_"+name);
             if(node)
             {
-                node.active = true;
+                //node.active = true;
+                node.getComponent(name).show(showType);
                 return;
             }
         }
@@ -254,7 +255,7 @@ module.exports = {
             else
             {
                 var node = cc.instantiate(prefab);
-                node.name = name;
+                node.name = "ui_"+name;
                 parent.addChild(node);
                 node.getComponent(name).show(showType);
             }
@@ -266,7 +267,7 @@ module.exports = {
         if(!parent) parent = cc.find("Canvas");
         if(parent)
         {
-            var node = parent.getChildByName(name);
+            var node = parent.getChildByName("ui_"+name);
             if(node)
             {
                 node.destroy();
@@ -291,6 +292,23 @@ module.exports = {
             }
         });
     },
+
+    //judgeUIRed: function(name,callback)
+    //{
+    //    cc.loader.loadRes("prefab/ui/"+name, function(err, prefab)
+    //    {
+    //        if(err)
+    //        {
+    //            console.log("init error "+name,err);
+    //        }
+    //        else
+    //        {
+    //            var node = cc.instantiate(prefab);
+    //            var b = node.getComponent(name).judgeRed();
+    //            if(callback) callback(b);
+    //        }
+    //    });
+    //},
 
     isRestTime: function(time1,time2)
     {
