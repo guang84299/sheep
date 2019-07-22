@@ -30,8 +30,25 @@ cc.Class({
         this.addBox();
         this.addListener();
 
-        this.updateLixian();
         this.updateRed();
+
+        if(this.yindao < 14)
+        {
+            if(this.yindao == 4) this.yindao = 3;
+            else if(this.yindao == 5) this.yindao = 6;
+            else if(this.yindao == 8) this.yindao = 7;
+            else if(this.yindao == 9) this.yindao = 10;
+            else if(this.yindao == 12) this.yindao = 11;
+            else if(this.yindao == 13) this.yindao = 14;
+
+            if(this.yindao < 14)
+            {
+                this.scheduleOnce(function(){
+                    res.openUI("yindao");
+                },0.5);
+            }
+
+        }
     },
 
     initPhysics: function()
@@ -73,6 +90,7 @@ cc.Class({
         this.updateCoinTime = Math.random();
         this.uploadCoinDt = 0;
         this.shouyiDt = 0;
+        this.yindao = storage.getYinDao();
 
         qianqista.onshowmaincallback = this.updateLixian.bind(this);
 
@@ -91,7 +109,7 @@ cc.Class({
         this.totalLv = cc.find("top/bg/totalLv",this.node_main).getComponent(cc.Label);
         this.pro = cc.find("top/bg/pro",this.node_main).getComponent(cc.ProgressBar);
         this.pro_num = cc.find("top/bg/pro/num",this.node_main).getComponent(cc.Label);
-        this.currName = cc.find("top/bg/currName",this.node_main);
+        this.currName = cc.find("top/bg/currNamebg/currName",this.node_main);
         this.nextName = cc.find("top/bg/nextNamebg/nextName",this.node_main);
         this.nextNamebg = cc.find("top/bg/nextNamebg",this.node_main);
 
@@ -239,7 +257,22 @@ cc.Class({
             this.toalcoin += add;
         }
         this.coin += add;
-        this.coin_label.string = storage.castNum(this.coin);
+        if(add>0)
+        {
+            var self = this;
+            this.coin_label.node.runAction(cc.sequence(
+                cc.delayTime(0.5),
+                cc.scaleTo(0.2,1.2).easing(cc.easeSineIn()),
+                cc.scaleTo(0.2,1).easing(cc.easeSineIn()),
+                cc.callFunc(function(){
+                    self.coin_label.string = storage.castNum(self.coin);
+                })
+            ));
+        }
+        else
+        {
+            this.coin_label.string = storage.castNum(this.coin);
+        }
     },
 
     addFacCoin: function(coin)
@@ -328,7 +361,7 @@ cc.Class({
 
     addBox: function()
     {
-        if(this.boxs.length<15)
+        if(this.boxs.length<30)
         {
             var lock = this.unLock;
             if(this.boxs.length < lock+1 || this.boxs.length<3)
@@ -337,14 +370,17 @@ cc.Class({
                 box.getComponent("box").init(this.boxs.length+1);
                 this.scrollContent.addChild(box);
 
-                box.y = -box.height*this.boxs.length-320;
+                box.y = -box.height*this.boxs.length-380;
 
                 this.boxs.push(box);
-                this.scrollContent.height = box.height*this.boxs.length+320;
+                this.scrollContent.height = box.height*this.boxs.length+380;
                 cc.log(this.boxs.length);
 
                 this.updateBox();
-                this.scheduleOnce(this.addBox.bind(this),0.1);
+                this.scheduleOnce(this.addBox.bind(this),0.05);
+
+                if(this.boxs.length == lock)
+                    this.updateLixian();
             }
 
         }
@@ -385,7 +421,7 @@ cc.Class({
     judgeUnLock: function(lv)
     {
         var lock = this.unLock;
-        if(lock<15 && lv<=15)
+        if(lock<30 && lv<=30)
         {
             var tlv = 0;
             for(var i=1;i<=lock;i++)
@@ -402,7 +438,6 @@ cc.Class({
     getSecVal: function()
     {
         var boxs = this.boxs;
-
         var val = 0;
         for(var i=0;i<boxs.length;i++)
         {
@@ -472,7 +507,7 @@ cc.Class({
             storage.setLixianTime(new Date().getTime());
             storage.uploadLixianTime();
 
-            qianqista.uploadScore(this.toalcoin);
+            qianqista.uploadScore(this.toalcoin/config.totalCoinRate);
 
             var self = this;
             qianqista.rankSelf(function(res2){
@@ -485,15 +520,19 @@ cc.Class({
 
     updateLixian: function()
     {
-        var now = new Date().getTime();
-        var time = storage.getLixianTime();
-        var t = (now-time)/1000-20;
-        if(t>0)
+        if(this.yindao >= 14)
         {
-            storage.setLixianTime(now);
-            var val = this.getSecVal()*t;
-            if(val>0)
-                res.openUI("lixian",null,val);
+            var now = new Date().getTime();
+            var time = storage.getLixianTime();
+            var t = (now-time)/1000-20;
+            if(t>0)
+            {
+                if(t>1*60*60) t = 1*60*60;
+                storage.setLixianTime(now);
+                var val = this.getSecVal()*t;
+                if(val>0)
+                    res.openUI("lixian",null,val);
+            }
         }
     },
 
@@ -635,6 +674,24 @@ cc.Class({
         cc.find("top/buttons/rank/red",this.node_main).active = showRank;
         cc.find("top/buttons/zhuanpan/red",this.node_main).active = showChoujiang;
         cc.find("top/buttons/qiandao/red",this.node_main).active = showQiandao;
+    },
+
+    updateYindao: function()
+    {
+        if(this.yindao<14)
+        {
+            this.yindao += 1;
+            storage.setYinDao(this.yindao);
+
+            storage.uploadYinDao();
+
+            var node = this.node.getChildByName("ui_yindao");
+            if(node)
+            {
+                if(node.zIndex != 999) node.zIndex = 999;
+                node.getComponent("yindao").updateYindao();
+            }
+        }
     },
 
     scrollEvent: function(event,data)

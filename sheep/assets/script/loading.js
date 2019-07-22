@@ -75,6 +75,7 @@ cc.Class({
             "images/sheep/sheep3",
             "images/sheep/sheep4",
             "images/sheep/sheep5",
+            "images/sheep/sheep6",
 
             "prefab/ui/coinAni",
             "prefab/ui/toast",
@@ -89,6 +90,9 @@ cc.Class({
             "prefab/ui/carvup",
             "prefab/ui/shouyi",
             "prefab/ui/power",
+            "prefab/ui/yindao",
+
+            "prefab/anim/coinani",
 
             //"prefab/particle/suijinbi",
             //"scene/game1"
@@ -208,6 +212,8 @@ cc.Class({
             pifx = "sheep_";
         else if(url.indexOf("prefab/ui/") != -1)
             pifx = "prefab_ui_";
+        else if(url.indexOf("prefab/anim/") != -1)
+            pifx = "prefab_anim_";
         else if(url.indexOf("prefab/") != -1)
             pifx = "prefab_";
         else if(url.indexOf("conf/") != -1)
@@ -310,6 +316,14 @@ cc.Class({
                 storage.setFacCoin(coin);
             }
 
+            if(datas.hasOwnProperty("toalcoin"))
+            {
+                var coin = Number(datas.toalcoin);
+                var coin2 = storage.getToalCoin();
+                if(coin2>coin) coin = coin2;
+                storage.setToalCoin(coin);
+            }
+
             if(datas.hasOwnProperty("lock"))
                 storage.setLock(Number(datas.lock));
 
@@ -351,6 +365,9 @@ cc.Class({
             if(datas.hasOwnProperty("lixian_time"))
                 storage.setLixianTime(Number(datas.lixian_time));
 
+            if(datas.hasOwnProperty("yindao"))
+                storage.setYinDao(Number(datas.yindao));
+
 
             if(datas.hasOwnProperty("ginvitelist"))
                 cc.ginvitelist = datas.ginvitelist;
@@ -378,6 +395,10 @@ cc.Class({
         }
         else
         {
+            var now = new Date().getTime();
+            cc.login_time = now;
+            storage.setLoginTime(now);
+            storage.setLoginDay(1);
             this.uploadData();
         }
     },
@@ -391,7 +412,7 @@ cc.Class({
                 //qianqista.rankScore(function(res2){
                 //    self.worldrank = res2.data;
                 //});
-            },storage.getToalCoin());
+            },storage.getToalCoin()/config.totalCoinRate);
         }
         else
         {

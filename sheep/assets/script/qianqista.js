@@ -296,7 +296,7 @@ module.exports = {
                     {
                         self.paddUser(function(res){
 
-                        },cc.storage.getToalCoin());
+                        },cc.storage.getToalCoin()/cc.config.totalCoinRate);
                     }
                 });
             }

@@ -297,6 +297,7 @@ cc.Class({
             if(isVedio) award*=2;
             this.game.addCoin(award);
             res.showToast("金币+"+storage.castNum(award));
+            cc.res.showCoinAni();
         }
         else if(awardData.rewardType == "1")
         {

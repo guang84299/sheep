@@ -1,6 +1,7 @@
 var storage = require("storage");
 var res = require("res");
 var sdk = require("sdk");
+var config = require("config");
 
 cc.Class({
     extends: cc.Component,
@@ -123,7 +124,7 @@ cc.Class({
 
             rank.string = data.id;
             name.string = storage.getLabelStr(data.nick,8);
-            score.string = storage.castNum(data.score);
+            score.string = storage.castNum(data.score*config.totalCoinRate);
             res.loadPic(data.avatarUrl,icon);
 
             if(data.id<=3)
@@ -254,6 +255,7 @@ cc.Class({
         storage.uploadRankUp();
 
         res.showToast("金币+"+storage.castNum(award));
+        cc.res.showCoinAni();
     },
 
     lingqu3: function()
@@ -280,6 +282,7 @@ cc.Class({
         this.game.initShouYi();
 
         res.showToast("金币+"+storage.castNum(award));
+        cc.res.showCoinAni();
     },
 
     click: function(event,data)

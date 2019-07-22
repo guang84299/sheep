@@ -36,6 +36,7 @@ cc.Class({
         if(x2) award *= 2;
         this.game.addCoin(award);
         this.hide();
+        cc.res.showCoinAni();
     },
 
     show: function(award)

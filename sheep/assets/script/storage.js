@@ -172,7 +172,7 @@ module.exports = {
     uploadToalCoin: function()
     {
         var datas = {};
-        datas.coin = this.getToalCoin();
+        datas.toalcoin = this.getToalCoin();
         var data = JSON.stringify(datas);
         cc.qianqista.uploaddatas(data);
     },
@@ -635,8 +635,16 @@ module.exports = {
     getYinDao: function()
     {
         var yindao = cc.sys.localStorage.getItem(this.pfix+"yindao");
-        yindao = yindao ? yindao : 0;
+        yindao = yindao ? yindao : 1;
         return Number(yindao);
+    },
+
+    uploadYinDao: function()
+    {
+        var datas = {};
+        datas.yindao = this.getYinDao();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
     },
 
     setInviteLnum: function(num)

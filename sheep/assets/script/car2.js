@@ -28,6 +28,7 @@ cc.Class({
         this.cars = this.node.children;
 
         this.isRuning = false;
+        this.goTime = new Date().getTime();
         if(this.game.unLock>0)
             this.run();
     },
@@ -80,8 +81,18 @@ cc.Class({
     carGo: function(car)
     {
         var self = this;
+
+        var dtv = 0;
+        var now = new Date().getTime();
+        this.goTime = new Date().getTime();
+
+        if(now-this.goTime<500)
+        {
+            dtv = 0.5;
+            this.goTime = now;
+        }
         car.runAction(cc.sequence(
-            cc.moveBy(this.speed,-400,0),
+            cc.moveBy(this.speed+dtv,-350,0),
             cc.callFunc(function(){
                 self.addCoin(car);
             })
@@ -92,7 +103,7 @@ cc.Class({
         if(this.isUp)
         {
             this.isUp = false;
-            var dt = Math.random()+Math.random();
+            var dt = Math.random();
             this.node.runAction(cc.sequence(
                 cc.delayTime(dt),
                 cc.callFunc(function(){
@@ -106,7 +117,7 @@ cc.Class({
     {
         var self = this;
         car.runAction(cc.sequence(
-            cc.moveBy(this.speed,400,0),
+            cc.moveBy(this.speed,350,0),
             cc.callFunc(function(){
                 self.subCoin(car);
             })
@@ -120,6 +131,19 @@ cc.Class({
         car.scaleX = -1;
         car.lunzi1.active = false;
         car.lunzi2.active = false;
+
+        if(this.game.faccoin<=0)
+        {
+            var self = this;
+            car.runAction(cc.sequence(
+                cc.delayTime(0.3),
+                cc.callFunc(function(){
+                    self.carBack(car);
+                })
+            ));
+
+            return;
+        }
 
         var coin = cc.instantiate(car.coinsp);
         coin.active = true;

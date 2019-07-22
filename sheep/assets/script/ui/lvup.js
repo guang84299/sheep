@@ -45,8 +45,9 @@ cc.Class({
         this.title1.string = this.index;
         this.title2.string = lv;
 
+        var type = cc.res.conf_grade[this.index-1].knifeType;
         var nexlLv = this.findNextBuoy(lv);
-        var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoyIcon"+this.index+"_"+res.conf_base[nexlLv-1].buoyNum);
+        var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoyIcon"+type+"_"+res.conf_base[nexlLv-1].buoyNum);
         this.buoyIcon.getComponent(cc.Sprite).spriteFrame = sp;
         //res.setSpriteFrame("images/buoy/buoyIcon"+this.index+"_"+res.conf_base[nexlLv-1].buoyNum,this.buoyIcon);
 
@@ -136,6 +137,7 @@ cc.Class({
                 storage.uploadLevel(this.index);
                 this.updateUI();
                 this.game.lvupBox(this.index);
+                this.game.updateYindao();
             }
             else
             {
@@ -154,10 +156,14 @@ cc.Class({
         this.initUI();
         this.updateUI();
 
+        var self = this;
         this.node.active = true;
         this.bg.runAction(cc.sequence(
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
-                cc.scaleTo(0.2,1).easing(cc.easeSineOut())
+                cc.scaleTo(0.2,1).easing(cc.easeSineOut()),
+                cc.callFunc(function(){
+                    self.game.updateYindao();
+                })
             ));
         cc.sdk.showBanner();
 
@@ -176,6 +182,7 @@ cc.Class({
                 })
             ));
         cc.sdk.hideBanner();
+        this.game.updateYindao();
     },
 
     click: function(event,data)

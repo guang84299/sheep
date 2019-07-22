@@ -225,10 +225,10 @@ module.exports = {
 
     showCoinAni: function()
     {
-        var toast = cc.instantiate(this.pjinbipenfa);
+        var toast = cc.instantiate(this["prefab_anim_coinani"]);
         cc.find("Canvas").addChild(toast,10000);
         toast.runAction(cc.sequence(
-            cc.delayTime(3),
+            cc.delayTime(1),
             cc.removeSelf()
         ));
     },

@@ -125,6 +125,7 @@ cc.Class({
                 storage.uploadCarHLv();
                 this.updateUI();
                 this.game.carhup();
+                this.game.updateYindao();
             }
             else
             {
@@ -143,10 +144,14 @@ cc.Class({
         this.initUI();
         this.updateUI();
 
+        var self = this;
         this.node.active = true;
         this.bg.runAction(cc.sequence(
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
-                cc.scaleTo(0.2,1).easing(cc.easeSineOut())
+                cc.scaleTo(0.2,1).easing(cc.easeSineOut()),
+                cc.callFunc(function(){
+                    self.game.updateYindao();
+                })
             ));
         cc.sdk.showBanner();
 
@@ -165,6 +170,8 @@ cc.Class({
                 })
             ));
         cc.sdk.hideBanner();
+
+        this.game.updateYindao();
     },
 
     click: function(event,data)

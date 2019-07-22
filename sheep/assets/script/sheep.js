@@ -18,8 +18,10 @@ cc.Class({
         this.node.addChild(this.anim);
         this.anim.scale = 0.8;
 
-        this.aniconfig = cc.config.sheepAnim[parseInt((this.box.index-1)/3)];
+        this.aniconfig = cc.config.sheepAnim[this.box.type];
         this.conf = this.box.conf;
+
+        this.anim.color = this.aniconfig.color;
 
         this.holdTime = this.conf.growSpeed;
         this.holdTimeDt = 0;
@@ -44,7 +46,7 @@ cc.Class({
             cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeSineIn())
         ));
         node.scale = 0.8;
-
+        node.color = this.aniconfig.color;
         //if(this.game.totalLvNum < 10)
         //    this.game.addCoin(this.box.pice);
     },

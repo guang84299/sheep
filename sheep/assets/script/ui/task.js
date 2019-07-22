@@ -116,6 +116,9 @@ cc.Class({
         res.showToast("金币+"+this.num.string);
         this.awardCom = -1;
         this.updateUI();
+
+        this.game.updateYindao();
+        cc.res.showCoinAni();
     },
 
     getCurrNickId: function()
@@ -149,7 +152,7 @@ cc.Class({
         {
             var ranchId = parseInt(this.task.ranchId)-2;
             var h = this.game.boxs[0].height;
-            var y = h*ranchId+320;
+            var y = h*ranchId+380;
             this.game.scroll.scrollToOffset(cc.v2(0,y),1);
         }
         //采集车升级 //运输车升级

@@ -39,7 +39,8 @@ cc.Class({
     {
         var self = this;
         this.index = -1;
-        var num = this.game.unLock;
+        var h = this.game.boxs[0].height;
+        var num = (-this.node.y+this.ny)/h;
         var t = this.speed*num;
         var y = this.ny;
         var dt = 0.5;
@@ -68,8 +69,10 @@ cc.Class({
         var dt = 0.5;
         var t = this.speed;
 
+        var coin = Number(this.conf.capacity)-this.coin;
+
         this.index++;
-        if(this.index>=num){
+        if(this.index>=num || coin<=0){
             this.back();
             return;
         }
@@ -104,7 +107,7 @@ cc.Class({
                     {
                         coin = box.getCoin(coin);
                         self.coin += coin;
-                        self.addMao(y);
+                        self.addMao(y,box.type);
                     }
                 }
 
@@ -114,9 +117,9 @@ cc.Class({
         ));
     },
 
-    addMao: function(h)
+    addMao: function(h,type)
     {
-        var icon = parseInt((this.index)/3)+1;
+        var icon = type+1;
 
         var mao = new cc.Node();
         mao.addComponent(cc.Sprite);

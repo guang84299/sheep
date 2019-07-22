@@ -103,6 +103,7 @@ cc.Class({
         this.updateUI();
 
         this.game.task.updateUI();
+        cc.res.showCoinAni();
     },
 
     show: function(award)

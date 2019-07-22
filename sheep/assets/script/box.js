@@ -27,6 +27,11 @@ cc.Class({
         this.conf = cc.res.conf_base[this.lv-1];
         this.pice = cc.res.conf_price[this.lv-1]["price"+index];
         this.knifeType = cc.res.conf_grade[index-1].knifeType;
+        this.type = parseInt(cc.res.conf_ranch[index-1].type);
+        var nextIndex = index;
+        if(nextIndex>=cc.res.conf_ranch.length)
+            nextIndex = cc.res.conf_ranch.length-1;
+        this.nextType = parseInt(cc.res.conf_ranch[nextIndex].type);
         this.growSpeed = this.conf.growSpeed;
         this.isUnLock = false;
         this.upDt = 0;
@@ -53,10 +58,10 @@ cc.Class({
             }
         }
 
-        var icon = parseInt((this.index-1)/3)+1;
+        var icon = this.type+1;
 
         cc.res.setSpriteFrame("images/box/bg"+icon,this.node);
-        if(this.index%3==0)
+        if(this.type != this.nextType)
         {
             this.boxbg2 =  cc.find("bg2",this.node);
             cc.res.setSpriteFrame("images/box/bg2"+icon,this.boxbg2);
@@ -72,7 +77,7 @@ cc.Class({
 
     updateUI: function()
     {
-        this.lv_label.string = this.lv;
+        this.lv_label.string = "LV."+this.lv;
         this.index_label.string = this.index;
     },
 
@@ -125,7 +130,7 @@ cc.Class({
     proMao: function()
     {
         this.mao.destroyAllChildren();
-        var icon = parseInt((this.index-1)/3)+1;
+        var icon = this.type+1;
         var node = cc.res.playAnim("images/box/mao"+icon,4,1,1,null,false);
         this.mao.addChild(node);
     },
@@ -202,10 +207,12 @@ cc.Class({
         this.lock_desc.string = conf.tips;
         this.lock_cost.string = cc.storage.castNum(this.unLockCost);
 
-        var icon = parseInt((this.index-1)/3)+1;
+        var icon = this.type+1;
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+icon,this.lock_sheepIcon);
         cc.res.setSpriteFrame("images/box/title_"+icon,this.lock_name);
 
+        this.lock_saoguang.x = -340;
+        this.lock_saoguang.stopAllActions();
         this.lock_saoguang.runAction(cc.repeatForever(cc.sequence(
             cc.moveBy(0.6,630,0).easing(cc.easeSineIn()),
             cc.moveBy(0,-630,0),
@@ -246,6 +253,8 @@ cc.Class({
 
                 if(!this.game.car2.isRuning)
                     this.game.car2.run();
+
+                this.game.updateYindao();
             }
         }
         else
@@ -302,7 +311,7 @@ cc.Class({
             {
                 this.upDt = 0;
 
-                this.coin += this.pice*36*2;
+                this.coin += this.pice*(1/this.growSpeed)*36*2;
                 this.coinnum.string = cc.storage.castNum(this.coin);
             }
 
