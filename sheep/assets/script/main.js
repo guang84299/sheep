@@ -31,9 +31,11 @@ cc.Class({
         this.addListener();
 
         this.updateRed();
+        this.updateFlyCoin();
 
         if(this.yindao < 14)
         {
+            this.yindao = 14;
             if(this.yindao == 4) this.yindao = 3;
             else if(this.yindao == 5) this.yindao = 6;
             else if(this.yindao == 8) this.yindao = 7;
@@ -49,6 +51,7 @@ cc.Class({
             }
 
         }
+
     },
 
     initPhysics: function()
@@ -83,6 +86,7 @@ cc.Class({
     {
         this.lastY = 0;
         this.coin = storage.getCoin();
+        this.diamond = storage.getDiamond();
         this.toalcoin = storage.getToalCoin();
         this.faccoin = storage.getFacCoin();
         this.updateCoinDt = 0;
@@ -106,10 +110,11 @@ cc.Class({
         this.scrollContent = cc.find("scroll/view/content",this.node_main);
 
         this.coin_label = cc.find("top/coinbg/num",this.node_main).getComponent(cc.Label);
+        this.diamond_label = cc.find("top/diamondbg/num",this.node_main).getComponent(cc.Label);
         this.totalLv = cc.find("top/bg/totalLv",this.node_main).getComponent(cc.Label);
         this.pro = cc.find("top/bg/pro",this.node_main).getComponent(cc.ProgressBar);
         this.pro_num = cc.find("top/bg/pro/num",this.node_main).getComponent(cc.Label);
-        this.currName = cc.find("top/bg/currNamebg/currName",this.node_main);
+        this.currName = cc.find("top/bg/currName",this.node_main);
         this.nextName = cc.find("top/bg/nextNamebg/nextName",this.node_main);
         this.nextNamebg = cc.find("top/bg/nextNamebg",this.node_main);
 
@@ -161,6 +166,7 @@ cc.Class({
     updateUI: function()
     {
         this.coin_label.string = storage.castNum(this.coin);
+        this.diamond_label.string = storage.castNum(this.diamond);
         this.faccoin_label.string = storage.castNum(this.faccoin);
 
         var tlv = 0;
@@ -275,6 +281,47 @@ cc.Class({
         }
     },
 
+    addDiamond: function(diamond,rate)
+    {
+        var add = Number(diamond);
+        if(add>0)
+        {
+            if(!this.diamond_pos)
+            {
+                var coinbg = cc.find("top/diamondbg/num",this.node_main);
+                this.diamond_pos = coinbg.convertToWorldSpace(coinbg.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            }
+
+            var str = "+"+storage.castNum(add);
+            if(rate)
+            {
+                add *= rate;
+                str = "+"+storage.castNum(add) + "x" + rate;
+            }
+
+            res.showCoin(str,this.diamond_pos,this.node_main);
+        }
+        this.diamond += add;
+        storage.setDiamond(this.diamond);
+        storage.uploadDiamond();
+        if(add>0)
+        {
+            var self = this;
+            this.diamond_label.node.runAction(cc.sequence(
+                cc.delayTime(0.5),
+                cc.scaleTo(0.2,1.2).easing(cc.easeSineIn()),
+                cc.scaleTo(0.2,1).easing(cc.easeSineIn()),
+                cc.callFunc(function(){
+                    self.diamond_label.string = storage.castNum(self.diamond);
+                })
+            ));
+        }
+        else
+        {
+            this.diamond_label.string = storage.castNum(this.diamond);
+        }
+    },
+
     addFacCoin: function(coin)
     {
         var add = Number(coin);
@@ -357,6 +404,7 @@ cc.Class({
         }
 
         //this.share_btn.active = cc.GAME.share;
+
     },
 
     addBox: function()
@@ -370,10 +418,10 @@ cc.Class({
                 box.getComponent("box").init(this.boxs.length+1);
                 this.scrollContent.addChild(box);
 
-                box.y = -box.height*this.boxs.length-380;
+                box.y = -box.height*this.boxs.length-457;
 
                 this.boxs.push(box);
-                this.scrollContent.height = box.height*this.boxs.length+380;
+                this.scrollContent.height = box.height*this.boxs.length+457;
                 cc.log(this.boxs.length);
 
                 this.updateBox();
@@ -538,6 +586,57 @@ cc.Class({
 
     initShouYi: function()
     {
+
+        if(cc.gjiabeilist.length>0)
+        {
+            var rate = 2;
+            var tips = "1人助力2倍收益";
+            if(cc.gjiabeilist.length>=6)
+            {
+                rate = 4;
+                tips = "6人助力4倍收益";
+            }
+            else if(cc.gjiabeilist.length>=3)
+            {
+                rate = 3;
+                tips = "3人助力3倍收益";
+            }
+
+            var mt = new Date();
+            mt.setHours(23);
+            mt.setMinutes(59);
+            mt.setSeconds(59);
+
+            var time = (mt.getTime() - new Date().getTime())/(60*60*1000.0);
+
+            var ishave = false;
+            var isupdate = false;
+            var rateTasks = storage.getAddRateTask();
+            for(var i=0;i<rateTasks.length;i++)
+            {
+                var rateTask = rateTasks[i];
+                if(rateTask.tip.indexOf("助力") != -1)
+                {
+                    ishave = true;
+                    if(rateTask.reward != rate)
+                    {
+                        rateTasks[i].reward = rate;
+                        rateTasks[i].time = time;
+                        rateTasks[i].tip = tips;
+                        storage.updateAddRateTask(rateTasks);
+                        isupdate = true;
+                    }
+                    break;
+                }
+            }
+
+            if(!ishave)
+            {
+                var task = {reward:rate,time:time,tip:tips};
+                storage.addAddRateTask(task);
+            }
+        }
+
         var rateTasks = storage.getAddRateTask();
         if(rateTasks.length>0)
         {
@@ -694,6 +793,34 @@ cc.Class({
         }
     },
 
+    updateFlyCoin: function()
+    {
+        var now = new Date().getTime();
+        if(!this.flyCoinTime)
+        {
+            this.flyCoinTime = now;
+
+            var flycoin = cc.find("top/flycoin",this.node_main);
+            flycoin.active = true;
+            flycoin.x = -cc.winSize.width/2-flycoin.width;
+
+            flycoin.runAction(cc.repeatForever(cc.sequence(
+                cc.moveBy(8,cc.winSize.width+flycoin.width,0),
+                cc.scaleTo(0,0.4,0.4),
+                cc.moveBy(8,-cc.winSize.width-flycoin.width,0),
+                cc.scaleTo(0,-0.4,0.4)
+            )));
+        }
+    },
+
+    touchBox: function(pos)
+    {
+        for(var i=0;i<this.boxs.length;i++)
+        {
+            this.boxs[i].sc.touchBox(pos);
+        }
+    },
+
     scrollEvent: function(event,data)
     {
         var y = this.scroll.getScrollOffset().y;
@@ -787,6 +914,30 @@ cc.Class({
             this.scrollControlUp.active =true;
             this.scrollControlDown.active =false;
         }
+        else if(data == "skill")
+        {
+            res.openUI("skill");
+        }
+        else if(data == "shouyifanbei")
+        {
+            res.openUI("shouyifanbei");
+        }
+        else if(data == "flycoin")
+        {
+            res.openUI("freecoin");
+        }
+        else if(data == "shop")
+        {
+            res.openUI("shop");
+        }
+        else if(data == "dog")
+        {
+            res.openUI("dog");
+        }
+        else if(data == "tanxian")
+        {
+            res.openUI("tanxian");
+        }
         storage.playSound(res.audio_button);
         cc.log(data);
     },
@@ -796,18 +947,24 @@ cc.Class({
     {
         var s = cc.winSize;
         var self = this;
-        this.node.on(cc.Node.EventType.TOUCH_START, function (event) {
+        this.scrollContent.on(cc.Node.EventType.TOUCH_START, function (event) {
             var pos = event.getLocation();
-            if(this.state == "start")
+            this.lastTouchPos = pos;
+            //if(this.state == "start")
+            //{
+            //
+            //}
+
+        }, this);
+        //this.scrollContent.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
+        //
+        //}, this);
+        this.scrollContent.on(cc.Node.EventType.TOUCH_END, function (event) {
+            var pos = event.getLocation();
+            if(pos.sub(this.lastTouchPos).mag()<20)
             {
-
+                this.touchBox(pos.sub(cc.v2(s.width/2,s.height/2)));
             }
-        }, this);
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
-
-        }, this);
-        this.node.on(cc.Node.EventType.TOUCH_END, function (event) {
-
         }, this);
     },
 

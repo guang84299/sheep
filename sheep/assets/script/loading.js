@@ -16,6 +16,7 @@ cc.myscene = "load";
 cc.res = res;
 cc.GAME = {};
 cc.GAME.control = [];
+cc.gjiabeilist = [];
 
 cc.Class({
     extends: cc.Component,
@@ -64,6 +65,11 @@ cc.Class({
             "conf/choujiang",
             "conf/truckHor",
             "conf/truckVic",
+            "conf/shop",
+            "conf/cardDraw",
+            "conf/cardGrade",
+            "conf/cardText",
+            "conf/compose",
 
             "prefab/sheep",
             "prefab/buoy",
@@ -91,6 +97,13 @@ cc.Class({
             "prefab/ui/shouyi",
             "prefab/ui/power",
             "prefab/ui/yindao",
+            "prefab/ui/freecoin",
+            "prefab/ui/skill",
+            "prefab/ui/shouyifanbei",
+            "prefab/ui/shop",
+            "prefab/ui/unlockdog",
+            "prefab/ui/dog",
+            "prefab/ui/tanxian",
 
             "prefab/anim/coinani",
 
@@ -129,6 +142,7 @@ cc.Class({
             storage.setSound(1);
             storage.setVibrate(1);
             storage.setCoin(0);
+            storage.setDogCardLv(1,1)
         }
     },
 
@@ -308,6 +322,14 @@ cc.Class({
                 storage.setCoin(coin);
             }
 
+            if(datas.hasOwnProperty("diamond"))
+            {
+                var diamond = Number(datas.diamond);
+                var diamond2 = storage.getDiamond();
+                if(diamond2>diamond) diamond = diamond2;
+                storage.setDiamond(coin);
+            }
+
             if(datas.hasOwnProperty("faccoin"))
             {
                 var coin = Number(datas.faccoin);
@@ -332,6 +354,9 @@ cc.Class({
             {
                 if(datas.hasOwnProperty("level_"+i))
                     storage.setLevel(i,Number(datas["level_"+i]));
+
+                if(datas.hasOwnProperty("level_"+i+"_dog"))
+                    storage.setLevelDog(i,Number(datas["level_"+i+"_dog"]));
             }
 
             if(datas.hasOwnProperty("carv_lv"))
@@ -368,11 +393,21 @@ cc.Class({
             if(datas.hasOwnProperty("yindao"))
                 storage.setYinDao(Number(datas.yindao));
 
+            if(datas.hasOwnProperty("txlv"))
+                storage.setTxLv(Number(datas.txlv));
+            if(datas.hasOwnProperty("txnum"))
+                storage.setTxNum(Number(datas.txnum));
+            if(datas.hasOwnProperty("txtask"))
+                storage.setTxTask(Number(datas.txtask));
+
 
             if(datas.hasOwnProperty("ginvitelist"))
                 cc.ginvitelist = datas.ginvitelist;
             if(datas.hasOwnProperty("ginvite_lnum"))
                 storage.setInviteLnum(Number(datas.ginvite_lnum));
+
+            if(datas.hasOwnProperty("gjiabeilist"))
+                cc.gjiabeilist = datas.gjiabeilist;
 
 
             console.log("datas:",datas);
@@ -391,6 +426,11 @@ cc.Class({
 
                 storage.setLoginDay(parseInt(datas.login_day)+1);
                 storage.uploadLoginDay();
+
+                cc.gjiabeilist = [];
+                storage.uploadJiabei();
+
+                storage.setFreeDiaNum(1);
             }
         }
         else
@@ -399,6 +439,7 @@ cc.Class({
             cc.login_time = now;
             storage.setLoginTime(now);
             storage.setLoginDay(1);
+            storage.setFreeDiaNum(1);
             this.uploadData();
         }
     },

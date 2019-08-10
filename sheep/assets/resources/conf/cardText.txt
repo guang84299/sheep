@@ -1,0 +1,7 @@
+[
+{"id":"1","name":"大哈","tips":"逗者","character":"普通","base":"1","top":"2","ratio":"0.02"},
+{"id":"2","name":"二哈","tips":"逗王","character":"高级","base":"2","top":"4","ratio":"0.04"},
+{"id":"3","name":"三哈","tips":"逗皇","character":"稀有","base":"3","top":"6","ratio":"0.06"},
+{"id":"4","name":"四哈","tips":"逗尊","character":"史诗","base":"4","top":"8","ratio":"0.08"},
+{"id":"5","name":"小哈","tips":"逗帝","character":"传奇","base":"5","top":"10","ratio":"0.1"}
+]

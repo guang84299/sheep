@@ -24,6 +24,7 @@ cc.Class({
         this.index = index;
         this.lv = cc.storage.getLevel(index);
         this.coin = cc.storage.getLevelCoin(index);
+        this.dog = cc.storage.getLevelDog(index);
         this.conf = cc.res.conf_base[this.lv-1];
         this.pice = cc.res.conf_price[this.lv-1]["price"+index];
         this.knifeType = cc.res.conf_grade[index-1].knifeType;
@@ -65,8 +66,10 @@ cc.Class({
         {
             this.boxbg2 =  cc.find("bg2",this.node);
             cc.res.setSpriteFrame("images/box/bg2"+icon,this.boxbg2);
-            cc.find("node_hua",this.node).active = true;
+            //cc.find("node_hua",this.node).active = true;
         }
+
+        this.initDog();
     },
 
     initUnlock: function(lock)
@@ -117,6 +120,9 @@ cc.Class({
             box.addChild(buoy);
 
             this.buoys.push(buoy);
+
+            if(this.dog != 1)
+                buoy.active = false;
         }
 
         cc.find("node_mao",this.node).active = true;
@@ -180,6 +186,9 @@ cc.Class({
             box.addChild(buoy);
 
             this.buoys.push(buoy);
+
+            if(this.dog != 1)
+                buoy.active = false;
         }
 
         for(var i=0;i<this.sheeps.length;i++)
@@ -255,11 +264,14 @@ cc.Class({
                     this.game.car2.run();
 
                 this.game.updateYindao();
+
+                cc.res.openUI("unlockbox",null,this.index);
             }
         }
         else
         {
             cc.res.showToast("金币不足！");
+            cc.res.openUI("freecoin");
         }
     },
 
@@ -305,23 +317,125 @@ cc.Class({
     {
         if(this.isUnLock)
         {
-            this.upDt += dt;
-            this.saveDt += dt;
-            if(this.upDt>2)
+            if(this.dog == 1)
             {
-                this.upDt = 0;
+                this.upDt += dt;
+                this.saveDt += dt;
+                if(this.upDt>2)
+                {
+                    this.upDt = 0;
 
-                this.coin += this.pice*(1/this.growSpeed)*36*2;
-                this.coinnum.string = cc.storage.castNum(this.coin);
+                    this.coin += this.pice*(1/this.growSpeed)*36*2;
+                    this.coinnum.string = cc.storage.castNum(this.coin);
+                }
+
+                if(this.saveDt>5)
+                {
+                    this.saveDt = 0;
+                    cc.storage.setLevelCoin(this.index,this.coin);
+                }
             }
 
-            if(this.saveDt>5)
+            if(this.dog > 1)
             {
-                this.saveDt = 0;
-                cc.storage.setLevelCoin(this.index,this.coin);
+                this.dogUnlokDt += dt;
+                if(this.dogUnlokDt>1)
+                {
+                    this.updateDogUnlock();
+                }
             }
         }
 
+    },
+
+    touchBox: function(pos)
+    {
+        if(this.isUpdate && this.isUnLock)
+        {
+            for(var i=0;i<this.sheeps.length;i++)
+            {
+                this.sheeps[i].sc.touchBox(pos);
+            }
+        }
+    },
+
+    touchBoxAddCoin: function()
+    {
+        this.coin += this.pice*(1/this.growSpeed)*1*2;
+        this.coinnum.string = cc.storage.castNum(this.coin);
+
+        cc.storage.setLevelCoin(this.index,this.coin);
+    },
+
+    initDog: function()
+    {
+        this.dog_dog = cc.find("box_dog/dog",this.node);
+        this.dog_lock = cc.find("box_dog/lock",this.node);
+        this.dog_lock_txt = cc.find("box_dog/lock/txt",this.node).getComponent(cc.Label);
+        if(this.dog == 0)
+        {
+            this.dog_lock.active = true;
+        }
+        else if(this.dog == 1)
+        {
+            this.dog_lock.active = false;
+        }
+        else if(this.dog > 1)
+        {
+            this.dog_lock.active = true;
+        }
+        this.dogUnlokDt = 0;
+    },
+
+    updateDogUnlock: function()
+    {
+        var now = new Date().getTime();
+        var time = this.dog - now;
+        if(time>0)
+        {
+            var h = Math.floor(time/(60*60*1000));
+            var m = Math.floor((time - h*60*60*1000)/(60*1000));
+            var s = Math.floor(((time - h*60*60*1000 - m*60*1000))/1000);
+            //var sh = h < 10 ? "0"+h : h;
+            var sm = m < 10 ? "0"+m : m;
+            var ss = s < 10 ? "0"+s : s;
+            this.dog_lock_txt.string = sm+":"+ss;
+        }
+        else
+        {
+            this.unlockdog();
+        }
+    },
+
+    unlockdog: function()
+    {
+        this.dog = 1;
+        this.dog_lock.active = false;
+        cc.storage.setLevelDog(this.index,1);
+        cc.storage.uploadLevelDog(this.index);
+
+        for(var i=0;i<this.buoys.length;i++)
+        {
+            this.buoys[i].active = true;
+        }
+    },
+
+    tounlockdog: function()
+    {
+        if(this.dog == 0)
+        {
+            var now = new Date().getTime();
+            this.dog = now + 1*60*1000;
+            cc.storage.setLevelDog(this.index,this.dog);
+            cc.storage.uploadLevelDog(this.index);
+            this.updateDogUnlock();
+        }
+    },
+
+    updatedog: function()
+    {
+        var i = Math.floor(Math.random()*5)+1;
+        cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+i,this.dog_dog);
     },
 
     click: function(event,data)
@@ -333,6 +447,14 @@ cc.Class({
         else if(data == "unlock")
         {
             this.unlock();
+        }
+        else if(data == "unlockdog")
+        {
+            cc.res.openUI("unlockdog",null,this.index);
+        }
+        else if(data == "dog")
+        {
+            this.updatedog();
         }
         cc.storage.playSound(cc.res.audio_button);
         cc.log(data);

@@ -137,6 +137,26 @@ module.exports = {
         cc.qianqista.uploaddatas(data);
     },
 
+    setDiamond: function(diamond)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"diamond",Math.floor(diamond));
+    },
+
+    getDiamond: function()
+    {
+        var diamond = cc.sys.localStorage.getItem(this.pfix+"diamond");
+        diamond = diamond ? diamond : 0;
+        return Number(diamond);
+    },
+
+    uploadDiamond: function()
+    {
+        var datas = {};
+        datas.diamond = this.getDiamond();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
     setFacCoin: function(coin)
     {
         cc.sys.localStorage.setItem(this.pfix+"faccoin",Math.floor(coin));
@@ -253,6 +273,26 @@ module.exports = {
         return Number(coin);
     },
 
+    setLevelDog: function(index,lv)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"level_"+index+"_dog",lv);
+    },
+
+    getLevelDog: function(index)
+    {
+        var lv = cc.sys.localStorage.getItem(this.pfix+"level_"+index+"_dog");
+        lv = lv ? lv : 0;
+        return Number(lv);
+    },
+
+    uploadLevelDog: function(index)
+    {
+        var datas = {};
+        datas["level_"+index+"_dog"] = this.getLevelDog(index);
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
     setLock: function(lv)
     {
         cc.sys.localStorage.setItem(this.pfix+"lock",lv);
@@ -329,6 +369,46 @@ module.exports = {
     {
         var datas = {};
         datas.task = this.getTask();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setSheep: function(id,lv)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"sheep_"+id,lv);
+    },
+
+    getSheep: function(id)
+    {
+        var lv = cc.sys.localStorage.getItem(this.pfix+"sheep_"+id);
+        lv = lv ? lv : 0;
+        return Number(lv);
+    },
+
+    uploadSheep: function(id)
+    {
+        var datas = {};
+        datas["sheep_"+id] = this.getSheep(id);
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setBuoy: function(id,lv)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"buoy_"+id,lv);
+    },
+
+    getBuoy: function(id)
+    {
+        var lv = cc.sys.localStorage.getItem(this.pfix+"buoy_"+id);
+        lv = lv ? lv : 0;
+        return Number(lv);
+    },
+
+    uploadBuoy: function(id)
+    {
+        var datas = {};
+        datas["buoy_"+id] = this.getBuoy(id);
         var data = JSON.stringify(datas);
         cc.qianqista.uploaddatas(data);
     },
@@ -574,6 +654,11 @@ module.exports = {
         cc.sys.localStorage.setItem(this.pfix+"addrate_task",JSON.stringify(tasks));
     },
 
+    updateAddRateTask: function(tasks)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"addrate_task",JSON.stringify(tasks));
+    },
+
     getAddRateTask: function()
     {
         var task = cc.sys.localStorage.getItem(this.pfix+"addrate_task");
@@ -657,6 +742,280 @@ module.exports = {
         num = num ? num : 0;
         return Number(num);
     },
+
+    uploadJiabei: function()
+    {
+        var datas = {};
+        datas.gjiabeilist = [];
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setDogCard: function(id)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"DogCard",id);
+    },
+    getDogCard: function()
+    {
+        var id = cc.sys.localStorage.getItem(this.pfix+"DogCard");
+        id = id ? id : 1;
+        return Number(id);
+    },
+    uploadDogCard: function()
+    {
+        var datas = {};
+        datas.dogcard = this.getDogCard();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setDogCardLv: function(id,lv)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"DogCardLv_"+id,lv);
+    },
+    getDogCardLv: function(id)
+    {
+        var lv = cc.sys.localStorage.getItem(this.pfix+"DogCardLv_"+id);
+        lv = lv ? lv : 0;
+        return Number(lv);
+    },
+    uploadDogCardLv: function(id)
+    {
+        var datas = {};
+        datas["dogcardlv_"+id] = this.getDogCardLv(id);
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+
+    setDogCardNum: function(id,num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"DogCardNum_"+id,num);
+    },
+    getDogCardNum: function(id)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"DogCardNum_"+id);
+        num = num ? num : 0;
+        return Number(num);
+    },
+    uploadDogCardNum: function(id)
+    {
+        var datas = {};
+        datas["dogcardnum_"+id] = this.getDogCardNum(id);
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+
+    setCailiao: function(type,id,num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"cailiao_"+type+"_"+id,num);
+    },
+    getCailiao: function(type,id)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"cailiao_"+type+"_"+id);
+        num = num ? num : 0;
+        return Number(num);
+    },
+    uploadCailiao: function(type,id)
+    {
+        var datas = {};
+        datas["cailiao_"+type+"_"+id] = this.getCailiao(type,id);
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setCailiaoTime: function(type,id,time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"cailiaoTime_"+type+"_"+id,time);
+    },
+    getCailiaoTime: function(type,id)
+    {
+        var time = cc.sys.localStorage.getItem(this.pfix+"cailiaoTime_"+type+"_"+id);
+        time = time ? time : 0;
+        return Number(time);
+    },
+
+    //type 1:羊 2：刀
+    setPeiyuTime: function(type,id,time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"peiyuTime_"+type+"_"+id,time);
+    },
+    getPeiyuTime: function(type,id)
+    {
+        var time = cc.sys.localStorage.getItem(this.pfix+"peiyuTime_"+type+"_"+id);
+        time = time ? time : 0;
+        return Number(time);
+    },
+
+
+    setFreeDiaNum: function(num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"freeDiaNum",num);
+    },
+    getFreeDiaNum: function()
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"freeDiaNum");
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    setShopVcarTime: function(lv,time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"shopVcarTime_"+lv,time);
+    },
+    getShopVcarTime: function(lv)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"shopVcarTime_"+lv);
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    setShopHcarTime: function(lv,time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"shopHcarTime_"+lv,time);
+    },
+    getShopHcarTime: function(lv)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"shopHcarTime_"+lv);
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    setShopVcarAdNum: function(lv,num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"shopVcarAdNum_"+lv,num);
+    },
+    getShopVcarAdNum: function(lv)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"shopVcarAdNum_"+lv);
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    setShopHcarAdNum: function(lv,num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"shopHcarAdNum_"+lv,num);
+    },
+    getShopHcarAdNum: function(lv)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"shopHcarAdNum_"+lv);
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+
+    setDogCardTime: function(lv,time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"DogCardTime_"+lv,time);
+    },
+    getDogCardTime: function(lv)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"DogCardTime_"+lv);
+        num = num ? num : 0;
+        return Number(num);
+    },
+    setDogCardAdNum: function(lv,num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"DogCardAdNum_"+lv,num);
+    },
+    getDogCardAdNum: function(lv)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"DogCardAdNum_"+lv);
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+
+
+    setTxLv: function(txlv)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"txlv",txlv);
+    },
+    getTxLv: function()
+    {
+        var txlv = cc.sys.localStorage.getItem(this.pfix+"txlv");
+        txlv = txlv ? txlv : 1;
+        return Number(txlv);
+    },
+    uploadTxLv: function()
+    {
+        var datas = {};
+        datas.txlv = this.getTxLv();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+
+    setTxNum: function(txnum)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"txnum",txnum);
+    },
+    getTxNum: function()
+    {
+        var txnum = cc.sys.localStorage.getItem(this.pfix+"txnum");
+        txnum = txnum ? txnum : 0;
+        return Number(txnum);
+    },
+    uploadTxNum: function()
+    {
+        var datas = {};
+        datas.txnum = this.getTxNum();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setTxTime: function(txtime)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"txtime",txtime);
+    },
+    getTxTime: function()
+    {
+        var txtime = cc.sys.localStorage.getItem(this.pfix+"txtime");
+        txtime = txtime ? txtime : 0;
+        return Number(txtime);
+    },
+
+    setTxTask: function(txtask)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"txtask",txtask);
+    },
+    getTxTask: function()
+    {
+        var txtask = cc.sys.localStorage.getItem(this.pfix+"txtask");
+        txtask = txtask ? txtask : 1;
+        return Number(txtask);
+    },
+    uploadTxTask: function()
+    {
+        var datas = {};
+        datas.txtask = this.getTxTask();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setTxTaskCoin: function(num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"txtaskcoin",num);
+    },
+    getTxTaskCoin: function()
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"txtaskcoin");
+        num = num ? num : 0;
+        return Number(num);
+    },
+
+    setTxTaskLq: function(lv,num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"txtasklq_"+lv,num);
+    },
+    getTxTaskLq: function(lv)
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"txtasklq_"+lv);
+        num = num ? num : 0;
+        return Number(num);
+    },
+
 
 
     scientificToNumber: function(num) {
@@ -747,5 +1106,37 @@ module.exports = {
             }
         }
         return s;
+    },
+
+    getCountDown: function(t1,t2,fnum)
+    {
+        var time = t2 - t1;
+
+        var d = Math.floor(time/(24*60*60*1000));
+        var h = Math.floor((time - d*24*60*60*1000)/(60*60*1000));
+        var m = Math.floor((time - d*24*60*60*1000 - h*60*60*1000)/(60*1000));
+        var s = Math.floor(((time - d*24*60*60*1000 - h*60*60*1000 - m*60*1000))/1000);
+        var sd = d < 10 ? "0"+d : d;
+        var sh = h < 10 ? "0"+h : h;
+        var sm = m < 10 ? "0"+m : m;
+        var ss = s < 10 ? "0"+s : s;
+
+        var str = "";
+
+        if(!fnum) fnum = 3;
+
+        if(fnum == 1)
+            str = ss;
+        else if(fnum == 2)
+            str = sm+":"+ss;
+        else if(fnum == 3)
+            str = sh+":"+sm+":"+ss;
+        else
+        {
+            if(d>0) str = sd+":"+sh+":"+sm+":"+ss;
+            else str = sh+":"+sm+":"+ss;
+        }
+
+        return str;
     }
 };

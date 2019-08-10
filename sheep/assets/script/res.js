@@ -275,6 +275,20 @@ module.exports = {
         }
     },
 
+    getUI: function(name,parent)
+    {
+        if(!parent) parent = cc.find("Canvas");
+        if(parent)
+        {
+            var node = parent.getChildByName("ui_"+name);
+            if(node)
+            {
+                return node.getComponent(name);
+            }
+        }
+        return null;
+    },
+
     openPrefab: function(path,parent,callback)
     {
         if(!parent) parent = cc.find("Canvas");

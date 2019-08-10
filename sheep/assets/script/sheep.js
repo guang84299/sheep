@@ -103,6 +103,21 @@ cc.Class({
         }
     },
 
+    touchBox: function(pos)
+    {
+        if(this.box.isUpdate)
+        {
+            var pos2 = this.node.parent.convertToWorldSpaceAR(this.node.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            if(pos2.sub(pos).mag()<30)
+            {
+                if(this.state == "grow")
+                {
+                    this.playCutAni();
+                    this.box.touchBoxAddCoin();
+                }
+            }
+        }
+    },
 
     update: function(dt)
     {
@@ -132,7 +147,7 @@ cc.Class({
                     }
                 }
 
-                if(this.state == "grow")
+                if(this.state == "grow" && this.box.dog == 1)
                 {
                     for(var i=0;i<this.box.buoys.length;i++)
                     {

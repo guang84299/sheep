@@ -1,0 +1,14 @@
+[
+{"id":"1","cost":"10","costType":"0","goods":"100","goodsType":"0","goodsLevel":"0"},
+{"id":"2","cost":"30","costType":"0","goods":"330","goodsType":"0","goodsLevel":"0"},
+{"id":"3","cost":"60","costType":"0","goods":"720","goodsType":"0","goodsLevel":"0"},
+{"id":"4","cost":"100","costType":"0","goods":"1300","goodsType":"0","goodsLevel":"0"},
+{"id":"5","cost":"300","costType":"0","goods":"4200","goodsType":"0","goodsLevel":"0"},
+{"id":"6","cost":"600","costType":"0","goods":"9000","goodsType":"0","goodsLevel":"0"},
+{"id":"7","cost":"100","costType":"0","goods":"1","goodsType":"1","goodsLevel":"1.5"},
+{"id":"8","cost":"500","costType":"0","goods":"1","goodsType":"1","goodsLevel":"2"},
+{"id":"9","cost":"1","costType":"1","goods":"1","goodsType":"1","goodsLevel":"3"},
+{"id":"10","cost":"100","costType":"0","goods":"1","goodsType":"2","goodsLevel":"1.5"},
+{"id":"11","cost":"500","costType":"0","goods":"1","goodsType":"2","goodsLevel":"2"},
+{"id":"12","cost":"1","costType":"1","goods":"1","goodsType":"2","goodsLevel":"3"}
+]

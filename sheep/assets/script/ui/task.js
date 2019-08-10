@@ -152,7 +152,7 @@ cc.Class({
         {
             var ranchId = parseInt(this.task.ranchId)-2;
             var h = this.game.boxs[0].height;
-            var y = h*ranchId+380;
+            var y = h*ranchId+457;
             this.game.scroll.scrollToOffset(cc.v2(0,y),1);
         }
         //采集车升级 //运输车升级

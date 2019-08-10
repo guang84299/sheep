@@ -255,6 +255,30 @@ module.exports = {
                                     console.log("upload invitelist:",res);
                                 });
                             }
+
+                            //加倍列表
+                            var jiabeilists = {};
+                            var jiabeilist = json.gjiabeilist == undefined ? [] : json.gjiabeilist;
+                            var inviteitem = {openid:self.openid,name:self.userName,pic:self.avatarUrl};
+                            var ishave = false;
+                            for(var i=0;i<jiabeilist.length;i++)
+                            {
+                                if(jiabeilist[i].openid == inviteitem.openid)
+                                {
+                                    ishave = true;
+                                    break;
+                                }
+                            }
+                            if(!ishave)
+                            {
+                                jiabeilist.push(inviteitem);
+                                jiabeilists.gjiabeilist = jiabeilist;
+                                var datas = JSON.stringify(jiabeilists);
+                                console.log("upload jiabeilist:",datas);
+                                self.sendRequest("uploaddatas",{gameId:self.gameId,openid:self.fromid,datas:datas},function(res){
+                                    console.log("upload jiabeilist:",res);
+                                });
+                            }
                         }
                     });
 

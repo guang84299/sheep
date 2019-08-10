@@ -130,6 +130,7 @@ cc.Class({
             else
             {
                 res.showToast("金币不足！");
+                cc.res.openUI("freecoin");
             }
         }
     },
