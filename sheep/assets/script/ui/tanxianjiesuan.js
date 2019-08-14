@@ -24,6 +24,11 @@ cc.Class({
         this.orenum = cc.find("box/orenum",this.bg).getComponent(cc.Label);
         this.chartnum = cc.find("box/chartnum",this.bg).getComponent(cc.Label);
 
+        this.wool = cc.find("box/wool",this.bg);
+        this.feed = cc.find("box/feed",this.bg);
+        this.ore = cc.find("box/ore",this.bg);
+        this.chart = cc.find("box/chart",this.bg);
+
         this.acoin = this.getAwardByType(1)*this.game.getSecVal()*(Math.floor(Math.random()*6)+10);
         this.adiamon = this.getAwardByType(2)*(Math.floor(Math.random()*3)+1);
         this.awool = this.getAwardByType(5);
@@ -38,35 +43,39 @@ cc.Class({
             var data =  this.getAwardDataByType(5);
             var num = storage.getCailiao(data.type-4,data.id);
             storage.setCailiao(data.type-4,data.id,num+this.awool);
+            res.setSpriteFrame("images/main/car_mao"+(parseInt(data.img)+1),this.wool);
         }
         if(this.afeed>0)
         {
             var data =  this.getAwardDataByType(6);
             var num = storage.getCailiao(data.type-4,data.id);
             storage.setCailiao(data.type-4,data.id,num+this.afeed);
+            res.setSpriteFrame("images/cailiao/sl/"+data.img,this.feed);
         }
         if(this.aore>0)
         {
             var data =  this.getAwardDataByType(7);
             var num = storage.getCailiao(data.type-4,data.id);
             storage.setCailiao(data.type-4,data.id,num+this.aore);
+            res.setSpriteFrame("images/cailiao/ks/"+data.img,this.ore);
         }
         if(this.achart>0)
         {
             var data =  this.getAwardDataByType(8);
             var num = storage.getCailiao(data.type-4,data.id);
             storage.setCailiao(data.type-4,data.id,num+this.achart);
+            res.setSpriteFrame("images/cailiao/tz/"+data.img,this.chart);
         }
     },
 
     updateUI: function()
     {
-        this.coinnum.string = storage.castNum(this.acoin);
-        this.diamondnum.string = storage.castNum(this.adiamon);
-        this.woolnum.string = this.awool;
-        this.feednum.string = this.afeed;
-        this.orenum.string = this.aore;
-        this.chartnum.string = this.achart;
+        this.coinnum.string = "+"+storage.castNum(this.acoin);
+        this.diamondnum.string =  "+"+storage.castNum(this.adiamon);
+        this.woolnum.string =  "+"+this.awool;
+        this.feednum.string =  "+"+this.afeed;
+        this.orenum.string =  "+"+this.aore;
+        this.chartnum.string =  "+"+this.achart;
     },
 
     getAwardByType: function(type)
@@ -121,7 +130,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
 
     },

@@ -16,7 +16,7 @@ cc.Class({
     initUI: function()
     {
         this.bg = cc.find("bg",this.node);
-
+        this.pro = cc.find("box/pro",this.bg).getComponent(cc.ProgressBar);
         this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg).getComponent(cc.Button);
 
         this.btn_lingqu2.mcolor = this.btn_lingqu2.node.color;
@@ -45,10 +45,18 @@ cc.Class({
 
     updateHead: function()
     {
-        for(var i=0;i<cc.gjiabeilist.length;i++)
+        for(var i=0;i<6;i++)
         {
-            this.heads[i].color = cc.color(255,0,0);
+            if(i<cc.gjiabeilist.length)
+            {
+                cc.res.setSpriteFrame("images/shouyifanbei/touxiang",this.heads[i]);
+            }
+            else
+            {
+                cc.res.setSpriteFrame("images/shouyifanbei/touxiangkuang",this.heads[i]);
+            }
         }
+        this.pro.progress = cc.gjiabeilist.length/6;
 
         if(cc.gjiabeilist.length>0)
         {
@@ -95,7 +103,8 @@ cc.Class({
 
             if(!ishave)
             {
-                var task = {reward:rate,time:time,tip:tips};
+                var to = new Date().getTime() + time*60*60*1000;
+                var task = {reward:rate,time:time,tip:tips,to:to};
                 storage.addAddRateTask(task);
             }
 
@@ -144,7 +153,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
     },
 

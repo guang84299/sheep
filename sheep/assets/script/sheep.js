@@ -18,7 +18,11 @@ cc.Class({
         this.node.addChild(this.anim);
         this.anim.scale = 0.8;
 
-        this.aniconfig = cc.config.sheepAnim[this.box.type];
+        if(this.box.isUnLockSheep == 2)
+            this.aniconfig = cc.config.sheepAnim[this.box.type];
+        else
+            this.aniconfig = cc.config.sheepAnim[0];
+
         this.conf = this.box.conf;
 
         this.anim.color = this.aniconfig.color;
@@ -119,6 +123,15 @@ cc.Class({
         }
     },
 
+    updateAniconfig: function()
+    {
+        if(this.box.isUnLockSheep == 2)
+            this.aniconfig = cc.config.sheepAnim[this.box.type];
+        else
+            this.aniconfig = cc.config.sheepAnim[0];
+        this.playCutAni();
+    },
+
     update: function(dt)
     {
         if(this.box.isUpdate)
@@ -147,7 +160,7 @@ cc.Class({
                     }
                 }
 
-                if(this.state == "grow" && this.box.dog == 1)
+                if(this.state == "grow" )//&& this.box.dog == 1
                 {
                     for(var i=0;i<this.box.buoys.length;i++)
                     {
@@ -156,6 +169,8 @@ cc.Class({
                         if(dis<buoy.sc.collradius+this.node.width/2)
                         {
                             this.playCutAni();
+
+                            if(this.box.dog != 1) this.box.touchBoxAddCoin();
                             break;
                         }
                     }

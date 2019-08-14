@@ -22,10 +22,10 @@ cc.Class({
         this.box3 = cc.find("box3",this.bg);
 
         this.title1 = cc.find("title/num1",this.bg).getComponent(cc.Label);
-        this.title2 = cc.find("title/num2",this.bg).getComponent(cc.Label);
-        this.buoyIcon = cc.find("buoyIcon",this.bg);
-        this.pro =  cc.find("pro",this.bg).getComponent(cc.ProgressBar);
-        this.buoyDesc = cc.find("buoyDesc",this.bg).getComponent(cc.Label);
+        this.title2 = cc.find("title/lvbox/num2",this.bg).getComponent(cc.Label);
+        this.buoyIcon = cc.find("buoyIcon",this.box1);
+        this.pro =  cc.find("pro",this.box1).getComponent(cc.ProgressBar);
+        this.buoyDesc = cc.find("buoyDesc",this.box1).getComponent(cc.Label);
 
         this.icon1_val = cc.find("box/icon1/val",this.bg).getComponent(cc.Label);
         this.icon1_val2 = cc.find("box/icon1/val2",this.bg).getComponent(cc.Label);
@@ -41,6 +41,9 @@ cc.Class({
 
         this.cost1 = cc.find("box/up1/costbg/cost",this.bg).getComponent(cc.Label);
         this.up_rate1 = cc.find("box/up1/desc",this.bg).getComponent(cc.Label);
+
+        this.peiyangsuc = cc.find("peiyangsuc",this.node);
+        this.peiyangsuc.active = false;
 
         if(this.index == 1)
         {
@@ -80,7 +83,7 @@ cc.Class({
     {
         var lv = storage.getLevel(this.index);
         this.title1.string = this.index;
-        this.title2.string = lv;
+        this.title2.string = "lv"+lv;
 
         var type = cc.res.conf_grade[this.index-1].knifeType;
         var nexlLv = this.findNextBuoy(lv);
@@ -100,8 +103,17 @@ cc.Class({
         this.icon1_val.string = res.conf_base[lv-1].growSpeed+"秒";
         this.icon1_val2.string = (Number(res.conf_base[nlv-1].growSpeed)-Number(res.conf_base[lv-1].growSpeed)).toFixed(2)+"秒";
 
-        var pice = Number(res.conf_price[lv-1]["price"+this.index]);
-        var pice2 = Number(res.conf_price[nlv-1]["price"+this.index]);
+        var datacompose = cc.res.conf_compose[this.index-1];
+        var sheep = storage.getSheep(parseInt(datacompose.id));
+
+        var pice = Number(res.conf_price[lv-1]["price"+1]);
+        var pice2 = Number(res.conf_price[nlv-1]["price"+1]);
+
+        if(sheep == 2)
+        {
+            pice = Number(res.conf_price[lv-1]["price"+this.index]);
+            pice2 = Number(res.conf_price[nlv-1]["price"+this.index]);
+        }
 
         this.icon2_val.string = storage.castNum(pice);
         this.icon2_val2.string = "+"+storage.castNum(pice2-pice);
@@ -210,8 +222,14 @@ cc.Class({
 
         var data = cc.res.conf_compose[this.index-1];
 
+        cc.res.setSpriteFrame("images/main/car_mao"+(parseInt(data.woolImage)+1),yangmao_icon);
+        cc.res.setSpriteFrame("images/cailiao/sl/"+data.feedImage,siliao_icon);
+        var sheepConf = cc.config.sheepAnim[parseInt(data.newSheep)];
+        cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,yang_icon);
+        yang_icon.color = sheepConf.color;
+
         //是否已经解锁 0：未解锁 1:解锁 2：使用
-        var sheep = storage.getSheep(parseInt(data.newSheep));
+        var sheep = storage.getSheep(parseInt(data.id));
         if(sheep == 0)
         {
             var p1 = false;
@@ -269,12 +287,12 @@ cc.Class({
             var updateTime = 10;
             if(p1 && p2)
             {
-                var peiyuTime = storage.getPeiyuTime(1,parseInt(data.newSheep));
+                var peiyuTime = storage.getPeiyuTime(1,parseInt(data.id));
 
                 if(peiyuTime==0)
                 {
                     peiyuTime = now+(parseInt(data.sheepTime)*1000);
-                    storage.setPeiyuTime(1,parseInt(data.newSheep),peiyuTime);
+                    storage.setPeiyuTime(1,parseInt(data.id),peiyuTime);
                 }
 
                 yang_peiyu_state1.active = false;
@@ -284,8 +302,9 @@ cc.Class({
 
                 if(now>=peiyuTime)
                 {
-                    storage.setSheep(parseInt(data.newSheep),1);
-                    storage.uploadSheep(parseInt(data.newSheep));
+                    storage.setSheep(parseInt(data.id),1);
+                    storage.uploadSheep(parseInt(data.id));
+                    this.openpeiyangsuc(true);
                 }
                 updateTime = 1;
                 this.sheepPeiyuState = 1;
@@ -352,6 +371,12 @@ cc.Class({
         var yang_peiyu_state2 = cc.find("yang/peiyu/state2",this.box3);
 
         var data = cc.res.conf_compose[this.index-1];
+
+        cc.res.setSpriteFrame("images/cailiao/ks/"+data.oreImage,yangmao_icon);
+        cc.res.setSpriteFrame("images/cailiao/tz/"+data.chartImage,siliao_icon);
+
+        var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoyIcon"+data.newKnife+"_1");
+        yang_icon.getComponent(cc.Sprite).spriteFrame = sp;
 
         //是否已经解锁 0：未解锁 1:解锁 2：使用
         var buoy = storage.getBuoy(parseInt(data.newKnife));
@@ -429,6 +454,7 @@ cc.Class({
                 {
                     storage.setBuoy(parseInt(data.newKnife),1);
                     storage.uploadBuoy(parseInt(data.newKnife));
+                    this.openpeiyangsuc();
                 }
                 updateTime = 1;
                 this.buoyPeiyuState = 1;
@@ -470,6 +496,63 @@ cc.Class({
         }
     },
 
+    openpeiyangsuc: function(isSheep)
+    {
+        this.peiyangsuc.active = true;
+
+        var title = cc.find("title",this.peiyangsuc);
+        var icon = cc.find("icon",this.peiyangsuc);
+        var desc = cc.find("desc",this.peiyangsuc).getComponent(cc.Label);
+        var btn = cc.find("btn",this.peiyangsuc).getComponent(cc.Button);
+
+        var data = cc.res.conf_compose[this.index-1];
+        icon.stopAllActions();
+        if(isSheep)
+        {
+            cc.res.setSpriteFrame("images/lvup/peiyuchengg",title);
+            icon.scale = 0.8;
+            desc.string = "获得新羊";
+
+            var sheepConf = cc.config.sheepAnim[parseInt(data.newSheep)];
+            cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,icon);
+            icon.color = sheepConf.color;
+        }
+        else
+        {
+            cc.res.setSpriteFrame("images/lvup/yjchenggong",title);
+            icon.scale = 1;
+            desc.string = "获得新刀";
+
+            icon.color = cc.color(255,255,255);
+            var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoy"+data.newKnife+"_1");
+            icon.getComponent(cc.Sprite).spriteFrame = sp;
+            icon.runAction(cc.repeatForever(cc.rotateBy(1,360)));
+        }
+
+
+        this.useShare = false;
+        if(cc.GAME.share)
+        {
+            var rad = parseInt(cc.GAME.peiyusucAd);
+            if(Math.random()*100 < rad)
+            {
+                this.useShare = true;
+                btn.node.getChildByName("share").active = true;
+                btn.node.getChildByName("video").active = false;
+            }
+            else
+            {
+                btn.node.getChildByName("share").active = false;
+                btn.node.getChildByName("video").active = true;
+            }
+        }
+        else
+        {
+            btn.node.getChildByName("share").active = false;
+            btn.node.getChildByName("video").active = true;
+        }
+    },
+
     peiyu_sheep: function()
     {
         var self = this;
@@ -483,20 +566,23 @@ cc.Class({
             cc.sdk.showVedio(function(r){
                 if(r)
                 {
-                    storage.setPeiyuTime(1,parseInt(data.newSheep),new Date().getTime());
-                    storage.setSheep(parseInt(data.newSheep),1);
-                    storage.uploadSheep(parseInt(data.newSheep));
+                    storage.setPeiyuTime(1,parseInt(data.id),new Date().getTime());
+                    storage.setSheep(parseInt(data.id),1);
+                    storage.uploadSheep(parseInt(data.id));
                     self.sheepPeiyuState = 2;
+                    self.openpeiyangsuc(true);
                 }
             });
         }
         else if(this.sheepPeiyuState == 2)
         {
             var data = cc.res.conf_compose[this.index-1];
-            storage.setSheep(parseInt(data.newSheep),2);
-            storage.uploadSheep(parseInt(data.newSheep));
+            storage.setSheep(parseInt(data.id),2);
+            storage.uploadSheep(parseInt(data.id));
             this.updatePage2();
             this.sheepPeiyuState = 3;
+
+            this.game.boxs[this.index-1].sc.useNewSheep();
         }
     },
 
@@ -517,6 +603,7 @@ cc.Class({
                     storage.setBuoy(parseInt(data.newKnife),1);
                     storage.uploadBuoy(parseInt(data.newKnife));
                     self.buoyPeiyuState = 2;
+                    self.openpeiyangsuc();
                 }
             });
         }
@@ -527,6 +614,8 @@ cc.Class({
             storage.uploadBuoy(parseInt(data.newKnife));
             this.updatePage3();
             this.buoyPeiyuState = 3;
+
+            this.game.boxs[this.index-1].sc.useNewBuoy();
         }
     },
 
@@ -588,7 +677,20 @@ cc.Class({
 
     tanxian: function()
     {
-        cc.log("tanxian");
+        cc.res.openUI("tanxian");
+        this.hide();
+    },
+
+    lingqu: function(x2)
+    {
+        var award = 10;
+        if(x2) award *= 2;
+        this.game.addDiamond(award);
+
+        res.showToast("钻石+"+storage.castNum(award));
+        this.peiyangsuc.active = false;
+
+        //cc.res.showCoinAni();
     },
 
     show: function(index)
@@ -610,7 +712,11 @@ cc.Class({
                     self.game.updateYindao();
                 })
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
         //storage.playSound(res.audio_win);
     },
@@ -680,6 +786,32 @@ cc.Class({
         else if(data == "tanxian")
         {
             this.tanxian();
+        }
+        else if(data == "closepeiyangsuc")
+        {
+            this.lingqu();
+        }
+        else if(data == "lingqu")
+        {
+            var self = this;
+            if(this.useShare)
+            {
+                cc.sdk.share(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                },"lvup");
+            }
+            else
+            {
+                cc.sdk.showVedio(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                });
+            }
         }
         storage.playSound(res.audio_button);
         cc.log(data);

@@ -114,7 +114,7 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        //cc.sdk.showBanner();
 
     },
 
@@ -129,7 +129,7 @@ cc.Class({
                     self.node.destroy();
                 })
             ));
-        cc.sdk.hideBanner();
+        //cc.sdk.hideBanner();
     },
 
     click: function(event,data)

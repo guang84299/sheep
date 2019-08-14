@@ -17,9 +17,9 @@ cc.Class({
     {
         this.bg = cc.find("bg",this.node);
 
-        this.tili = cc.find("box/tili",this.bg).getComponent(cc.Label);
-        this.level = cc.find("box/level",this.bg).getComponent(cc.Label);
-        this.num = cc.find("box/num",this.bg).getComponent(cc.Label);
+        this.tili = cc.find("box/tililay/tili",this.bg).getComponent(cc.Label);
+        this.level = cc.find("box/levellay/level",this.bg).getComponent(cc.Label);
+        this.num = cc.find("box/numlay/num",this.bg).getComponent(cc.Label);
 
         var txTime = storage.getTxTime();
         if(txTime==0)
@@ -31,9 +31,9 @@ cc.Class({
 
     updateUI: function()
     {
-        this.tili.string = "初始体力：30";
-        this.level.string = "当前关卡："+storage.getTxLv();
-        this.num.string = "剩余次数"+storage.getTxNum()+"/5";
+        this.tili.string = "30";
+        this.level.string = storage.getTxLv();
+        this.num.string = storage.getTxNum()+"/5";
 
         var txTime = storage.getTxTime();
         if(txTime>0)
@@ -68,6 +68,8 @@ cc.Class({
             storage.uploadTxNum();
             res.openUI("tanxiangame");
             this.hide();
+
+            this.game.updateRed();
         }
         else
         {
@@ -89,9 +91,13 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
 
-        cc.log(jisuandata);
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
+
         if(jisuandata)
         {
             res.openUI("tanxianjiesuan",null,jisuandata);

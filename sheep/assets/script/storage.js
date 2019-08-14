@@ -618,16 +618,17 @@ module.exports = {
     addAddSpeedTask: function(task)
     {
         var tasks = this.getAddSpeedTask();
-        if(tasks.length == 0) this.setAddSpeedTime(new Date().getTime());
+        //if(tasks.length == 0) this.setAddSpeedTime(new Date().getTime());
         tasks.push(task);
         cc.sys.localStorage.setItem(this.pfix+"addspeed_task",JSON.stringify(tasks));
     },
 
-    removeAddSpeedTask: function()
+    removeAddSpeedTask: function(index)
     {
+        if(!index) index = 0;
         var tasks = this.getAddSpeedTask();
-        if(tasks.length>0) tasks.splice(0,1);
-        if(tasks.length > 0) this.setAddSpeedTime(new Date().getTime());
+        if(tasks.length>0) tasks.splice(index,1);
+        //if(tasks.length > 0) this.setAddSpeedTime(new Date().getTime());
         cc.sys.localStorage.setItem(this.pfix+"addspeed_task",JSON.stringify(tasks));
     },
 
@@ -641,16 +642,17 @@ module.exports = {
     addAddRateTask: function(task)
     {
         var tasks = this.getAddRateTask();
-        if(tasks.length == 0) this.setAddRateTime(new Date().getTime());
+        //if(tasks.length == 0) this.setAddRateTime(new Date().getTime());
         tasks.push(task);
         cc.sys.localStorage.setItem(this.pfix+"addrate_task",JSON.stringify(tasks));
     },
 
-    removeAddRateTask: function()
+    removeAddRateTask: function(index)
     {
+        if(!index) index = 0;
         var tasks = this.getAddRateTask();
-        if(tasks.length>0) tasks.splice(0,1);
-        if(tasks.length > 0) this.setAddRateTime(new Date().getTime());
+        if(tasks.length>0) tasks.splice(index,1);
+        //if(tasks.length > 0) this.setAddRateTime(new Date().getTime());
         cc.sys.localStorage.setItem(this.pfix+"addrate_task",JSON.stringify(tasks));
     },
 

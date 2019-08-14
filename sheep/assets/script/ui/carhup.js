@@ -16,7 +16,7 @@ cc.Class({
     initUI: function()
     {
         this.bg = cc.find("bg",this.node);
-        this.title = cc.find("title/num1",this.bg).getComponent(cc.Label);
+        this.title = cc.find("title/lvbox/num1",this.bg).getComponent(cc.Label);
         this.buoyIcon = cc.find("box/buoyIcon",this.bg);
         this.pro =  cc.find("box/pro",this.bg).getComponent(cc.ProgressBar);
         this.buoyDesc = cc.find("box/buoyDesc",this.bg).getComponent(cc.Label);
@@ -38,7 +38,7 @@ cc.Class({
     updateUI: function()
     {
         var lv = storage.getCarHLv();
-        this.title.string = lv;
+        this.title.string = "lv"+lv;
 
         var nexlLv = this.findNextBuoy(lv);
 
@@ -154,7 +154,11 @@ cc.Class({
                     self.game.updateYindao();
                 })
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
         //storage.playSound(res.audio_win);
     },

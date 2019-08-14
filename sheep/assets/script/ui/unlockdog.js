@@ -17,8 +17,8 @@ cc.Class({
     {
         this.bg = cc.find("bg",this.node);
 
-        this.coinicon = cc.find("box/coin",this.bg);
-        this.coinnum = cc.find("box/num",this.bg).getComponent(cc.Label);
+        this.coinicon = cc.find("btns/lingqu/lay/coin",this.bg);
+        this.coinnum = cc.find("btns/lingqu/lay/num",this.bg).getComponent(cc.Label);
         this.btn_lingqu = cc.find("btns/lingqu",this.bg).getComponent(cc.Button);
         this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg).getComponent(cc.Button);
 
@@ -31,25 +31,21 @@ cc.Class({
         this.isUseCoin = true;
         if(this.isUseCoin)
         {
-            this.coinicon.active = true;
-            this.coinnum.node.active = true;
-            this.btn_lingqu.active = true;
-            this.btn_lingqu2.active = false;
+            this.btn_lingqu.node.active = true;
+            this.btn_lingqu2.node.active = false;
 
             this.award = this.game.getSecVal()*60;
             this.coinnum.string = storage.castNum(this.award);
         }
         else
         {
-            this.coinicon.active = false;
-            this.coinnum.node.active = false;
-            this.btn_lingqu.active = false;
-            this.btn_lingqu2.active = true;
+            this.btn_lingqu.node.active = false;
+            this.btn_lingqu2.node.active = true;
 
             this.useShare = false;
             if(cc.GAME.share)
             {
-                var rad = parseInt(cc.GAME.freecoinAd);
+                var rad = parseInt(cc.GAME.unlockdogAd);
                 if(Math.random()*100 < rad)
                 {
                     this.useShare = true;
@@ -114,7 +110,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
     },
 
@@ -152,7 +152,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                },"qiandao");
+                },"unlockdog");
             }
             else
             {

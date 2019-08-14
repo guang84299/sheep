@@ -26,32 +26,35 @@ cc.Class({
     updateUI: function()
     {
         this.useShare = false;
-        if(cc.GAME.share)
-        {
-            var rad = parseInt(cc.GAME.skillAd);
-            if(Math.random()*100 < rad)
-            {
-                this.useShare = true;
-                this.btn_lingqu2.node.getChildByName("share").active = true;
-                this.btn_lingqu2.node.getChildByName("video").active = false;
-            }
-            else
-            {
-                this.btn_lingqu2.node.getChildByName("share").active = false;
-                this.btn_lingqu2.node.getChildByName("video").active = true;
-            }
-        }
-        else
-        {
-            this.btn_lingqu2.node.getChildByName("share").active = false;
-            this.btn_lingqu2.node.getChildByName("video").active = true;
-        }
-
+        //if(cc.GAME.share)
+        //{
+        //    var rad = parseInt(cc.GAME.skillAd);
+        //    if(Math.random()*100 < rad)
+        //    {
+        //        this.useShare = true;
+        //        this.btn_lingqu2.node.getChildByName("share").active = true;
+        //        this.btn_lingqu2.node.getChildByName("video").active = false;
+        //    }
+        //    else
+        //    {
+        //        this.btn_lingqu2.node.getChildByName("share").active = false;
+        //        this.btn_lingqu2.node.getChildByName("video").active = true;
+        //    }
+        //}
+        //else
+        //{
+        //    this.btn_lingqu2.node.getChildByName("share").active = false;
+        //    this.btn_lingqu2.node.getChildByName("video").active = true;
+        //}
+        this.btn_lingqu2.node.getChildByName("share").active = false;
+        this.btn_lingqu2.node.getChildByName("video").active = true;
     },
 
     lingqu: function(x2)
     {
-        var task = {reward:7,time:30.0/(60*60),tip:"30秒7倍收益"};
+        var time = 30.0/(60*60);
+        var to = new Date().getTime() + time*60*60*1000;
+        var task = {reward:7,time:time,tip:"30秒7倍收益",to:to};
         storage.addAddRateTask(task);
         this.game.initShouYi();
 
@@ -75,7 +78,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
     },
 
@@ -109,7 +116,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                },"qiandao");
+                },"skill");
             }
             else
             {

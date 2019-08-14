@@ -20,14 +20,34 @@ cc.Class({
 
         this.coin_val = cc.find("coin",this.bg).getComponent(cc.Label);
 
-        this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg);
+        this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg).getComponent(cc.Button);
     },
 
     updateUI: function()
     {
         this.coin_val.string = storage.castNum(this.award);
 
-        this.btn_lingqu2.active = cc.GAME.share;
+        this.useShare = false;
+        if(cc.GAME.share)
+        {
+            var rad = parseInt(cc.GAME.lixianAd);
+            if(Math.random()*100 < rad)
+            {
+                this.useShare = true;
+                this.btn_lingqu2.node.getChildByName("share").active = true;
+                this.btn_lingqu2.node.getChildByName("video").active = false;
+            }
+            else
+            {
+                this.btn_lingqu2.node.getChildByName("share").active = false;
+                this.btn_lingqu2.node.getChildByName("video").active = true;
+            }
+        }
+        else
+        {
+            this.btn_lingqu2.node.getChildByName("share").active = false;
+            this.btn_lingqu2.node.getChildByName("video").active = true;
+        }
     },
 
     lingqu: function(x2)
@@ -85,12 +105,24 @@ cc.Class({
         else if(data == "lingqu2")
         {
             var self = this;
-            cc.sdk.share(function(r){
-                if(r)
-                {
-                    self.lingqu(true);
-                }
-            },"lixian");
+            if(this.useShare)
+            {
+                cc.sdk.share(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                },"lixian");
+            }
+            else
+            {
+                cc.sdk.showVedio(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                });
+            }
 
         }
         storage.playSound(res.audio_button);

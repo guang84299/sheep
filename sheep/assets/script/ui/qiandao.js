@@ -87,7 +87,29 @@ cc.Class({
             this.btn_lingqu2.node.color = cc.color(180,180,180);
         }
 
-        this.btn_lingqu2.node.active = cc.GAME.share;
+        this.useShare = false;
+        if(cc.GAME.share)
+        {
+            var rad = parseInt(cc.GAME.qiandaoAd);
+            if(Math.random()*100 < rad)
+            {
+                this.useShare = true;
+                this.btn_lingqu2.node.getChildByName("share").active = true;
+                this.btn_lingqu2.node.getChildByName("video").active = false;
+            }
+            else
+            {
+                this.btn_lingqu2.node.getChildByName("share").active = false;
+                this.btn_lingqu2.node.getChildByName("video").active = true;
+            }
+        }
+        else
+        {
+            this.btn_lingqu2.node.getChildByName("share").active = false;
+            this.btn_lingqu2.node.getChildByName("video").active = true;
+        }
+
+        //this.btn_lingqu2.node.active = cc.GAME.share;
     },
 
     lingqu: function(x2)
@@ -120,7 +142,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
     },
 
@@ -152,12 +178,25 @@ cc.Class({
         else if(data == "lingqu2")
         {
             var self = this;
-            cc.sdk.share(function(r){
-                if(r)
-                {
-                    self.lingqu(true);
-                }
-            },"qiandao");
+            if(this.useShare)
+            {
+                cc.sdk.share(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                },"qiandao");
+            }
+            else
+            {
+                cc.sdk.showVedio(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                });
+            }
+
 
         }
         storage.playSound(res.audio_button);

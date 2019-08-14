@@ -17,9 +17,9 @@ cc.Class({
     {
         this.bg = cc.find("bg",this.node);
 
-        this.title = cc.find("title",this.bg).getComponent(cc.Label);
-        this.yang = cc.find("box/yang",this.bg).getComponent(cc.Label);
-        this.dao = cc.find("box/dao",this.bg).getComponent(cc.Label);
+        //this.title = cc.find("title",this.bg).getComponent(cc.Label);
+        //this.yang = cc.find("box/yang",this.bg).getComponent(cc.Label);
+        //this.dao = cc.find("box/dao",this.bg).getComponent(cc.Label);
         this.yangIcon = cc.find("box/yangIcon",this.bg);
         this.daoIcon = cc.find("box/daoIcon",this.bg);
         this.awards = cc.find("box/awards",this.bg).children;
@@ -31,9 +31,9 @@ cc.Class({
 
     updateUI: function()
     {
-        this.title.string = "恭喜解锁牧场"+this.index;
-        this.yang.string = "牧场"+this.index+"可培育新羊";
-        this.dao.string = "牧场"+this.index+"可研发新刀";
+        //this.title.string = "恭喜解锁牧场"+this.index;
+        //this.yang.string = "牧场"+this.index+"可培育新羊";
+        //this.dao.string = "牧场"+this.index+"可研发新刀";
 
         var data = cc.res.conf_compose[this.index-1];
         var sheepConf = cc.config.sheepAnim[parseInt(data.newSheep)];
@@ -54,24 +54,32 @@ cc.Class({
             if(num>0)
             {
                 item.active = true;
+                var icon = cc.find("icon",item);
                 var award = cc.find("award",item).getComponent(cc.Label);
-                award.string = "+"+num;
                 var cailiaoId = 0;
                 if(i==1)
                 {
+                    award.string = "新羊毛*"+num;
                     cailiaoId = parseInt(data.wool);
+                    cc.res.setSpriteFrame("images/main/car_mao"+(parseInt(data.woolImage)+1),icon);
                 }
                 else if(i==2)
                 {
+                    award.string = "新饲料*"+num;
                     cailiaoId = parseInt(data.feed);
+                    cc.res.setSpriteFrame("images/cailiao/sl/"+data.feedImage,icon);
                 }
                 else if(i==3)
                 {
+                    award.string = "新矿石*"+num;
                     cailiaoId = parseInt(data.ore);
+                    cc.res.setSpriteFrame("images/cailiao/ks/"+data.oreImage,icon);
                 }
                 else if(i==4)
                 {
+                    award.string = "新图纸*"+num;
                     cailiaoId = parseInt(data.chart);
+                    cc.res.setSpriteFrame("images/cailiao/tz/"+data.chartImage,icon);
                 }
 
                 if(i>0)
@@ -113,7 +121,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
     },
 

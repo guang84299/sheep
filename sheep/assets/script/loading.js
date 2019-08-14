@@ -86,24 +86,29 @@ cc.Class({
             "prefab/ui/coinAni",
             "prefab/ui/toast",
 
-            "prefab/ui/lvup",
-            "prefab/ui/lixian",
-            "prefab/ui/setting",
-            "prefab/ui/choujiang",
-            "prefab/ui/rank",
-            "prefab/ui/qiandao",
             "prefab/ui/carhup",
             "prefab/ui/carvup",
-            "prefab/ui/shouyi",
-            "prefab/ui/power",
-            "prefab/ui/yindao",
-            "prefab/ui/freecoin",
-            "prefab/ui/skill",
-            "prefab/ui/shouyifanbei",
-            "prefab/ui/shop",
-            "prefab/ui/unlockdog",
+            "prefab/ui/choujiang",
             "prefab/ui/dog",
+            "prefab/ui/freecoin",
+            "prefab/ui/lixian",
+            "prefab/ui/lvup",
+            "prefab/ui/power",
+            "prefab/ui/qiandao",
+            "prefab/ui/rank",
+            "prefab/ui/setting",
+            "prefab/ui/shop",
+            "prefab/ui/shouyi",
+            "prefab/ui/shouyifanbei",
+            "prefab/ui/skill",
             "prefab/ui/tanxian",
+            "prefab/ui/tanxiangame",
+            "prefab/ui/tanxianjiesuan",
+            "prefab/ui/tanxiantask",
+            "prefab/ui/unlockbox",
+            "prefab/ui/unlockdog",
+            "prefab/ui/yindao",
+
 
             "prefab/anim/coinani",
 
@@ -126,7 +131,7 @@ cc.Class({
             sdk.uploadScore(score,self.initNet.bind(self));
         });
         sdk.getUserInfo();
-        //sdk.videoLoad();
+        sdk.videoLoad();
         sdk.closeRank();
         sdk.keepScreenOn();
 
@@ -327,7 +332,7 @@ cc.Class({
                 var diamond = Number(datas.diamond);
                 var diamond2 = storage.getDiamond();
                 if(diamond2>diamond) diamond = diamond2;
-                storage.setDiamond(coin);
+                storage.setDiamond(diamond);
             }
 
             if(datas.hasOwnProperty("faccoin"))
@@ -357,6 +362,14 @@ cc.Class({
 
                 if(datas.hasOwnProperty("level_"+i+"_dog"))
                     storage.setLevelDog(i,Number(datas["level_"+i+"_dog"]));
+            }
+
+            for(var i=1;i<=30;i++)
+            {
+                if(datas.hasOwnProperty("sheep_"+i))
+                    storage.setSheep(i,Number(datas["sheep_"+i]));
+                if(datas.hasOwnProperty("buoy_"+i))
+                    storage.setBuoy(i,Number(datas["buoy_"+i]));
             }
 
             if(datas.hasOwnProperty("carv_lv"))

@@ -32,25 +32,45 @@ cc.Class({
         this.icon2_desc.string = "无";
         this.icon2_val.string = "0秒";
 
-        if(this.game.rateTask)
+        if(this.game.rateTask.length>0)
         {
             var now = new Date().getTime();
-            var time = this.game.rateTaskTime+this.game.rateTask.time*60*60*1000;
-            if(now<time)
+            if(this.game.rateTask.length>1)
             {
-                this.icon1_desc.string = this.game.rateTask.tip;
-                this.icon1_val.string = Math.floor((time-now)/1000)+"秒";
+                //找到时间最长的
+                var to = now;
+                for(var i=0;i<this.game.rateTask.length;i++)
+                {
+                    var task = this.game.rateTask[i];
+                    if(task.to>to)
+                    {
+                        to = task.to;
+                    }
+                }
+                this.icon1_desc.string = "当前收益"+this.game.shouYiRate+"倍";
+                this.icon1_val.string =  storage.getCountDown(now,to,3);
             }
+            else
+            {
+                var task = this.game.rateTask[0];
+                if(now<task.to)
+                {
+                    this.icon1_desc.string = task.tip;
+                    this.icon1_val.string =  storage.getCountDown(now,task.to,3);
+                }
+            }
+
         }
 
-        if(this.game.speedTask)
+        if(this.game.speedTask.length>0)
         {
             var now = new Date().getTime();
-            var time = this.game.speedTaskTime+this.game.speedTask.time*60*60*1000;
-            if(now<time)
+            var task = this.game.speedTask[0];
+            if(now<task.to)
             {
-                this.icon2_desc.string = this.game.speedTask.tip;
-                this.icon2_val.string =  Math.floor((time-now)/1000)+"秒";
+                this.icon2_desc.string = task.tip;
+
+                this.icon2_val.string = storage.getCountDown(now,task.to,3);
             }
         }
     },
@@ -70,7 +90,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
         this.upDt = 0;
         //storage.playSound(res.audio_win);

@@ -126,6 +126,8 @@ cc.Class({
         this.car2 = cc.find("car2",this.scrollContent).getComponent("car2");
 
         this.faccoin_label = cc.find("head/factory/coin",this.scrollContent).getComponent(cc.Label);
+        this.carvup_num = cc.find("head/carvup/num",this.scrollContent).getComponent(cc.Label);
+        this.carhup_num = cc.find("head/carhup/num",this.scrollContent).getComponent(cc.Label);
 
         this.scrollControlUp = cc.find("scrollControl/up",this.node_main);
         this.scrollControlDown = cc.find("scrollControl/down",this.node_main);
@@ -168,6 +170,8 @@ cc.Class({
         this.coin_label.string = storage.castNum(this.coin);
         this.diamond_label.string = storage.castNum(this.diamond);
         this.faccoin_label.string = storage.castNum(this.faccoin);
+        this.carvup_num.string = "lv"+storage.getCarVLv();
+        this.carhup_num.string = "lv"+storage.getCarHLv();
 
         var tlv = 0;
         var lock = storage.getLock();
@@ -256,7 +260,7 @@ cc.Class({
             if(rate)
             {
                 add *= rate;
-                str = "+"+storage.castNum(add) + "x" + rate;
+                str = "+"+storage.castNum(add);// + "x" + rate;
             }
 
             res.showCoin(str,this.coin_pos,this.node_main);
@@ -399,6 +403,10 @@ cc.Class({
                 {
                     cc.GAME.lixianswitch = con.value == 1 ? true : false;
                 }
+                else
+                {
+                    cc.GAME[con.id] = con.value;
+                }
             }
 
         }
@@ -458,12 +466,16 @@ cc.Class({
     {
         this.car.lvup();
         this.task.updateUI();
+
+        this.carvup_num.string = "lv"+storage.getCarVLv();
     },
 
     carhup: function()
     {
         this.car2.lvup();
         this.task.updateUI();
+
+        this.carhup_num.string = "lv"+storage.getCarHLv();
     },
 
     judgeUnLock: function(lv)
@@ -632,32 +644,37 @@ cc.Class({
 
             if(!ishave)
             {
-                var task = {reward:rate,time:time,tip:tips};
+                var to = new Date().getTime() + time*60*60*1000;
+                var task = {reward:rate,time:time,tip:tips,to:to};
                 storage.addAddRateTask(task);
             }
         }
 
-        var rateTasks = storage.getAddRateTask();
-        if(rateTasks.length>0)
-        {
-            this.rateTask = rateTasks[0];
-            this.rateTaskTime = storage.getAddRateTime();
-        }
-        else
-        {
-            this.rateTask = undefined;
-        }
+        this.shouYiRate = 1;
 
-        var speedTasks = storage.getAddSpeedTask();
-        if(speedTasks.length>0)
-        {
-            this.speedTask = speedTasks[0];
-            this.speedTaskTime = storage.getAddSpeedTime();
-        }
-        else
-        {
-            this.speedTask = undefined;
-        }
+        this.rateTask = storage.getAddRateTask();
+
+        //if(rateTasks.length>0)
+        //{
+        //    this.rateTask = rateTasks[0];
+        //    this.rateTaskTime = storage.getAddRateTime();
+        //}
+        //else
+        //{
+        //    this.rateTask = undefined;
+        //}
+
+        this.shouYiSpeed = 1;
+        this.speedTask = storage.getAddSpeedTask();
+        //if(speedTasks.length>0)
+        //{
+        //    this.speedTask = speedTasks[0];
+        //    this.speedTaskTime = storage.getAddSpeedTime();
+        //}
+        //else
+        //{
+        //    this.speedTask = undefined;
+        //}
     },
 
     updateShouYi: function(dt)
@@ -667,38 +684,71 @@ cc.Class({
         {
             this.shouyiDt = 0;
 
-            if(this.rateTask)
+            var rate = 1;
+            if(this.rateTask && this.rateTask.length>0)
             {
                 var now = new Date().getTime();
-                var time = this.rateTaskTime+this.rateTask.time*60*60*1000;
-                if(now<time)
+                for(var i=0;i<this.rateTask.length;i++)
                 {
-                    this.shouYiRate = this.rateTask.reward;
+                    var task = this.rateTask[i];
+                    if(task.to>now)
+                    {
+                        rate += task.reward;
+                    }
+                    else
+                    {
+                        storage.removeAddRateTask(i);
+                        this.initShouYi();
+                        break;
+                    }
                 }
-                else
-                {
-                    this.shouYiRate = undefined;
-                    storage.removeAddRateTask();
-                    this.initShouYi();
-                }
+                if(rate>1) rate -= 1;
+                //var time = this.rateTaskTime+this.rateTask.time*60*60*1000;
+                //if(now<time)
+                //{
+                //    this.shouYiRate = this.rateTask.reward;
+                //}
+                //else
+                //{
+                //    this.shouYiRate = undefined;
+                //    storage.removeAddRateTask();
+                //    this.initShouYi();
+                //}
             }
+            this.shouYiRate = rate;
 
-            if(this.speedTask)
+            var speed = 1;
+            if(this.speedTask && this.speedTask.length>0)
             {
                 var now = new Date().getTime();
-                var time = this.speedTaskTime+this.speedTask.time*60*60*1000;
-                if(now<time)
+                for(var i=0;i<this.speedTask.length;i++)
                 {
-                    this.shouYiSpeed = this.speedTask.reward;
+                    var task = this.speedTask[i];
+                    if(task.to>now)
+                    {
+                        speed += task.reward;
+                    }
+                    else
+                    {
+                        storage.removeAddSpeedTask(i);
+                        this.initShouYi();
+                        break;
+                    }
                 }
-                else
-                {
-                    this.shouYiSpeed = undefined;
-                    storage.removeAddSpeedTask();
-                    this.initShouYi();
-                }
+                if(speed>1) speed -= 1;
+                //var time = this.speedTaskTime+this.speedTask.time*60*60*1000;
+                //if(now<time)
+                //{
+                //    this.shouYiSpeed = this.speedTask.reward;
+                //}
+                //else
+                //{
+                //    this.shouYiSpeed = undefined;
+                //    storage.removeAddSpeedTask();
+                //    this.initShouYi();
+                //}
             }
-
+            this.shouYiSpeed = speed;
         }
     },
 
@@ -769,10 +819,33 @@ cc.Class({
         if(loginDay>qiandaoNum && qiandaoNum<7)
             showQiandao = true;
 
+        //探险
+        var showTanxian = false;
+        if(storage.getTxNum()>0)
+        {
+            showTanxian = true;
+        }
+        else
+        {
+            var txTime = storage.getTxTime();
+            var now = new Date().getTime();
+            if(txTime>0 && now>=txTime)
+            {
+                showTanxian = true;
+            }
+        }
+
+        //商店
+        var showShop = false;
+        var freeDiaNum = storage.getFreeDiaNum();
+        if(freeDiaNum == 1) showShop = true;
+
 
         cc.find("top/buttons/rank/red",this.node_main).active = showRank;
         cc.find("top/buttons/zhuanpan/red",this.node_main).active = showChoujiang;
         cc.find("top/buttons/qiandao/red",this.node_main).active = showQiandao;
+        cc.find("top/buttons/tanxian/red",this.node_main).active = showTanxian;
+        cc.find("top/buttons/shop/red",this.node_main).active = showShop;
     },
 
     updateYindao: function()

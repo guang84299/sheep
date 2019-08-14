@@ -127,7 +127,7 @@ module.exports = {
         var self = this;
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
-            this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'adunit-f6ce7bed6d31d3b1'});
+            this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'adunit-f3f018f8225dd66b'});
             this.rewardedVideoAd.onLoad(function(){
                 console.log('激励视频 广告加载成功')
             });
@@ -158,7 +158,7 @@ module.exports = {
     {
         var self = this;
         this.videocallback = callback;
-        if(cc.sys.os == cc.sys.OS_ANDROID && cc.sys.os == cc.sys.OS_IOS)
+        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
             this.rewardedVideoAd.show().catch(function(err){
                 self.rewardedVideoAd.load().then(function(){
@@ -185,14 +185,14 @@ module.exports = {
     showBanner: function(node,callback,isHide)
     {
         this.hideBanner();
-        if(cc.sys.os == cc.sys.OS_ANDROID && cc.sys.os == cc.sys.OS_IOS)
+        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
             //var dpi = cc.view.getDevicePixelRatio();
             var s = cc.view.getFrameSize();
             var dpi = cc.winSize.width/s.width;
 
             this.bannerAd = wx.createBannerAd({
-                adUnitId: 'adunit-88c8808e01d07b2a',
+                adUnitId: 'adunit-227021c411ca786f',
                 style: {
                     left: 0,
                     top: s.height/dpi-300/3.5,
@@ -209,7 +209,7 @@ module.exports = {
                     node.runAction(cc.sequence(
                         cc.delayTime(0.4),
                         cc.callFunc(function(){
-                            var y = node.parent.convertToWorldSpace(node.position).y;
+                            var y = node.parent.convertToWorldSpaceAR(node.position).y-(node.height*node.anchorY);
                             var dis = y - res.height*dpi;
                             //console.log(dis,y,res.height,dpi,node.y,node.height,cc.winSize.height/2);
                             callback(dis);
@@ -239,7 +239,7 @@ module.exports = {
 
     getBannerDis: function(node)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID && cc.sys.os == cc.sys.OS_IOS)
+        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
             if(this.bannerAd && node)
             {

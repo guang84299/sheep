@@ -30,8 +30,19 @@ cc.Class({
         //cc.res.setSpriteFrame("images/buoy/buoy"+this.box.knifeType+"_"+type,this.node);
         this.node.getComponent(cc.Sprite).spriteFrame = sp;
         this.conf = this.box.conf;
-        this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
-        this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
+
+        if(this.box.dog == 1)
+        {
+            this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
+            this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
+        }
+        else
+        {
+            this.rotateSpeed = cc.config.buoyRotateSpeed*0.1;
+            this.moveSpeed = cc.config.buoyMoveSpeed*0.1;
+        }
+
+        this.touchTime = 0;
     },
 
 
@@ -109,6 +120,29 @@ cc.Class({
         this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
     },
 
+    touchBox: function()
+    {
+        if(this.box.dog != 1)
+        {
+            this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
+            this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
+
+            this.touchTime = 1;
+        }
+    },
+
+    updateSpeed: function()
+    {
+        this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
+        this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
+    },
+
+    updateAniconfig: function()
+    {
+        var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoy"+this.box.knifeType+"_"+this.type);
+        this.node.getComponent(cc.Sprite).spriteFrame = sp;
+    },
+
     update: function(dt)
     {
         this.updateDt += dt;
@@ -127,6 +161,17 @@ cc.Class({
                         this.changeDir(buoy.position);
                         break;
                     }
+                }
+            }
+
+            if(this.touchTime>0)
+            {
+                this.touchTime -= dt;
+                if(this.touchTime<=0)
+                {
+                    this.touchTime = 0;
+                    this.rotateSpeed = cc.config.buoyRotateSpeed*0.1;
+                    this.moveSpeed = cc.config.buoyMoveSpeed*0.1;
                 }
             }
 

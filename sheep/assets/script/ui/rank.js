@@ -217,7 +217,11 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
 
-
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
         cc.qianqista.event("排行_打开");
 
     },
@@ -274,8 +278,14 @@ cc.Class({
 
         storage.setYesRankTime(new Date().getTime());
 
-        var task1 = {reward:parseInt(data.reward2),time:parseFloat(data.time1),tip:data.title2};
-        var task2 = {reward:parseFloat(data.reward3),time:parseFloat(data.time2),tip:data.title3};
+        var time1 = parseFloat(data.time1);
+        var to1 = new Date().getTime() + time1*60*60*1000;
+
+        var time2 = parseFloat(data.time2);
+        var to2 = new Date().getTime() + time2*60*60*1000;
+
+        var task1 = {reward:parseInt(data.reward2),time:time1,tip:data.title2,to:to1};
+        var task2 = {reward:parseFloat(data.reward3),time:time2,tip:data.title3,to:to2};
         storage.addAddRateTask(task1);
         storage.addAddSpeedTask(task2);
 

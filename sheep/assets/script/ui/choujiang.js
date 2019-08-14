@@ -153,7 +153,11 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
 
-
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
 
         cc.qianqista.event("抽奖_打开");
 
@@ -270,6 +274,7 @@ cc.Class({
             if(cc.GAME.share)
             self.btn_vedio_lingqu.node.active = true;
             self.btn_lingqu.node.active = true;
+            self.updateAdType();
             self.updateUI(true);
         });
 
@@ -301,7 +306,9 @@ cc.Class({
         }
         else if(awardData.rewardType == "1")
         {
-            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time),tip:awardData.tips};
+            var time = parseFloat(awardData.time);
+            var to = new Date().getTime() + time*60*60*1000;
+            var task = {reward:parseInt(awardData.rate),time:time,tip:awardData.tips,to:to};
             storage.addAddSpeedTask(task);
             this.game.initShouYi();
 
@@ -309,7 +316,9 @@ cc.Class({
         }
         else if(awardData.rewardType == "2")
         {
-            var task = {reward:parseInt(awardData.rate),time:parseFloat(awardData.time),tip:awardData.tips};
+            var time = parseFloat(awardData.time);
+            var to = new Date().getTime() + time*60*60*1000;
+            var task = {reward:parseInt(awardData.rate),time:time,tip:awardData.tips,to:to};
             storage.addAddRateTask(task);
             this.game.initShouYi();
 
@@ -320,6 +329,31 @@ cc.Class({
         this.btn_vedio_lingqu.node.active = false;
         this.btn_lingqu.node.active = false;
         this.updateUI();
+    },
+
+    updateAdType: function()
+    {
+        this.useShare = false;
+        if(cc.GAME.share)
+        {
+            var rad = parseInt(cc.GAME.choujiangAd);
+            if(Math.random()*100 < rad)
+            {
+                this.useShare = true;
+                this.btn_vedio_lingqu.node.getChildByName("share").active = true;
+                this.btn_vedio_lingqu.node.getChildByName("video").active = false;
+            }
+            else
+            {
+                this.btn_vedio_lingqu.node.getChildByName("share").active = false;
+                this.btn_vedio_lingqu.node.getChildByName("video").active = true;
+            }
+        }
+        else
+        {
+            this.btn_vedio_lingqu.node.getChildByName("share").active = false;
+            this.btn_vedio_lingqu.node.getChildByName("video").active = true;
+        }
     },
 
     click: function(event,data)
@@ -341,12 +375,24 @@ cc.Class({
         else if(data == "vedio_lingqu")
         {
             var self = this;
-            sdk.share(function(r){
-                if(r)
-                {
-                    self.lingqu(true);
-                }
-            },"choujiang");
+            if(this.useShare)
+            {
+                cc.sdk.share(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                },"choujiang");
+            }
+            else
+            {
+                cc.sdk.showVedio(function(r){
+                    if(r)
+                    {
+                        self.lingqu(true);
+                    }
+                });
+            }
             cc.qianqista.event("抽奖_2倍领取");
         }
 

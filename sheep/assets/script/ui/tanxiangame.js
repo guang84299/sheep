@@ -50,7 +50,7 @@ cc.Class({
         {
             var data = cc.res.conf_compose[i];
             //是否已经解锁 0：未解锁 1:解锁 2：使用
-            var sheep = storage.getSheep(parseInt(data.newSheep));
+            var sheep = storage.getSheep(parseInt(data.id));
             if(sheep == 0)
             {
                 var wool = storage.getCailiao(1,parseInt(data.wool));
@@ -59,13 +59,13 @@ cc.Class({
                 var chart = storage.getCailiao(4,parseInt(data.chart));
 
                 if(wool<parseInt(data.woolCost))
-                    cls.push({type:1,id:parseInt(data.wool)});
+                    cls.push({type:1,id:parseInt(data.wool),img:data.woolImage});
                 if(feed<parseInt(data.feedCost))
-                    cls.push({type:2,id:parseInt(data.feed)});
+                    cls.push({type:2,id:parseInt(data.feed),img:data.feedImage});
                 if(ore<parseInt(data.oreCost))
-                    cls.push({type:3,id:parseInt(data.ore)});
+                    cls.push({type:3,id:parseInt(data.ore),img:data.oreImage});
                 if(chart<parseInt(data.chartCost))
-                    cls.push({type:4,id:parseInt(data.chart)});
+                    cls.push({type:4,id:parseInt(data.chart),img:data.chartImage});
 
                 if(cls.length>0) break;
             }
@@ -74,7 +74,7 @@ cc.Class({
 
         for(var i=0;i<cls.length;i++)
         {
-            this.cailiaos.push({tid:-1,type:cls[i].type+4,id:cls[i].id});
+            this.cailiaos.push({tid:-1,type:cls[i].type+4,id:cls[i].id,img:cls[i].img});
         }
         //填充获得的材料
         for(var i=this.cailiaos.length;i<num;i++)
@@ -85,7 +85,7 @@ cc.Class({
                 if(cls.length>0)
                 {
                     var cl = cls[Math.floor(Math.random()*cls.length)];
-                    this.cailiaos.push({tid:-1,type:cl.type+4,id:cl.id});
+                    this.cailiaos.push({tid:-1,type:cl.type+4,id:cl.id,img:cl.img});
                 }
             }
             else if(type == 1)
@@ -168,7 +168,7 @@ cc.Class({
                 {
                     var item = this.box.children[i-1];
                     item.pstate = 3;//1: 可点 2：已点 3：不可点
-                    item.color = cc.color(120,120,120);
+                    res.setSpriteFrame("images/tanxian/box1",item);
                 }
             }
         }
@@ -180,7 +180,7 @@ cc.Class({
             this.updateUI();
 
             item.pstate = 2;//1: 可点 2：已点 3：不可点
-            item.color = cc.color(0,0,255);
+            res.setSpriteFrame("images/tanxian/box3",item);
 
             //材料
             var cailiao = null;
@@ -196,7 +196,7 @@ cc.Class({
             //todo 设置材料图标 并获取材料
             if(cailiao)
             {
-                item.icon.active = true;
+
                 if(cailiao.type == 3)
                 {
                     this.tili += 5;
@@ -210,12 +210,42 @@ cc.Class({
                     res.showToast("体力-10");
                 }
                 else
-                this.awards.push(cailiao);
+                {
+                    item.icon.active = true;
+                    this.awards.push(cailiao);
+                    if(cailiao.type == 1)
+                    {
+                        res.setSpriteFrame("images/common/coin",item.icon);
+                    }
+                    else if(cailiao.type == 2)
+                    {
+                        res.setSpriteFrame("images/common/diamond",item.icon);
+                    }
+                    else if(cailiao.type == 5)
+                    {
+                        res.setSpriteFrame("images/main/car_mao"+(parseInt(cailiao.img)+1),item.icon);
+                    }
+                    else if(cailiao.type == 6)
+                    {
+                        res.setSpriteFrame("images/cailiao/sl/"+cailiao.img,item.icon);
+                    }
+                    else if(cailiao.type == 7)
+                    {
+                        res.setSpriteFrame("images/cailiao/ks/"+cailiao.img,item.icon);
+                    }
+                    else if(cailiao.type == 8)
+                    {
+                        res.setSpriteFrame("images/cailiao/tz/"+cailiao.img,item.icon);
+                    }
+                }
+
             }
 
             //如果是出口
             if(tid == this.nextLvTid)
             {
+                item.icon.active = true;
+                res.setSpriteFrame("images/tanxian/xycrk",item.icon);
                 this.nextLevel();
                 return;
             }
@@ -228,7 +258,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    item2.color = cc.color(0,255,0);
+                    res.setSpriteFrame("images/tanxian/box2",item2);
                 }
             }
 
@@ -238,7 +268,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    item2.color = cc.color(0,255,0);
+                    res.setSpriteFrame("images/tanxian/box2",item2);
                 }
             }
 
@@ -248,7 +278,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    item2.color = cc.color(0,255,0);
+                    res.setSpriteFrame("images/tanxian/box2",item2);
                 }
             }
 
@@ -258,7 +288,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    item2.color = cc.color(0,255,0);
+                    res.setSpriteFrame("images/tanxian/box2",item2);
                 }
             }
         }
@@ -304,8 +334,11 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
-
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
     },
 
     hide: function()

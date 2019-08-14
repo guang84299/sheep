@@ -25,9 +25,17 @@ cc.Class({
         this.lv = cc.storage.getLevel(index);
         this.coin = cc.storage.getLevelCoin(index);
         this.dog = cc.storage.getLevelDog(index);
+        this.compose = cc.res.conf_compose[index-1];
+        this.isUnLockSheep = cc.storage.getSheep(parseInt(this.compose.id));
+        this.isUnLockBuoy = cc.storage.getBuoy(parseInt(this.compose.newKnife));
         this.conf = cc.res.conf_base[this.lv-1];
-        this.pice = cc.res.conf_price[this.lv-1]["price"+index];
-        this.knifeType = cc.res.conf_grade[index-1].knifeType;
+        this.pice = cc.res.conf_price[this.lv-1]["price"+1];
+        if(this.isUnLockSheep == 2)
+            this.pice = cc.res.conf_price[this.lv-1]["price"+index];
+        this.knifeType = cc.res.conf_grade[1-1].knifeType;
+        if(this.isUnLockBuoy == 2)
+            this.knifeType = cc.res.conf_grade[index-1].knifeType;
+
         this.type = parseInt(cc.res.conf_ranch[index-1].type);
         var nextIndex = index;
         if(nextIndex>=cc.res.conf_ranch.length)
@@ -80,7 +88,7 @@ cc.Class({
 
     updateUI: function()
     {
-        this.lv_label.string = "LV."+this.lv;
+        this.lv_label.string = "lv"+this.lv;
         this.index_label.string = this.index;
     },
 
@@ -121,8 +129,8 @@ cc.Class({
 
             this.buoys.push(buoy);
 
-            if(this.dog != 1)
-                buoy.active = false;
+            //if(this.dog != 1)
+            //    buoy.active = false;
         }
 
         cc.find("node_mao",this.node).active = true;
@@ -187,8 +195,8 @@ cc.Class({
 
             this.buoys.push(buoy);
 
-            if(this.dog != 1)
-                buoy.active = false;
+            //if(this.dog != 1)
+            //    buoy.active = false;
         }
 
         for(var i=0;i<this.sheeps.length;i++)
@@ -352,10 +360,20 @@ cc.Class({
     {
         if(this.isUpdate && this.isUnLock)
         {
-            for(var i=0;i<this.sheeps.length;i++)
+            var pos2 = this.node.parent.convertToWorldSpaceAR(this.node.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            pos2.y -= this.node.height/2;
+            if(pos2.sub(pos).mag()<this.node.height/2)
             {
-                this.sheeps[i].sc.touchBox(pos);
+                for(var i=0;i<this.buoys.length;i++)
+                {
+                    this.buoys[i].sc.touchBox();
+                }
             }
+            //cc.log(pos2.sub(pos).mag());
+            //for(var i=0;i<this.sheeps.length;i++)
+            //{
+            //    this.sheeps[i].sc.touchBox(pos);
+            //}
         }
     },
 
@@ -416,7 +434,7 @@ cc.Class({
 
         for(var i=0;i<this.buoys.length;i++)
         {
-            this.buoys[i].active = true;
+            this.buoys[i].sc.updateSpeed();
         }
     },
 
@@ -438,6 +456,30 @@ cc.Class({
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+i,this.dog_dog);
     },
 
+    useNewSheep: function()
+    {
+        this.isUnLockSheep = cc.storage.getSheep(parseInt(this.compose.id));
+        this.pice = cc.res.conf_price[this.lv-1]["price"+1];
+        if(this.isUnLockSheep == 2)
+            this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
+        for(var i=0;i<this.sheeps.length;i++)
+        {
+            this.sheeps[i].sc.updateAniconfig();
+        }
+    },
+
+    useNewBuoy: function()
+    {
+        this.isUnLockBuoy = cc.storage.getBuoy(parseInt(this.compose.newKnife));
+        this.knifeType = cc.res.conf_grade[1-1].knifeType;
+        if(this.isUnLockBuoy == 2)
+            this.knifeType = cc.res.conf_grade[this.index-1].knifeType;
+        for(var i=0;i<this.buoys.length;i++)
+        {
+            this.buoys[i].sc.updateAniconfig();
+        }
+    },
+
     click: function(event,data)
     {
         if(data == "up")
@@ -450,7 +492,8 @@ cc.Class({
         }
         else if(data == "unlockdog")
         {
-            cc.res.openUI("unlockdog",null,this.index);
+            if(this.dog == 0)
+                cc.res.openUI("unlockdog",null,this.index);
         }
         else if(data == "dog")
         {

@@ -17,6 +17,7 @@ cc.Class({
     {
         this.mask = cc.find("mask",this.node);
         this.hand = cc.find("hand",this.node);
+        this.game = cc.find("Canvas").getComponent("main");
 
         this.hand.runAction(cc.repeatForever(cc.sequence(
             cc.scaleTo(0.5,0.3).easing(cc.easeSineIn()),
@@ -27,116 +28,85 @@ cc.Class({
 
     updateYindao: function()
     {
+        this.node.opacity = 0;
         this.scheduleOnce(this.updateUI.bind(this),0.1);
     },
 
     updateUI: function()
     {
+        this.node.opacity = 255;
+        var box = null;
+        var pos = null;
         if(this.game.yindao == 1)
         {
-            var box = this.game.boxs[0].getChildByName("box");
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            box = this.game.boxs[0].getChildByName("box").getChildByName("border");
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
             pos.y -= box.height/2;
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
         }
         else if(this.game.yindao == 2 || this.game.yindao == 6 || this.game.yindao == 10)
         {
-            var box = this.game.task.node;
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            box = this.game.task.node;
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
             pos.x += box.width/2;
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
         }
         else if(this.game.yindao == 3)
         {
-            var box = cc.find("head/carvup",this.game.scrollContent);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("head/carvup",this.game.scrollContent);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 4)
         {
-            var box = cc.find("ui_carvup/bg/box/up1",this.game.node);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("ui_carvup/bg/box/up1",this.game.node);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 5)
         {
-            var box = cc.find("ui_carvup/bg/close",this.game.node);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("ui_carvup/bg/close",this.game.node);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 7)
         {
-            var box = cc.find("head/carhup",this.game.scrollContent);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("head/carhup",this.game.scrollContent);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 8)
         {
-            var box = cc.find("ui_carhup/bg/box/up1",this.game.node);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("ui_carhup/bg/box/up1",this.game.node);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 9)
         {
-            var box = cc.find("ui_carhup/bg/close",this.game.node);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("ui_carhup/bg/close",this.game.node);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 11)
         {
-            var box = this.game.boxs[0].getChildByName("box_lvup");
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = this.game.boxs[0].getChildByName("box_lvup");
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 12)
         {
-            var box = cc.find("ui_lvup/bg/box/up1",this.game.node);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("ui_lvup/bg/box/up1",this.game.node);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 13)
         {
-            var box = cc.find("ui_lvup/bg/close",this.game.node);
-            var pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            this.mask.setContentSize(box.getContentSize());
-            this.mask.position = pos;
-            this.hand.position = pos;
-            this.hand.y -= 50;
+            box = cc.find("ui_lvup/bg/close",this.game.node);
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 14)
         {
             this.hide();
         }
+        if(box)
+        {
+            this.mask.setContentSize(box.getContentSize());
+            this.mask.getComponent(cc.Mask).spriteFrame = box.getComponent(cc.Sprite).spriteFrame;
+            this.mask.position = pos;
+            this.hand.position = pos;
+            this.hand.y -= 50;
+        }
+
     },
 
 

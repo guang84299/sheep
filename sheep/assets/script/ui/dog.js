@@ -24,13 +24,13 @@ cc.Class({
 
         this.card1_btn1 = cc.find("card1/btn1",this.page1).getComponent(cc.Button);
         this.card1_btn2 = cc.find("card1/btn2",this.page1).getComponent(cc.Button);
-        this.card1_btn1_desc = cc.find("card1/btn1/desc",this.page1).getComponent(cc.Label);
-        this.card1_btn2_desc = cc.find("card1/btn2/desc",this.page1).getComponent(cc.Label);
+        this.card1_btn1_desc = cc.find("card1/btn1/lay/desc",this.page1).getComponent(cc.Label);
+        this.card1_btn2_desc = cc.find("card1/btn2/lay/desc",this.page1).getComponent(cc.Label);
 
         this.card2_btn1 = cc.find("card2/btn1",this.page1).getComponent(cc.Button);
         this.card2_btn2 = cc.find("card2/btn2",this.page1).getComponent(cc.Button);
-        this.card2_btn1_desc = cc.find("card2/btn1/desc",this.page1).getComponent(cc.Label);
-        this.card2_btn2_desc = cc.find("card2/btn2/desc",this.page1).getComponent(cc.Label);
+        this.card2_btn1_desc = cc.find("card2/btn1/lay/desc",this.page1).getComponent(cc.Label);
+        this.card2_btn2_desc = cc.find("card2/video/desc",this.page1).getComponent(cc.Label);
 
         this.cards = [];
         for(var i=1;i<=5;i++)
@@ -39,7 +39,8 @@ cc.Class({
             card.tid = i;
             this.cards.push(card);
         }
-        this.selbox = cc.find("selbox",this.page2);
+        this.selbox = cc.find("selbox",this.node);
+        this.selbox.active = false;
         this.selCardIndex = 0;
 
         this.cardColors = [
@@ -73,10 +74,10 @@ cc.Class({
         this.cost1 = val*10;
         this.cost2 = val*80;
         this.cost3 = 100;
-        this.card1_btn1_desc.string = storage.castNum(this.cost1)+"金币购买1次";
-        this.card1_btn2_desc.string = storage.castNum(this.cost2)+"金币购买10次";
-        this.card2_btn1_desc.string = storage.castNum(this.cost3)+"钻石购买1次";
-        this.card2_btn2_desc.string = "观看"+storage.getDogCardAdNum(4)+"/3次视频\r\n免费购买9次";
+        this.card1_btn1_desc.string = storage.castNum(this.cost1);
+        this.card1_btn2_desc.string = storage.castNum(this.cost2);
+        this.card2_btn1_desc.string = storage.castNum(this.cost3);
+        this.card2_btn2_desc.string = storage.getDogCardAdNum(4)+"/3";
 
         var time1 = storage.getDogCardTime(1);
         this.card1_btn1_desc.time = time1;
@@ -173,9 +174,9 @@ cc.Class({
         for(var i=0;i<this.cards.length;i++)
         {
             var card = this.cards[i];
-            var desc = cc.find("desc",card).getComponent(cc.Label);
             var lv = cc.find("lv",card).getComponent(cc.Label);
-            var pro = cc.find("pro",card).getComponent(cc.Label);
+            var pro = cc.find("pro",card).getComponent(cc.ProgressBar);
+            var pro_num = cc.find("pro/num",card).getComponent(cc.Label);
 
             var sel = cc.find("sel",card);
             var mask = cc.find("mask",card);
@@ -184,7 +185,6 @@ cc.Class({
 
 
             var data = cc.res.conf_cardText[i];
-            desc.string = data.character;
 
             var cardLv = storage.getDogCardLv(i+1);
             var carNum = storage.getDogCardNum(i+1);
@@ -192,14 +192,15 @@ cc.Class({
 
             if(cardLv>=cc.res.conf_cardGrade.length)
             {
-                lv.string = "满级";
-                pro.node.active = false;
+                lv.string =  "lv"+cardLv;//"满级";
+                pro_num.node.active = false;
             }
             else
             {
-                lv.string = "等级"+cardLv;
+                lv.string = "lv"+cardLv;
                 var dataGrade = cc.res.conf_cardGrade[cardLv];
-                pro.string = carNum+"/"+dataGrade["card"+(i+1)];
+                pro_num.string = carNum+"/"+dataGrade["card"+(i+1)];
+                pro.progress = carNum/parseFloat(dataGrade["card"+(i+1)]);
             }
 
             if(cardLv>0)
@@ -222,30 +223,44 @@ cc.Class({
             }
         }
 
-        var rate = cc.find("rate",this.selbox).getComponent(cc.Label);
-        var name = cc.find("name",this.selbox).getComponent(cc.Label);
-        var desc = cc.find("desc",this.selbox).getComponent(cc.Label);
-        var grade = cc.find("grade",this.selbox).getComponent(cc.Label);
-        var base = cc.find("base",this.selbox).getComponent(cc.Label);
-        var up = cc.find("up",this.selbox).getComponent(cc.Label);
-        var ratio = cc.find("ratio",this.selbox).getComponent(cc.Label);
 
-        var use = cc.find("use",this.selbox).getComponent(cc.Button);
-        var use_str = cc.find("use/str",this.selbox).getComponent(cc.Label);
+    },
+
+    openSelBox: function()
+    {
+        this.selbox.active = true;
+
+        var rate = cc.find("box/rate",this.selbox).getComponent(cc.Label);
+        var name = cc.find("box/name",this.selbox).getComponent(cc.Label);
+        var desc = cc.find("box/desc",this.selbox).getComponent(cc.Label);
+        var grade = cc.find("box/grade",this.selbox).getComponent(cc.Label);
+        var base = cc.find("box/base",this.selbox).getComponent(cc.Label);
+        var up = cc.find("box/up",this.selbox).getComponent(cc.Label);
+
+        var use = cc.find("box/use",this.selbox).getComponent(cc.Button);
+        var use_str = cc.find("box/use/str",this.selbox).getComponent(cc.Label);
+
+        var lv = cc.find("box/card/lv",this.selbox).getComponent(cc.Label);
+        var pro = cc.find("box/card/pro",this.selbox).getComponent(cc.ProgressBar);
+        var pro_num = cc.find("box/card/pro/num",this.selbox).getComponent(cc.Label);
 
         var seldata = cc.res.conf_cardText[this.selCardIndex];
         var cardLv = storage.getDogCardLv(this.selCardIndex+1);
+        var dataGrade = cc.res.conf_cardGrade[cardLv];
+        var carNum = storage.getDogCardNum(this.selCardIndex+1);
 
-        rate.string = "牧场收益加成X"+(Number(seldata.base)+Number(seldata.ratio)*cardLv).toFixed(2);
-        name.string = "姓名："+seldata.name;
-        desc.string = "性格："+seldata.tips;
-        grade.string = "品级："+seldata.character;
-        base.string = "基础收益加成："+seldata.base+"倍";
-        up.string = "收益加成上限："+seldata.top+"倍";
-        ratio.string = "成长系数："+seldata.ratio;
+        rate.string = "X"+(Number(seldata.base)+Number(seldata.ratio)*cardLv).toFixed(2);
+        name.string = seldata.name;
+        desc.string = seldata.tips;
+        grade.string = seldata.character;
+        base.string = seldata.base+"倍";
+        up.string = "（上限"+seldata.top+"倍）";
 
-        grade.node.color = this.cardColors[this.selCardIndex];
-        ratio.node.color = this.cardColors[this.selCardIndex];
+        lv.string = "lv"+cardLv;
+        pro_num.string = carNum+"/"+dataGrade["card"+(this.selCardIndex+1)];
+        pro.progress = carNum/parseFloat(dataGrade["card"+(this.selCardIndex+1)]);
+
+        //grade.node.color = this.cardColors[this.selCardIndex];
 
         var cardId = storage.getDogCard();
         if(this.selCardIndex+1 == cardId)
@@ -276,8 +291,12 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
 
-
-        cc.qianqista.event("商店_打开");
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
+        cc.qianqista.event("牧羊犬_打开");
 
     },
 
@@ -343,10 +362,9 @@ cc.Class({
             var card = cc.find("card",singlecard);
             var box = cc.find("box",singlecard);
 
-            var card_desc = cc.find("desc",card).getComponent(cc.Label);
+            var card_desc = cc.find("desc",card);
 
-            var title = cc.find("title",box).getComponent(cc.Label);
-            var desc = cc.find("desc",box).getComponent(cc.Label);
+            var title = cc.find("title",box);
             var info2 = cc.find("info2",box).getComponent(cc.Label);
             var info = cc.find("info",box);
 
@@ -354,37 +372,36 @@ cc.Class({
             var desc = cc.find("desc",info).getComponent(cc.Label);
             var grade = cc.find("grade",info).getComponent(cc.Label);
             var base = cc.find("base",info).getComponent(cc.Label);
-            var up = cc.find("up",info).getComponent(cc.Label);
-            var ratio = cc.find("ratio",info).getComponent(cc.Label);
 
 
             var index = this.getChoukaIndex(type);
             var cardLv = storage.getDogCardLv(index);
             var seldata = cc.res.conf_cardText[index-1];
 
-            card_desc.string = seldata.character;
+            cc.res.setSpriteFrame("images/dogcard/card_"+index,card);
             if(cardLv>0)
             {
-                title.string = "相同品质卡片自动转为升级经验";
+                //title.string = "相同品质卡片自动转为升级经验";
+                cc.res.setSpriteFrame("images/dog/wenzi03",title);
+                cc.res.setSpriteFrame("images/dog/yiyongyou",card_desc);
                 info2.node.active = true;
-                info2.string = seldata.character+"牧羊犬升级进度+1";
+                info2.string = seldata.character+"牧羊犬 经验+1";
                 info.active = false;
             }
             else
             {
-                title.string = "新卡片在狗窝中查看使用";
+                //title.string = "新卡片在狗窝中查看使用";
+                cc.res.setSpriteFrame("images/dog/wenzi04",title);
+                cc.res.setSpriteFrame("images/dog/xin",card_desc);
                 info2.node.active = false;
                 info.active = true;
 
-                name.string = "姓名："+seldata.name;
-                desc.string = "性格："+seldata.tips;
-                grade.string = "品级："+seldata.character;
-                base.string = "基础收益加成："+seldata.base+"倍";
-                up.string = "收益加成上限："+seldata.top+"倍";
-                ratio.string = "成长系数："+seldata.ratio;
+                name.string = seldata.name;
+                desc.string = seldata.tips;
+                grade.string = seldata.character;
+                base.string = seldata.base+"倍"+"（上限："+seldata.top+"倍）";
 
-                grade.node.color = this.cardColors[index-1];
-                ratio.node.color = this.cardColors[index-1];
+                //grade.node.color = this.cardColors[index-1];
             }
 
             //动画
@@ -433,16 +450,15 @@ cc.Class({
             for(var i=0;i<cards.length;i++)
             {
                 var card = cards[i];
-                var desc = cc.find("desc",card).getComponent(cc.Label);
-                var desc2 = cc.find("desc2",card).getComponent(cc.Label);
+                var desc = cc.find("desc",card);
 
                 var index = this.getChoukaIndex(type);
                 var cardLv = storage.getDogCardLv(index);
                 var seldata = cc.res.conf_cardText[index-1];
 
-                desc.string = seldata.character;
-                if(cardLv>0) desc2.string = "已拥有";
-                else desc2.string = "新";
+                cc.res.setSpriteFrame("images/dogcard/card_"+index,card);
+                if(cardLv>0) cc.res.setSpriteFrame("images/dog/yiyongyou",desc);
+                else cc.res.setSpriteFrame("images/dog/xin",desc);
 
                 //动画
                 card.scale = 0;
@@ -568,6 +584,7 @@ cc.Class({
         {
             this.selCardIndex = tid-1;
             this.updatePage2();
+            this.openSelBox();
         }
     },
 
@@ -650,6 +667,10 @@ cc.Class({
             });
 
             cc.qianqista.event("牧羊犬_购买4");
+        }
+        else if(data == "closeselbox")
+        {
+            this.selbox.active = false;
         }
         else if(data == "closesinglecard")
         {

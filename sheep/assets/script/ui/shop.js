@@ -103,7 +103,7 @@ cc.Class({
             item.active = true;
 
             var coin = cc.find("coin",item).getComponent(cc.Label);
-            var cost = cc.find("diamondbg/cost",item).getComponent(cc.Label);
+            var cost = cc.find("diamondbg/lay/cost",item).getComponent(cc.Label);
             var btn = cc.find("diamondbg",item);
             btn.tid = n;
 
@@ -127,7 +127,8 @@ cc.Class({
             item.tid = n;
 
             var desc = cc.find("desc",item).getComponent(cc.Label);
-            var cost = cc.find("diamondbg/cost",item).getComponent(cc.Label);
+            var icon = cc.find("icon",item);
+            var cost = cc.find("diamondbg/lay/cost",item).getComponent(cc.Label);
             var time = cc.find("time",item).getComponent(cc.Label);
             var diamondbg = cc.find("diamondbg",item);
             diamondbg.tid = n;
@@ -136,6 +137,7 @@ cc.Class({
 
             desc.string = "收益x"+data.goodsLevel+"倍";
             cost.string = storage.castNum(Number(data.cost));
+            cc.res.setSpriteFrame("images/shop/carv_"+(n+1),icon);
 
             var t = storage.getShopVcarTime(n);
             item.time = t;
@@ -241,7 +243,8 @@ cc.Class({
             item.active = true;
 
             var desc = cc.find("desc",item).getComponent(cc.Label);
-            var cost = cc.find("diamondbg/cost",item).getComponent(cc.Label);
+            var icon = cc.find("icon",item);
+            var cost = cc.find("diamondbg/lay/cost",item).getComponent(cc.Label);
             var time = cc.find("time",item).getComponent(cc.Label);
             var diamondbg = cc.find("diamondbg",item);
             diamondbg.tid = n;
@@ -250,6 +253,7 @@ cc.Class({
 
             desc.string = "收益x"+data.goodsLevel+"倍";
             cost.string = storage.castNum(Number(data.cost));
+            cc.res.setSpriteFrame("images/shop/carh_"+(n+1),icon);
 
             var t = storage.getShopHcarTime(n);
             item.time = t;
@@ -359,7 +363,11 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
 
-
+        var self = this;
+        cc.sdk.showBanner(this.bg,function(dis){
+            if(dis<0)
+                self.bg.y -= dis;
+        });
         cc.qianqista.event("商店_打开");
 
     },
@@ -387,6 +395,7 @@ cc.Class({
         storage.setFreeDiaNum(0);
         res.showToast("钻石+"+storage.castNum(award));
         this.updateUI();
+        this.game.updateRed();
         //cc.res.showCoinAni();
     },
 
@@ -417,6 +426,12 @@ cc.Class({
         var cost = Number(data.cost);
         if(this.game.diamond>=cost)
         {
+            var time = 24;
+            var to = new Date().getTime() + time*60*60*1000;
+            var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"采集车加倍",to:to};
+            storage.addAddRateTask(task);
+            this.game.initShouYi();
+
             storage.setShopVcarTime(tid,new Date().getTime()+24*60*60*1000);
             this.game.addDiamond(-cost);
             this.updateItem2(tid);
@@ -437,6 +452,12 @@ cc.Class({
         if(adNum>=cost)
         {
             storage.setShopVcarTime(tid,new Date().getTime()+24*60*60*1000);
+
+            var time = 24;
+            var to = new Date().getTime() + time*60*60*1000;
+            var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"采集车加倍",to:to};
+            storage.addAddRateTask(task);
+            this.game.initShouYi();
         }
         this.updateItem2(tid);
     },
@@ -451,6 +472,12 @@ cc.Class({
             storage.setShopHcarTime(tid,new Date().getTime()+24*60*60*1000);
             this.game.addDiamond(-cost);
             this.updateItem3(tid);
+
+            var time = 24;
+            var to = new Date().getTime() + time*60*60*1000;
+            var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"运输车加倍",to:to};
+            storage.addAddRateTask(task);
+            this.game.initShouYi();
         }
         else
         {
@@ -468,6 +495,12 @@ cc.Class({
         if(adNum>=cost)
         {
             storage.setShopHcarTime(tid,new Date().getTime()+24*60*60*1000);
+
+            var time = 24;
+            var to = new Date().getTime() + time*60*60*1000;
+            var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"运输车加倍",to:to};
+            storage.addAddRateTask(task);
+            this.game.initShouYi();
         }
         this.updateItem3(tid);
     },
