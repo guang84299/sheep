@@ -43,7 +43,7 @@ cc.Class({
             var data =  this.getAwardDataByType(5);
             var num = storage.getCailiao(data.type-4,data.id);
             storage.setCailiao(data.type-4,data.id,num+this.awool);
-            res.setSpriteFrame("images/main/car_mao"+(parseInt(data.img)+1),this.wool);
+            res.setSpriteFrameAtlas("images/main","car_mao"+(parseInt(data.img)+1),this.wool);
         }
         if(this.afeed>0)
         {

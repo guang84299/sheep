@@ -226,7 +226,7 @@ cc.Class({
                     }
                     else if(cailiao.type == 5)
                     {
-                        res.setSpriteFrame("images/main/car_mao"+(parseInt(cailiao.img)+1),item.icon);
+                        res.setSpriteFrameAtlas("images/main","car_mao"+(parseInt(cailiao.img)+1),item.icon);
                     }
                     else if(cailiao.type == 6)
                     {

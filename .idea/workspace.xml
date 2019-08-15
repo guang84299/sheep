@@ -24,61 +24,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sheep/assets/script/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.962963" vertical-offset="16795" max-vertical-offset="20235">
-              <caret line="891" column="0" selection-start-line="891" selection-start-column="0" selection-end-line="891" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="yindao.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/yindao.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2812" max-vertical-offset="3781">
-              <caret line="159" column="37" selection-start-line="159" selection-start-column="37" selection-end-line="159" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="task.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/task.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2784" max-vertical-offset="3572">
-              <caret line="163" column="0" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="choujiang.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/choujiang.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5138" max-vertical-offset="7809">
-              <caret line="278" column="32" selection-start-line="278" selection-start-column="32" selection-end-line="278" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sdk.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sheep/assets/script/sdk.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4284" max-vertical-offset="9842">
-              <caret line="239" column="31" selection-start-line="239" selection-start-column="27" selection-end-line="239" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="box.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="box.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sheep/assets/script/box.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37172773" vertical-offset="4081" max-vertical-offset="10754">
-              <caret line="226" column="31" selection-start-line="226" selection-start-column="31" selection-end-line="226" selection-end-column="31" />
+            <state vertical-scroll-proportion="-12.111111" vertical-offset="4043" max-vertical-offset="10754">
+              <caret line="230" column="36" selection-start-line="230" selection-start-column="36" selection-end-line="230" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="car.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sheep/assets/script/car.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3122" max-vertical-offset="4370">
+              <caret line="177" column="14" selection-start-line="177" selection-start-column="14" selection-end-line="177" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="car2.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sheep/assets/script/car2.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1579" max-vertical-offset="5149">
+              <caret line="91" column="24" selection-start-line="91" selection-start-column="24" selection-end-line="91" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -117,8 +87,38 @@
       <file leaf-file-name="lvup.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/lvup.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="11960" max-vertical-offset="16511">
-              <caret line="656" column="54" selection-start-line="656" selection-start-column="44" selection-end-line="656" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4243" max-vertical-offset="16511">
+              <caret line="233" column="42" selection-start-line="233" selection-start-column="42" selection-end-line="233" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tanxiangame.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/tanxiangame.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="4224" max-vertical-offset="7961">
+              <caret line="228" column="47" selection-start-line="228" selection-start-column="47" selection-end-line="228" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tanxianjiesuan.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/tanxianjiesuan.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="747" max-vertical-offset="3743">
+              <caret line="47" column="24" selection-start-line="47" selection-start-column="24" selection-end-line="47" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="unlockbox.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/unlockbox.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.43333334" vertical-offset="1146" max-vertical-offset="3781">
+              <caret line="74" column="29" selection-start-line="74" selection-start-column="29" selection-end-line="74" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -153,25 +153,25 @@
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/shouyi.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/shouyifanbei.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/skill.js" />
-        <option value="$PROJECT_DIR$/sheep/assets/script/ui/tanxianjiesuan.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/rank.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/qiandao.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/carvup.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/carhup.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/unlockdog.js" />
-        <option value="$PROJECT_DIR$/sheep/assets/script/ui/unlockbox.js" />
-        <option value="$PROJECT_DIR$/sheep/assets/script/ui/tanxiangame.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/loading.js" />
-        <option value="$PROJECT_DIR$/sheep/assets/script/car.js" />
-        <option value="$PROJECT_DIR$/sheep/assets/script/car2.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/sdk.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/choujiang.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/task.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/main.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/ui/yindao.js" />
-        <option value="$PROJECT_DIR$/sheep/assets/script/ui/lvup.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/res.js" />
         <option value="$PROJECT_DIR$/sheep/assets/script/box.js" />
+        <option value="$PROJECT_DIR$/sheep/assets/script/car.js" />
+        <option value="$PROJECT_DIR$/sheep/assets/script/car2.js" />
+        <option value="$PROJECT_DIR$/sheep/assets/script/ui/lvup.js" />
+        <option value="$PROJECT_DIR$/sheep/assets/script/ui/tanxiangame.js" />
+        <option value="$PROJECT_DIR$/sheep/assets/script/ui/tanxianjiesuan.js" />
+        <option value="$PROJECT_DIR$/sheep/assets/script/ui/unlockbox.js" />
       </list>
     </option>
   </component>
@@ -572,14 +572,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/tanxianjiesuan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2269" max-vertical-offset="3743">
-          <caret line="136" column="11" selection-start-line="136" selection-start-column="11" selection-end-line="136" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/tanxiantask.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.51386625" vertical-offset="1908" max-vertical-offset="3344">
@@ -668,26 +660,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/unlockbox.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2212" max-vertical-offset="3781">
-          <caret line="137" column="36" selection-start-line="137" selection-start-column="36" selection-end-line="137" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/unlockdog.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1927" max-vertical-offset="3781">
           <caret line="105" column="7" selection-start-line="105" selection-start-column="7" selection-end-line="105" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/tanxiangame.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.481482" vertical-offset="5469" max-vertical-offset="7961">
-          <caret line="307" column="17" selection-start-line="307" selection-start-column="17" selection-end-line="307" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -704,22 +680,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="16292" max-vertical-offset="21831">
           <caret line="868" column="4" selection-start-line="868" selection-start-column="4" selection-end-line="868" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sheep/assets/script/car.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1439" max-vertical-offset="4370">
-          <caret line="94" column="70" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sheep/assets/script/car2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1444" max-vertical-offset="5149">
-          <caret line="91" column="24" selection-start-line="91" selection-start-column="24" selection-end-line="91" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -764,14 +724,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/lvup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="11960" max-vertical-offset="16511">
-          <caret line="656" column="54" selection-start-line="656" selection-start-column="44" selection-end-line="656" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sheep/assets/script/buoy.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="3553">
@@ -798,8 +750,56 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sheep/assets/script/box.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37172773" vertical-offset="4081" max-vertical-offset="10754">
-          <caret line="226" column="31" selection-start-line="226" selection-start-column="31" selection-end-line="226" selection-end-column="31" />
+        <state vertical-scroll-proportion="-12.111111" vertical-offset="4043" max-vertical-offset="10754">
+          <caret line="230" column="36" selection-start-line="230" selection-start-column="36" selection-end-line="230" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sheep/assets/script/car.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3122" max-vertical-offset="4370">
+          <caret line="177" column="14" selection-start-line="177" selection-start-column="14" selection-end-line="177" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sheep/assets/script/car2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1579" max-vertical-offset="5149">
+          <caret line="91" column="24" selection-start-line="91" selection-start-column="24" selection-end-line="91" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/lvup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4243" max-vertical-offset="16511">
+          <caret line="233" column="42" selection-start-line="233" selection-start-column="42" selection-end-line="233" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/tanxiangame.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4224" max-vertical-offset="7961">
+          <caret line="228" column="47" selection-start-line="228" selection-start-column="47" selection-end-line="228" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/tanxianjiesuan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="747" max-vertical-offset="3743">
+          <caret line="47" column="24" selection-start-line="47" selection-start-column="24" selection-end-line="47" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sheep/assets/script/ui/unlockbox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.43333334" vertical-offset="1146" max-vertical-offset="3781">
+          <caret line="74" column="29" selection-start-line="74" selection-start-column="29" selection-end-line="74" selection-end-column="29" />
           <folding />
         </state>
       </provider>

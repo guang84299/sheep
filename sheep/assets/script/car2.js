@@ -87,7 +87,7 @@ cc.Class({
             var ct = cc.storage.getShopHcarTime(i);
             if(ct>now) carId = i+1;
         }
-        cc.res.setSpriteFrame("images/main/car_2"+carId,car);
+        cc.res.setSpriteFrameAtlas("images/main","car_2"+carId,car);
 
         var self = this;
 

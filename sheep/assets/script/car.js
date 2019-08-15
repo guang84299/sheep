@@ -51,7 +51,7 @@ cc.Class({
         var t = this.speed*num;
         var y = this.ny;
         var dt = 0.5;
-        cc.res.setSpriteFrame("images/main/car_up"+carId,this.node);
+        cc.res.setSpriteFrameAtlas("images/main","car_up"+carId,this.node);
         this.node.runAction(cc.sequence(
             cc.moveTo(t,cc.v2(this.node.x,y)),
             cc.callFunc(function(){
@@ -92,7 +92,7 @@ cc.Class({
             return;
         }
 
-        cc.res.setSpriteFrame("images/main/car_down"+carId,this.node);
+        cc.res.setSpriteFrameAtlas("images/main","car_down"+carId,this.node);
         //this.maosp.active = false;
 
 
@@ -166,14 +166,14 @@ cc.Class({
         mao.y = h;
         mao.zIndex = this.node.zIndex+1;
         this.node.parent.addChild(mao);
-        cc.res.setSpriteFrame("images/main/car_mao"+icon,mao);
+        cc.res.setSpriteFrameAtlas("images/main","car_mao"+icon,mao);
 
         var self = this;
         mao.runAction(cc.sequence(
             cc.moveTo(0.3,this.node.position).easing(cc.easeSineIn()),
             cc.callFunc(function(){
                 self.maosp.active = true;
-                cc.res.setSpriteFrame("images/main/car_mao"+icon,self.maosp);
+                cc.res.setSpriteFrameAtlas("images/main","car_mao"+icon,self.maosp);
                 mao.destroy();
             })
         ));

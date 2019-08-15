@@ -227,7 +227,7 @@ cc.Class({
 
         var data = cc.res.conf_compose[this.index-1];
 
-        cc.res.setSpriteFrame("images/main/car_mao"+(parseInt(data.woolImage)+1),yangmao_icon);
+        cc.res.setSpriteFrameAtlas("images/main","car_mao"+(parseInt(data.woolImage)+1),yangmao_icon);
         cc.res.setSpriteFrame("images/cailiao/sl/"+data.feedImage,siliao_icon);
         var sheepConf = cc.config.sheepAnim[parseInt(data.newSheep)];
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,yang_icon);

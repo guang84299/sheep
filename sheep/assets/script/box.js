@@ -226,7 +226,7 @@ cc.Class({
 
         var icon = this.type+1;
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+icon,this.lock_sheepIcon);
-        cc.res.setSpriteFrame("images/box","title_"+icon,this.lock_name);
+        cc.res.setSpriteFrameAtlas("images/box","title_"+icon,this.lock_name);
 
         this.lock_saoguang.x = -340;
         this.lock_saoguang.stopAllActions();

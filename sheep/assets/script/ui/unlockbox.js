@@ -64,7 +64,7 @@ cc.Class({
                 {
                     award.string = "新羊毛*"+num;
                     cailiaoId = parseInt(data.wool);
-                    cc.res.setSpriteFrame("images/main/car_mao"+(parseInt(data.woolImage)+1),icon);
+                    cc.res.setSpriteFrameAtlas("images/main","car_mao"+(parseInt(data.woolImage)+1),icon);
                 }
                 else if(i==2)
                 {
