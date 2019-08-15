@@ -80,6 +80,15 @@ cc.Class({
 
     carGo: function(car)
     {
+        var now = new Date().getTime();
+        var carId = 0;
+        for(var i=0;i<3;i++)
+        {
+            var ct = cc.storage.getShopHcarTime(i);
+            if(ct>now) carId = i+1;
+        }
+        cc.res.setSpriteFrame("images/main/car_2"+carId,car);
+
         var self = this;
 
         var dtv = 0;
@@ -132,7 +141,10 @@ cc.Class({
         car.lunzi1.active = false;
         car.lunzi2.active = false;
 
-        if(this.game.faccoin<=0)
+        var capacity = Number(this.conf.capacity);
+        var carrySpeed = Number(this.conf.carrySpeed);
+
+        if(this.game.faccoin<=0 || car.coin>=capacity)
         {
             var self = this;
             car.runAction(cc.sequence(
@@ -154,16 +166,16 @@ cc.Class({
         this.node.parent.addChild(coin);
 
 
-        var capacity = Number(this.conf.capacity);
-        if(capacity>this.game.faccoin)
+
+        if(carrySpeed>this.game.faccoin)
         {
             car.coin = this.game.faccoin;
-            this.game.addFacCoin(-car.coin);
+            this.game.addFacCoin(-this.game.faccoin);
         }
         else
         {
-            car.coin = capacity;
-            this.game.addFacCoin(-car.coin);
+            car.coin += carrySpeed;
+            this.game.addFacCoin(-carrySpeed);
         }
 
         var self = this;
@@ -172,7 +184,13 @@ cc.Class({
             cc.callFunc(function(){
                 coin.destroy();
                 car.coinsp.active = true;
-                self.carBack(car);
+            })
+        ));
+
+        this.node.runAction(cc.sequence(
+            cc.delayTime(1),
+            cc.callFunc(function(){
+                self.addCoin(car);
             })
         ));
     },

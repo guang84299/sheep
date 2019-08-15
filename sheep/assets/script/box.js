@@ -30,10 +30,10 @@ cc.Class({
         this.isUnLockBuoy = cc.storage.getBuoy(parseInt(this.compose.newKnife));
         this.conf = cc.res.conf_base[this.lv-1];
         this.pice = cc.res.conf_price[this.lv-1]["price"+1];
-        if(this.isUnLockSheep == 2)
+        if(this.isUnLockSheep == 3)
             this.pice = cc.res.conf_price[this.lv-1]["price"+index];
         this.knifeType = cc.res.conf_grade[1-1].knifeType;
-        if(this.isUnLockBuoy == 2)
+        if(this.isUnLockBuoy == 3)
             this.knifeType = cc.res.conf_grade[index-1].knifeType;
 
         this.type = parseInt(cc.res.conf_ranch[index-1].type);
@@ -69,11 +69,11 @@ cc.Class({
 
         var icon = this.type+1;
 
-        cc.res.setSpriteFrame("images/box/bg"+icon,this.node);
+        cc.res.setSpriteFrameAtlas("images/box","bg"+icon,this.node);
         if(this.type != this.nextType)
         {
             this.boxbg2 =  cc.find("bg2",this.node);
-            cc.res.setSpriteFrame("images/box/bg2"+icon,this.boxbg2);
+            cc.res.setSpriteFrameAtlas("images/box","bg2"+icon,this.boxbg2);
             //cc.find("node_hua",this.node).active = true;
         }
 
@@ -226,7 +226,7 @@ cc.Class({
 
         var icon = this.type+1;
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+icon,this.lock_sheepIcon);
-        cc.res.setSpriteFrame("images/box/title_"+icon,this.lock_name);
+        cc.res.setSpriteFrame("images/box","title_"+icon,this.lock_name);
 
         this.lock_saoguang.x = -340;
         this.lock_saoguang.stopAllActions();
@@ -271,9 +271,9 @@ cc.Class({
                 if(!this.game.car2.isRuning)
                     this.game.car2.run();
 
-                this.game.updateYindao();
-
                 cc.res.openUI("unlockbox",null,this.index);
+
+                this.box_dog.active = this.isUnLock;
             }
         }
         else
@@ -364,6 +364,8 @@ cc.Class({
             pos2.y -= this.node.height/2;
             if(pos2.sub(pos).mag()<this.node.height/2)
             {
+                this.game.updateYindao();
+
                 for(var i=0;i<this.buoys.length;i++)
                 {
                     this.buoys[i].sc.touchBox();
@@ -387,22 +389,36 @@ cc.Class({
 
     initDog: function()
     {
+        this.box_dog = cc.find("box_dog",this.node);
         this.dog_dog = cc.find("box_dog/dog",this.node);
+        this.dog_dog_dog = cc.find("box_dog/dog/dog",this.node);
+        this.dog_dog_qipao = cc.find("box_dog/dog/qipao",this.node);
+        this.dog_dog_qipao_txt = cc.find("txt",this.dog_dog_qipao).getComponent(cc.Label);
+
         this.dog_lock = cc.find("box_dog/lock",this.node);
-        this.dog_lock_txt = cc.find("box_dog/lock/txt",this.node).getComponent(cc.Label);
+        this.dog_lock_txt = cc.find("box_dog/lock/btn2/timebg/txt",this.node).getComponent(cc.Label);
+        this.dog_lock_btn1 = cc.find("btn1",this.dog_lock);
+        this.dog_lock_btn2 = cc.find("btn2",this.dog_lock);
         if(this.dog == 0)
         {
             this.dog_lock.active = true;
+            this.dog_lock_btn1.active = true;
+            this.dog_lock_btn2.active = false;
         }
         else if(this.dog == 1)
         {
             this.dog_lock.active = false;
+            this.dog_dog_qipao.active = false;
         }
         else if(this.dog > 1)
         {
             this.dog_lock.active = true;
+            this.dog_lock_btn1.active = false;
+            this.dog_lock_btn2.active = true;
         }
         this.dogUnlokDt = 0;
+
+        this.box_dog.active = this.isUnLock;
     },
 
     updateDogUnlock: function()
@@ -436,31 +452,60 @@ cc.Class({
         {
             this.buoys[i].sc.updateSpeed();
         }
+
+        this.dog_dog_qipao.active = true;
+        this.dog_dog_qipao_txt.string = cc.res.conf_dogText[0].text;
+        this.dog_dog_qipao.scale = 0;
+        this.dog_dog_qipao.runAction(cc.scaleTo(0.2,1).easing(cc.easeSineIn()));
     },
 
     tounlockdog: function()
     {
         if(this.dog == 0)
         {
+            var conf = cc.res.conf_ranch[this.index-1];
+
             var now = new Date().getTime();
-            this.dog = now + 1*60*1000;
+            this.dog = now + Number(conf.dogTime)*1000;
             cc.storage.setLevelDog(this.index,this.dog);
             cc.storage.uploadLevelDog(this.index);
             this.updateDogUnlock();
+
+            this.dog_lock_btn1.active = false;
+            this.dog_lock_btn2.active = true;
         }
     },
 
     updatedog: function()
     {
-        var i = Math.floor(Math.random()*5)+1;
-        cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+i,this.dog_dog);
+        var acc = this.dog_dog_qipao.getActionByTag(1);
+        if(acc && !acc.isDone()) return;
+        //var i = Math.floor(Math.random()*5)+1;
+        //cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+i,this.dog_dog);
+
+        this.dog_dog_dog.runAction(cc.jumpTo(0.5,this.dog_dog_dog.position,30,3));
+
+        var i = Math.floor(Math.random()*(cc.res.conf_dogText.length-1))+1;
+
+        this.dog_dog_qipao.active = true;
+        this.dog_dog_qipao.scale = 0;
+        this.dog_dog_qipao_txt.string = cc.res.conf_dogText[i].text;
+        var ac = cc.sequence(
+            cc.fadeIn(0.1),
+            cc.scaleTo(0.2,1).easing(cc.easeSineIn()),
+            cc.delayTime(2),
+            cc.fadeOut(1)
+        );
+        ac.setTag(1);
+        this.dog_dog_qipao.runAction(ac);
+
     },
 
     useNewSheep: function()
     {
         this.isUnLockSheep = cc.storage.getSheep(parseInt(this.compose.id));
         this.pice = cc.res.conf_price[this.lv-1]["price"+1];
-        if(this.isUnLockSheep == 2)
+        if(this.isUnLockSheep == 3)
             this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
         for(var i=0;i<this.sheeps.length;i++)
         {
@@ -472,7 +517,7 @@ cc.Class({
     {
         this.isUnLockBuoy = cc.storage.getBuoy(parseInt(this.compose.newKnife));
         this.knifeType = cc.res.conf_grade[1-1].knifeType;
-        if(this.isUnLockBuoy == 2)
+        if(this.isUnLockBuoy == 3)
             this.knifeType = cc.res.conf_grade[this.index-1].knifeType;
         for(var i=0;i<this.buoys.length;i++)
         {
@@ -492,8 +537,18 @@ cc.Class({
         }
         else if(data == "unlockdog")
         {
+            var self = this;
             if(this.dog == 0)
+            {
+                this.game.hideYindao();
                 cc.res.openUI("unlockdog",null,this.index);
+            }
+            else if(this.dog > 1)
+            {
+                cc.sdk.showVedio(function(r){
+                    if(r) self.unlockdog();
+                });
+            }
         }
         else if(data == "dog")
         {

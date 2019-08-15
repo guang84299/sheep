@@ -70,6 +70,7 @@ cc.Class({
             "conf/cardGrade",
             "conf/cardText",
             "conf/compose",
+            "conf/dogText",
 
             "prefab/sheep",
             "prefab/buoy",
@@ -146,7 +147,7 @@ cc.Class({
             storage.setMusic(1);
             storage.setSound(1);
             storage.setVibrate(1);
-            storage.setCoin(0);
+            storage.setCoin(100);
             storage.setDogCardLv(1,1)
         }
     },

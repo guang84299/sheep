@@ -683,7 +683,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 482,
+      "width": 486,
       "height": 80
     },
     "_anchorPoint": {
@@ -750,8 +750,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 221,
-      "height": 45
+      "width": 223,
+      "height": 79
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -760,7 +760,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -130.5,
+      "x": -131.5,
       "y": -0.078,
       "z": 0
     },
@@ -1225,7 +1225,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "d66dd1ad-d562-4805-adfa-a34ad731d9c8"
+      "__uuid__": "130ecad6-88f4-402a-8888-98264a67f8c4"
     },
     "_type": 1,
     "_sizeMode": 1,
@@ -1373,8 +1373,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 221,
-      "height": 45
+      "width": 223,
+      "height": 79
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1383,7 +1383,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 130.5,
+      "x": 131.5,
       "y": -0.078,
       "z": 0
     },
@@ -1443,7 +1443,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 0,
+      "x": 35.334,
       "y": 0,
       "z": 0
     },
@@ -1548,7 +1548,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -89.407,
+      "x": -67.021,
       "y": 4.724,
       "z": 0
     },
@@ -1651,7 +1651,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -90.195,
+      "x": -67.809,
       "y": 0,
       "z": 0
     },
@@ -1732,7 +1732,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "09b46d27-7b8c-40c2-9e9e-525d483c307f"
+      "__uuid__": "3a1cce73-1733-46ad-b0cf-2f707f1a8eca"
     },
     "_type": 1,
     "_sizeMode": 1,
@@ -1849,7 +1849,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 482,
+      "width": 486,
       "height": 80
     },
     "_resize": 1,

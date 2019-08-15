@@ -41,36 +41,31 @@ cc.Class({
             var item = this.items[i];
             var award = cc.find("award",item).getComponent(cc.Label);
             var desc = cc.find("desc",item);
-            var box = cc.find("box",item);
             var mask = cc.find("mask",item);
 
             var data = res.conf_qiandao[i];
 
-            award.string = storage.castNum(Number(data.reward));
+            if(data.rewrdType == "2")
+                award.string = "+1";
+            else
+                award.string = storage.castNum(Number(data.reward));
             if(i==qiandaoNum)
             {
                 if(canSign)
                 {
-                    box.active = false;
                     mask.active = false;
-                    award.node.color = cc.color(196,124,30);
-                    desc.color = cc.color(196,124,30);
+                    item.getComponent(cc.Button).interactable = true;
                 }
             }
             else if(i<qiandaoNum)
             {
-                box.active = true;
                 mask.active = true;
-                award.string = "已领取";
-                award.node.color = cc.color(124,121,114);
-                desc.color = cc.color(124,121,114);
+                item.getComponent(cc.Button).interactable = false;
             }
             else
             {
-                box.active = true;
                 mask.active = false;
-                award.node.color = cc.color(196,124,30);
-                desc.color = cc.color(124,121,114);
+                item.getComponent(cc.Button).interactable = true;
             }
         }
 
@@ -114,14 +109,39 @@ cc.Class({
 
     lingqu: function(x2)
     {
-        var award = Number(res.conf_qiandao[this.qiandaoNum].reward);
-        if(x2) award *= 2;
-        this.game.addCoin(award);
+        var data = res.conf_qiandao[this.qiandaoNum];
+        if(data.rewrdType == "0")
+        {
+            var award = Number(data.reward);
+            if(x2) award *= 2;
+            this.game.addCoin(award);
+            res.showToast("金币+"+storage.castNum(award));
+        }
+        else if(data.rewrdType == "1")
+        {
+            var award = Number(data.reward);
+            if(x2) award *= 2;
+            this.game.addDiamond(award);
+            res.showToast("钻石+"+storage.castNum(award));
+        }
+        else
+        {
+            var award = Number(data.reward);
+            var carNum = storage.getDogCardNum(award);
+            carNum += 1;
+            storage.setDogCardNum(award,carNum);
+            storage.uploadDogCardNum(award);
+
+            if(award == "4")
+                res.showToast("史诗牧羊犬+1");
+            else if(award == "5")
+                res.showToast("传奇牧羊犬+1");
+        }
 
         storage.setQianDaoNum((this.qiandaoNum+1));
         storage.uploadQianDaoNum();
 
-        res.showToast("金币+"+storage.castNum(award));
+
         this.updateUI();
 
         this.game.task.updateUI();

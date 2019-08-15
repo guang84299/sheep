@@ -67,19 +67,19 @@
       "y": 1,
       "z": 1
     },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
     "_rotationY": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -135,19 +135,19 @@
       "y": 1,
       "z": 1
     },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
     "_rotationY": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Button",
@@ -225,7 +225,11 @@
       "__id__": 2
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
@@ -325,7 +329,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 560,
-      "height": 640
+      "height": 660
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -344,19 +348,19 @@
       "y": 1,
       "z": 1
     },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
     "_rotationY": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -401,7 +405,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 282.025,
+      "y": 243.155,
       "z": 0
     },
     "_scale": {
@@ -410,19 +414,19 @@
       "y": 1,
       "z": 1
     },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
     "_rotationY": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -445,9 +449,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
@@ -472,19 +476,19 @@
       "y": 1,
       "z": 1
     },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
     "_rotationY": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Label",
@@ -494,7 +498,11 @@
       "__id__": 9
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_useOriginalSize": false,
     "_string": "授权设置",
     "_N$string": "授权设置",
@@ -610,7 +618,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -39.153,
+      "y": -59.336,
       "z": 0
     },
     "_scale": {
@@ -619,17 +627,17 @@
       "y": 1,
       "z": 1
     },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "groupIndex": 0,
-    "_id": "",
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
       "z": 0
-    }
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -652,9 +660,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
@@ -670,7 +678,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 122.389,
+      "y": 132.48,
       "z": 0
     },
     "_scale": {
@@ -679,19 +687,19 @@
       "y": 1,
       "z": 1
     },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
     "_rotationY": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Label",
@@ -701,7 +709,11 @@
       "__id__": 15
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_useOriginalSize": false,
     "_string": "请点击下面按钮允许授权",
     "_N$string": "请点击下面按钮允许授权",
@@ -738,7 +750,11 @@
       "__id__": 14
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
@@ -777,11 +793,15 @@
       "__id__": 7
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "5e93bd1b-7e89-4e74-ab94-e1d4c164fd13"
+      "__uuid__": "5eddc7f2-c01e-4fab-93a5-ff41156b752d"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -810,7 +830,7 @@
     "_alignFlags": 1,
     "_left": 0,
     "_right": 0,
-    "_top": 0.21830985915492962,
+    "_top": 0.20950704225352118,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,

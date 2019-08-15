@@ -159,8 +159,11 @@ cc.Class({
             cc.res.openUI("freetili");
             return;
         }
+
+        var isFirst = false;
         if(this.isFirst)
         {
+            isFirst = true;
             this.isFirst = false;
             for(var i=1;i<=25;i++)
             {
@@ -168,7 +171,7 @@ cc.Class({
                 {
                     var item = this.box.children[i-1];
                     item.pstate = 3;//1: 可点 2：已点 3：不可点
-                    res.setSpriteFrame("images/tanxian/box1",item);
+                    //res.setSpriteFrame("images/tanxian/box1",item);
                 }
             }
         }
@@ -293,6 +296,18 @@ cc.Class({
             }
         }
 
+
+        if(isFirst)
+        {
+            for(var i=1;i<=25;i++)
+            {
+                var item = this.box.children[i-1];
+                if(item.pstate == 3)//1: 可点 2：已点 3：不可点
+                {
+                    res.setSpriteFrame("images/tanxian/box1",item);
+                }
+            }
+        }
     },
 
     nextLevel: function()

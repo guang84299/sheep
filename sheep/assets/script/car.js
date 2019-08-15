@@ -37,6 +37,13 @@ cc.Class({
 
     back: function()
     {
+        var now = new Date().getTime();
+        var carId = 0;
+        for(var i=0;i<3;i++)
+        {
+            var ct = cc.storage.getShopVcarTime(i);
+            if(ct>now) carId = i+1;
+        }
         var self = this;
         this.index = -1;
         var h = this.game.boxs[0].height;
@@ -44,7 +51,7 @@ cc.Class({
         var t = this.speed*num;
         var y = this.ny;
         var dt = 0.5;
-        cc.res.setSpriteFrame("images/main/car_up",this.node);
+        cc.res.setSpriteFrame("images/main/car_up"+carId,this.node);
         this.node.runAction(cc.sequence(
             cc.moveTo(t,cc.v2(this.node.x,y)),
             cc.callFunc(function(){
@@ -57,6 +64,14 @@ cc.Class({
 
     run: function()
     {
+        var now = new Date().getTime();
+        var carId = 0;
+        for(var i=0;i<3;i++)
+        {
+            var ct = cc.storage.getShopVcarTime(i);
+            if(ct>now) carId = i+1;
+        }
+
         this.isRun = true;
         var num = this.game.unLock;
         if(this.game.boxs.length<num)
@@ -77,7 +92,7 @@ cc.Class({
             return;
         }
 
-        cc.res.setSpriteFrame("images/main/car_down",this.node);
+        cc.res.setSpriteFrame("images/main/car_down"+carId,this.node);
         //this.maosp.active = false;
 
 
@@ -101,20 +116,44 @@ cc.Class({
             cc.callFunc(function(){
                 if(self.index < num && self.index>=0)
                 {
-                    var box = self.game.boxs[self.index].getComponent("box");
-                    var coin = Number(self.conf.capacity)-self.coin;
-                    if(box.coin>0 && coin>0)
-                    {
-                        coin = box.getCoin(coin);
-                        self.coin += coin;
-                        self.addMao(y,box.type);
-                    }
+                    self.addCoin(y);
+                }
+                else
+                {
+                    self.run();
                 }
 
-            }),
-            cc.delayTime(dt),
-            cc.callFunc(this.run.bind(this))
+            })
+            //cc.delayTime(dt),
+            //cc.callFunc(this.run.bind(this))
         ));
+    },
+
+    addCoin: function(y)
+    {
+        var self = this;
+
+        var box = this.game.boxs[this.index].getComponent("box");
+        var coin = Number(this.conf.capacity)-this.coin;
+        if(box.coin>0 && coin>0)
+        {
+            var carrySpeed =  Number(this.conf.carrySpeed);
+            if(coin>carrySpeed) coin = carrySpeed;
+            coin = box.getCoin(coin);
+            this.coin += coin;
+            this.addMao(y,box.type);
+
+            this.node.runAction(cc.sequence(
+                cc.delayTime(1),
+                cc.callFunc(function(){
+                    self.addCoin(y);
+                })
+            ));
+        }
+        else
+        {
+            this.run();
+        }
     },
 
     addMao: function(h,type)

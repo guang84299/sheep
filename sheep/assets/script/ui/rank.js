@@ -134,6 +134,15 @@ cc.Class({
                 res.setSpriteFrame("images/rank/rank"+data.id,rankIcon);
             }
 
+            if(data.id==1)
+                item.color = cc.color(204,110,59);
+            else if(data.id==2)
+                item.color = cc.color(109,198,209);
+            else if(data.id==3)
+                item.color = cc.color(176,197,101);
+            else
+                item.color = cc.color(255,243,169);
+
             this.content1.addChild(item);
 
             this.scheduleOnce(this.addItem1.bind(this),0.1);
@@ -190,12 +199,19 @@ cc.Class({
             var desc = cc.find("desc",item).getComponent(cc.Label);
             var desc1 = cc.find("desc1",item).getComponent(cc.Label);
             var desc2 = cc.find("desc2",item).getComponent(cc.Label);
-            var desc3 = cc.find("desc3",item).getComponent(cc.Label);
+            //var desc3 = cc.find("desc3",item).getComponent(cc.Label);
+            var icon3 = cc.find("icon3",item);
 
             desc.string = data.head;
             desc1.string = data.title1;
             desc2.string = data.title2;
-            desc3.string = data.title3;
+            //desc3.string = data.title3;
+
+            var bn = n+1;
+            if(bn>4) bn = 4;
+            cc.res.setSpriteFrame("images/rank/box_" +bn,item);
+
+            cc.res.setSpriteFrame("images/dogcard/icon_" +data.reward3,icon3);
 
             this.content3.addChild(item);
 
@@ -270,6 +286,14 @@ cc.Class({
         var award = parseInt(data.reward1)*this.game.getSecVal();
         this.game.addCoin(award);
 
+        var award2 = parseInt(data.reward2);
+        this.game.addDiamond(award2);
+
+        var award3 = parseInt(data.award3);
+        var carNum = storage.getDogCardNum(award3);
+        carNum += 1;
+        storage.setDogCardNum(award3,carNum);
+        storage.uploadDogCardNum(award3);
         //data.reward2 = parseInt(data.reward2);
         //data.reward3 = parseFloat(data.reward3);
         //data.time1 = parseFloat(data.time1);
@@ -278,18 +302,18 @@ cc.Class({
 
         storage.setYesRankTime(new Date().getTime());
 
-        var time1 = parseFloat(data.time1);
-        var to1 = new Date().getTime() + time1*60*60*1000;
-
-        var time2 = parseFloat(data.time2);
-        var to2 = new Date().getTime() + time2*60*60*1000;
-
-        var task1 = {reward:parseInt(data.reward2),time:time1,tip:data.title2,to:to1};
-        var task2 = {reward:parseFloat(data.reward3),time:time2,tip:data.title3,to:to2};
-        storage.addAddRateTask(task1);
-        storage.addAddSpeedTask(task2);
-
-        this.game.initShouYi();
+        //var time1 = parseFloat(data.time1);
+        //var to1 = new Date().getTime() + time1*60*60*1000;
+        //
+        //var time2 = parseFloat(data.time2);
+        //var to2 = new Date().getTime() + time2*60*60*1000;
+        //
+        //var task1 = {reward:parseInt(data.reward2),time:time1,tip:data.title2,to:to1};
+        //var task2 = {reward:parseFloat(data.reward3),time:time2,tip:data.title3,to:to2};
+        //storage.addAddRateTask(task1);
+        //storage.addAddSpeedTask(task2);
+        //
+        //this.game.initShouYi();
 
         res.showToast("金币+"+storage.castNum(award));
         cc.res.showCoinAni();

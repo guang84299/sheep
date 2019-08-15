@@ -452,9 +452,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
@@ -470,7 +470,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 2,
+      "y": -41.925,
       "z": 0
     },
     "_scale": {
@@ -620,7 +620,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 237.579,
-      "y": 284.631,
+      "y": 239.608,
       "z": 0
     },
     "_scale": {
@@ -813,7 +813,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -39.153,
+      "y": -60.009,
       "z": 0
     },
     "_scale": {
@@ -1735,7 +1735,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "5e93bd1b-7e89-4e74-ab94-e1d4c164fd13"
+      "__uuid__": "5eddc7f2-c01e-4fab-93a5-ff41156b752d"
     },
     "_type": 1,
     "_sizeMode": 0,

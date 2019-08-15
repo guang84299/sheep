@@ -159,6 +159,18 @@ module.exports = {
         });
     },
 
+    setSpriteFrameAtlas: function(atlasUrl,url,sp)
+    {
+        cc.loader.loadRes(atlasUrl,cc.SpriteAtlas, function(err, atlas)
+        {
+            if(!err && sp && cc.isValid(sp))
+            {
+                sp.getComponent("cc.Sprite").spriteFrame = atlas.getSpriteFrame(url);
+            }
+
+        });
+    },
+
     loadPic: function(url,sp)
     {
         cc.loader.load({url: url, type: 'png'}, function (err, tex) {

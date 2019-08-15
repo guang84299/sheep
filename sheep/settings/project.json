@@ -9,7 +9,6 @@
   "design-resolution-width": 960,
   "excluded-modules": [
     "TiledMap",
-    "Spine Skeleton",
     "DragonBones",
     "RichText",
     "MotionStreak",
@@ -26,8 +25,7 @@
     "Native Socket",
     "Geom Utils",
     "3D",
-    "3D Primitive",
-    "Mesh"
+    "3D Primitive"
   ],
   "facebook": {
     "appID": "",

@@ -38,7 +38,10 @@ cc.Class({
         var data = cc.res.conf_compose[this.index-1];
         var sheepConf = cc.config.sheepAnim[parseInt(data.newSheep)];
         if(this.index == 1)
+        {
+            this.btn_lingqu2.node.active = false;
             res.setSpriteFrame("images/sheepIcon/sheepIcon1",this.yangIcon);
+        }
         else
             res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,this.yangIcon);
 
@@ -127,6 +130,13 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        this.game.hideYindao();
+
+        if(this.game.yindao == 14)
+        {
+            this.game.updateYindao();
+            cc.res.openUI("yindao");
+        }
     },
 
     hide: function()
@@ -141,6 +151,8 @@ cc.Class({
                 })
             ));
         cc.sdk.hideBanner();
+
+        this.game.updateYindao();
     },
 
     click: function(event,data)

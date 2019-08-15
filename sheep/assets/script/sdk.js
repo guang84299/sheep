@@ -245,7 +245,7 @@ module.exports = {
             {
                 var s = cc.view.getFrameSize();
                 var dpi = cc.winSize.width/s.width;
-                var y = node.parent.convertToWorldSpace(node.position).y;
+                var y = node.parent.convertToWorldSpaceAR(node.position).y-(node.height*node.anchorY);
                 var dis = y - this.bannerAd.res.height*dpi;
                 return dis;
             }

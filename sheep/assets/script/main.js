@@ -33,9 +33,9 @@ cc.Class({
         this.updateRed();
         this.updateFlyCoin();
 
-        if(this.yindao < 14)
+        if(this.yindao < 22)
         {
-            this.yindao = 14;
+            //this.yindao = 14;
             if(this.yindao == 4) this.yindao = 3;
             else if(this.yindao == 5) this.yindao = 6;
             else if(this.yindao == 8) this.yindao = 7;
@@ -49,7 +49,10 @@ cc.Class({
                     res.openUI("yindao");
                 },0.5);
             }
-
+            else
+            {
+                this.yindao = 22;
+            }
         }
 
     },
@@ -426,10 +429,10 @@ cc.Class({
                 box.getComponent("box").init(this.boxs.length+1);
                 this.scrollContent.addChild(box);
 
-                box.y = -box.height*this.boxs.length-457;
+                box.y = -box.height*this.boxs.length-487;
 
                 this.boxs.push(box);
-                this.scrollContent.height = box.height*this.boxs.length+457;
+                this.scrollContent.height = box.height*this.boxs.length+487;
                 cc.log(this.boxs.length);
 
                 this.updateBox();
@@ -580,7 +583,7 @@ cc.Class({
 
     updateLixian: function()
     {
-        if(this.yindao >= 14)
+        if(this.yindao == 14 || this.yindao >= 22)
         {
             var now = new Date().getTime();
             var time = storage.getLixianTime();
@@ -850,7 +853,7 @@ cc.Class({
 
     updateYindao: function()
     {
-        if(this.yindao<14)
+        if(this.yindao<22)
         {
             this.yindao += 1;
             storage.setYinDao(this.yindao);
@@ -860,9 +863,19 @@ cc.Class({
             var node = this.node.getChildByName("ui_yindao");
             if(node)
             {
+                node.active = true;
                 if(node.zIndex != 999) node.zIndex = 999;
                 node.getComponent("yindao").updateYindao();
             }
+        }
+    },
+
+    hideYindao: function()
+    {
+        var node = this.node.getChildByName("ui_yindao");
+        if(node)
+        {
+            node.active = false;
         }
     },
 
@@ -879,9 +892,7 @@ cc.Class({
 
             flycoin.runAction(cc.repeatForever(cc.sequence(
                 cc.moveBy(8,cc.winSize.width+flycoin.width,0),
-                cc.scaleTo(0,0.4,0.4),
-                cc.moveBy(8,-cc.winSize.width-flycoin.width,0),
-                cc.scaleTo(0,-0.4,0.4)
+                cc.moveBy(8,-cc.winSize.width-flycoin.width,0)
             )));
         }
     },

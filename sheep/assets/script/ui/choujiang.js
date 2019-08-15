@@ -271,9 +271,10 @@ cc.Class({
             box.mask.opacity = 0;
             box.guang.opacity = 255;
 
-            if(cc.GAME.share)
             self.btn_vedio_lingqu.node.active = true;
             self.btn_lingqu.node.active = true;
+            var dis = cc.sdk.getBannerDis(self.btn_lingqu.node);
+            if(dis<0) self.bg.y -= dis;
             self.updateAdType();
             self.updateUI(true);
         });

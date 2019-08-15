@@ -68,6 +68,8 @@ cc.Class({
         this.box3.active = false;
 
         this.updatePage2();
+
+        this.game.updateYindao();
     },
 
     open3: function()
@@ -77,6 +79,8 @@ cc.Class({
         this.box3.active = true;
 
         this.updatePage3();
+
+        this.game.updateYindao();
     },
 
     updateUI: function()
@@ -186,7 +190,8 @@ cc.Class({
                 storage.uploadLevel(this.index);
                 this.updateUI();
                 this.game.lvupBox(this.index);
-                this.game.updateYindao();
+                if(this.game.yindao<14)
+                    this.game.updateYindao();
             }
             else
             {
@@ -304,7 +309,7 @@ cc.Class({
                 {
                     storage.setSheep(parseInt(data.id),1);
                     storage.uploadSheep(parseInt(data.id));
-                    this.openpeiyangsuc(true);
+                    //this.openpeiyangsuc(true);
                 }
                 updateTime = 1;
                 this.sheepPeiyuState = 1;
@@ -336,11 +341,16 @@ cc.Class({
             if(sheep == 1)
             {
                 this.sheepPeiyuState = 2;
+                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "培育";
+            }
+            else if(sheep == 2)
+            {
+                this.sheepPeiyuState = 3;
                 cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "使用";
             }
             else
             {
-                this.sheepPeiyuState = 3;
+                this.sheepPeiyuState = 4;
                 cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "已使用";
             }
         }
@@ -369,6 +379,8 @@ cc.Class({
         var yang_peiyu = cc.find("yang/peiyu",this.box3);
         var yang_peiyu_state1 = cc.find("yang/peiyu/state1",this.box3);
         var yang_peiyu_state2 = cc.find("yang/peiyu/state2",this.box3);
+
+        var str = cc.find("str",yang_peiyu_state1).getComponent(cc.Label);
 
         var data = cc.res.conf_compose[this.index-1];
 
@@ -454,7 +466,7 @@ cc.Class({
                 {
                     storage.setBuoy(parseInt(data.newKnife),1);
                     storage.uploadBuoy(parseInt(data.newKnife));
-                    this.openpeiyangsuc();
+                    //this.openpeiyangsuc();
                 }
                 updateTime = 1;
                 this.buoyPeiyuState = 1;
@@ -486,12 +498,17 @@ cc.Class({
             if(buoy == 1)
             {
                 this.buoyPeiyuState = 2;
-                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "使用";
+                str.string = "研发";
+            }
+            else if(buoy == 2)
+            {
+                this.buoyPeiyuState = 3;
+                str.string = "使用";
             }
             else
             {
-                this.buoyPeiyuState = 3;
-                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "已使用";
+                this.buoyPeiyuState = 4;
+                str.string = "已使用";
             }
         }
     },
@@ -551,6 +568,8 @@ cc.Class({
             btn.node.getChildByName("share").active = false;
             btn.node.getChildByName("video").active = true;
         }
+
+        this.game.hideYindao();
     },
 
     peiyu_sheep: function()
@@ -570,7 +589,7 @@ cc.Class({
                     storage.setSheep(parseInt(data.id),1);
                     storage.uploadSheep(parseInt(data.id));
                     self.sheepPeiyuState = 2;
-                    self.openpeiyangsuc(true);
+                    //self.openpeiyangsuc(true);
                 }
             });
         }
@@ -581,8 +600,19 @@ cc.Class({
             storage.uploadSheep(parseInt(data.id));
             this.updatePage2();
             this.sheepPeiyuState = 3;
+            this.openpeiyangsuc(true);
+        }
+        else if(this.sheepPeiyuState == 3)
+        {
+            var data = cc.res.conf_compose[this.index-1];
+            storage.setSheep(parseInt(data.id),3);
+            storage.uploadSheep(parseInt(data.id));
+            this.updatePage2();
+            this.sheepPeiyuState = 4;
 
             this.game.boxs[this.index-1].sc.useNewSheep();
+
+            this.game.updateYindao();
         }
     },
 
@@ -603,7 +633,7 @@ cc.Class({
                     storage.setBuoy(parseInt(data.newKnife),1);
                     storage.uploadBuoy(parseInt(data.newKnife));
                     self.buoyPeiyuState = 2;
-                    self.openpeiyangsuc();
+                    //self.openpeiyangsuc();
                 }
             });
         }
@@ -614,8 +644,19 @@ cc.Class({
             storage.uploadBuoy(parseInt(data.newKnife));
             this.updatePage3();
             this.buoyPeiyuState = 3;
+            this.openpeiyangsuc();
+        }
+        else if(this.buoyPeiyuState == 3)
+        {
+            var data = cc.res.conf_compose[this.index-1];
+            storage.setBuoy(parseInt(data.newKnife),3);
+            storage.uploadBuoy(parseInt(data.newKnife));
+            this.updatePage3();
+            this.buoyPeiyuState = 4;
 
             this.game.boxs[this.index-1].sc.useNewBuoy();
+
+            this.game.updateYindao();
         }
     },
 
@@ -689,7 +730,7 @@ cc.Class({
 
         res.showToast("钻石+"+storage.castNum(award));
         this.peiyangsuc.active = false;
-
+        this.game.updateYindao();
         //cc.res.showCoinAni();
     },
 
@@ -707,10 +748,7 @@ cc.Class({
         this.node.active = true;
         this.bg.runAction(cc.sequence(
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
-                cc.scaleTo(0.2,1).easing(cc.easeSineOut()),
-                cc.callFunc(function(){
-                    self.game.updateYindao();
-                })
+                cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
         var self = this;
         cc.sdk.showBanner(this.bg,function(dis){
@@ -718,6 +756,8 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        if(this.game.yindao<14)
+            this.game.updateYindao();
         //storage.playSound(res.audio_win);
     },
 
@@ -733,7 +773,9 @@ cc.Class({
                 })
             ));
         cc.sdk.hideBanner();
-        this.game.updateYindao();
+
+        if(this.game.yindao<14)
+            this.game.updateYindao();
     },
 
     click: function(event,data)

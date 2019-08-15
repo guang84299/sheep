@@ -28,56 +28,73 @@ cc.Class({
 
     updateUI: function()
     {
+        var conf = cc.res.conf_ranch[this.index-1];
+        this.award = Number(conf.dogCost);
         this.isUseCoin = true;
+        if(conf.costType == "1") this.isUseCoin = false;
+
+        this.btn_lingqu.node.active = true;
+        this.btn_lingqu2.node.active = false;
+
+        this.coinnum.string = storage.castNum(this.award);
+
         if(this.isUseCoin)
         {
-            this.btn_lingqu.node.active = true;
-            this.btn_lingqu2.node.active = false;
-
-            this.award = this.game.getSecVal()*60;
-            this.coinnum.string = storage.castNum(this.award);
+            cc.res.setSpriteFrame("images/common/coin",this.coinicon);
         }
         else
         {
-            this.btn_lingqu.node.active = false;
-            this.btn_lingqu2.node.active = true;
-
-            this.useShare = false;
-            if(cc.GAME.share)
-            {
-                var rad = parseInt(cc.GAME.unlockdogAd);
-                if(Math.random()*100 < rad)
-                {
-                    this.useShare = true;
-                    this.btn_lingqu2.node.getChildByName("share").active = true;
-                    this.btn_lingqu2.node.getChildByName("video").active = false;
-                }
-                else
-                {
-                    this.btn_lingqu2.node.getChildByName("share").active = false;
-                    this.btn_lingqu2.node.getChildByName("video").active = true;
-                }
-            }
-            else
-            {
-                this.btn_lingqu2.node.getChildByName("share").active = false;
-                this.btn_lingqu2.node.getChildByName("video").active = true;
-            }
+            cc.res.setSpriteFrame("images/common/diamond",this.coinicon);
         }
+        //else
+        //{
+        //    this.btn_lingqu.node.active = false;
+        //    this.btn_lingqu2.node.active = true;
+        //
+        //    this.useShare = false;
+        //    if(cc.GAME.share)
+        //    {
+        //        var rad = parseInt(cc.GAME.unlockdogAd);
+        //        if(Math.random()*100 < rad)
+        //        {
+        //            this.useShare = true;
+        //            this.btn_lingqu2.node.getChildByName("share").active = true;
+        //            this.btn_lingqu2.node.getChildByName("video").active = false;
+        //        }
+        //        else
+        //        {
+        //            this.btn_lingqu2.node.getChildByName("share").active = false;
+        //            this.btn_lingqu2.node.getChildByName("video").active = true;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        this.btn_lingqu2.node.getChildByName("share").active = false;
+        //        this.btn_lingqu2.node.getChildByName("video").active = true;
+        //    }
+        //}
 
     },
 
     lingqu: function(x2)
     {
-        if(x2)
+        var award = this.award;
+        if(!this.isUseCoin)
         {
-            this.game.boxs[this.index-1].sc.tounlockdog();
-            res.showToast("解锁成功！");
-            this.hide();
+            if(this.game.diamond>=award)
+            {
+                this.game.addDiamond(-award);
+                this.game.boxs[this.index-1].sc.tounlockdog();
+                res.showToast("解锁成功！");
+                this.hide();
+            }
+            else
+            {
+                res.showToast("钻石不足！");
+            }
         }
         else
         {
-            var award = this.award;
             if(this.game.coin>=award)
             {
                 this.game.addCoin(-award);
@@ -116,6 +133,7 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        this.game.updateYindao();
     },
 
     hide: function()
@@ -130,6 +148,8 @@ cc.Class({
                 })
             ));
         cc.sdk.hideBanner();
+
+        this.game.updateYindao();
     },
 
     click: function(event,data)

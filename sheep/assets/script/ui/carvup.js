@@ -25,6 +25,8 @@ cc.Class({
         this.icon1_val2 = cc.find("box/icon1/val2",this.bg).getComponent(cc.Label);
         this.icon2_val = cc.find("box/icon2/val",this.bg).getComponent(cc.Label);
         this.icon2_val2 = cc.find("box/icon2/val2",this.bg).getComponent(cc.Label);
+        this.icon3_val = cc.find("box/icon3/val",this.bg).getComponent(cc.Label);
+        this.icon3_val2 = cc.find("box/icon3/val2",this.bg).getComponent(cc.Label);
 
         this.cost10 = cc.find("box/up10/costbg/cost",this.bg).getComponent(cc.Label);
         this.up_rate10 = cc.find("box/up10/desc",this.bg).getComponent(cc.Label);
@@ -54,6 +56,12 @@ cc.Class({
 
         this.icon2_val.string = storage.castNum(pice);
         this.icon2_val2.string = "+"+storage.castNum(pice2-pice);
+
+        var carrySpeed = Number(res.conf_truckVic[lv-1].carrySpeed);
+        var carrySpeed2 = Number(res.conf_truckVic[nlv-1].carrySpeed);
+
+        this.icon3_val.string = storage.castNum(carrySpeed);
+        this.icon3_val2.string = "+"+storage.castNum(carrySpeed2-carrySpeed);
 
 
         var costDate = this.getCost(lv,1);
