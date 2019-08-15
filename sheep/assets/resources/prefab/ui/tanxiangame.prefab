@@ -2461,7 +2461,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "4776c548-86f5-4fad-a121-b806e7ea2422"
+      "__uuid__": "fc95f883-f4ce-41cf-ab32-3387a5443574"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -2474,7 +2474,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e0bc08b7-05db-4edf-af07-0f130e0ab29f"
+    },
     "_id": ""
   },
   {
@@ -3309,7 +3311,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "4fb5a34f-dd94-4ece-86ec-785a4657845e"
+      "__uuid__": "89779888-6b0d-4d06-88c4-7bfe20cefe47"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -3322,7 +3324,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e0bc08b7-05db-4edf-af07-0f130e0ab29f"
+    },
     "_id": ""
   },
   {
@@ -3596,8 +3600,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 34
+      "width": 29,
+      "height": 29
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3644,7 +3648,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "320a6ffa-0965-4f8b-ad76-64202ba20470"
+      "__uuid__": "a6fdf24d-7d07-4d4d-8432-a0c4eb28a82c"
     },
     "_type": 0,
     "_sizeMode": 2,
@@ -3657,7 +3661,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e0bc08b7-05db-4edf-af07-0f130e0ab29f"
+    },
     "_id": ""
   },
   {
@@ -3767,7 +3773,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "5eddc7f2-c01e-4fab-93a5-ff41156b752d"
+      "__uuid__": "4c516055-0e30-49b6-8731-9177908dc216"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3780,7 +3786,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e0bc08b7-05db-4edf-af07-0f130e0ab29f"
+    },
     "_id": ""
   },
   {

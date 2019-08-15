@@ -248,7 +248,7 @@ cc.Class({
         else
             res[pifx+resource.name] = resource;
 
-        //cc.log(res);
+        cc.log(url);
     },
 
     initNet: function()
