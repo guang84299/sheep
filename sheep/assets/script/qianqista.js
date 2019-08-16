@@ -146,6 +146,7 @@ module.exports = {
                     //    cc.storage.playMusic(cc.res.audio_bgm);
                     if(cc.myscene == "main")
                         cc.storage.playMusic(cc.res.audio_music);
+
                 }
                 if(self.onshowmaincallback)
                     self.onshowmaincallback();

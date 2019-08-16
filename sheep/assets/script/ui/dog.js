@@ -382,8 +382,8 @@ cc.Class({
             if(cardLv>0)
             {
                 //title.string = "相同品质卡片自动转为升级经验";
-                cc.res.setSpriteFrame("images/dog/wenzi03",title);
-                cc.res.setSpriteFrame("images/dog/yiyongyou",card_desc);
+                cc.res.setSpriteFrameAtlas("images/dog","wenzi03",title);
+                cc.res.setSpriteFrameAtlas("images/dog","yiyongyou",card_desc);
                 info2.node.active = true;
                 info2.string = seldata.character+"牧羊犬 经验+1";
                 info.active = false;
@@ -391,8 +391,8 @@ cc.Class({
             else
             {
                 //title.string = "新卡片在狗窝中查看使用";
-                cc.res.setSpriteFrame("images/dog/wenzi04",title);
-                cc.res.setSpriteFrame("images/dog/xin",card_desc);
+                cc.res.setSpriteFrameAtlas("images/dog","wenzi04",title);
+                cc.res.setSpriteFrameAtlas("images/dog","xin",card_desc);
                 info2.node.active = false;
                 info.active = true;
 
@@ -457,8 +457,8 @@ cc.Class({
                 var seldata = cc.res.conf_cardText[index-1];
 
                 cc.res.setSpriteFrame("images/dogcard/card_"+index,card);
-                if(cardLv>0) cc.res.setSpriteFrame("images/dog/yiyongyou",desc);
-                else cc.res.setSpriteFrame("images/dog/xin",desc);
+                if(cardLv>0) cc.res.setSpriteFrameAtlas("images/dog","yiyongyou",desc);
+                else cc.res.setSpriteFrameAtlas("images/dog","xin",desc);
 
                 //动画
                 card.scale = 0;

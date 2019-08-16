@@ -40,11 +40,11 @@ cc.Class({
 
         if(this.isUseCoin)
         {
-            cc.res.setSpriteFrame("images/common/coin",this.coinicon);
+            cc.res.setSpriteFrameAtlas("images/common","coin",this.coinicon);
         }
         else
         {
-            cc.res.setSpriteFrame("images/common/diamond",this.coinicon);
+            cc.res.setSpriteFrameAtlas("images/common","diamond",this.coinicon);
         }
         //else
         //{

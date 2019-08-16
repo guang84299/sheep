@@ -125,7 +125,7 @@ cc.Class({
 
     updateAniconfig: function()
     {
-        if(this.box.isUnLockSheep == 2)
+        if(this.box.isUnLockSheep == 3)
             this.aniconfig = cc.config.sheepAnim[this.box.type];
         else
             this.aniconfig = cc.config.sheepAnim[0];

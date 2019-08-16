@@ -145,6 +145,8 @@ cc.Class({
     {
         this.mao.destroyAllChildren();
         var icon = this.type+1;
+        if(this.isUnLockSheep != 3)
+            icon = 1;
         var node = cc.res.playAnim("images/box/mao"+icon,4,1,1,null,false);
         this.mao.addChild(node);
     },
@@ -493,7 +495,7 @@ cc.Class({
         var ac = cc.sequence(
             cc.fadeIn(0.1),
             cc.scaleTo(0.2,1).easing(cc.easeSineIn()),
-            cc.delayTime(2),
+            cc.delayTime(3),
             cc.fadeOut(1)
         );
         ac.setTag(1);

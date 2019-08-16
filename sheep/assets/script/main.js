@@ -33,17 +33,17 @@ cc.Class({
         this.updateRed();
         this.updateFlyCoin();
 
-        if(this.yindao < 22)
+        if(this.yindao < 22)//22
         {
             //this.yindao = 14;
-            if(this.yindao == 4) this.yindao = 3;
-            else if(this.yindao == 5) this.yindao = 6;
-            else if(this.yindao == 8) this.yindao = 7;
-            else if(this.yindao == 9) this.yindao = 10;
-            else if(this.yindao == 12) this.yindao = 11;
-            else if(this.yindao == 13) this.yindao = 14;
+            //if(this.yindao == 4) this.yindao = 3;
+            //else if(this.yindao == 5) this.yindao = 6;
+            //else if(this.yindao == 8) this.yindao = 7;
+            //else if(this.yindao == 9) this.yindao = 10;
+            //else if(this.yindao == 12) this.yindao = 11;
+            //else if(this.yindao == 13) this.yindao = 14;
 
-            if(this.yindao < 14)
+            if(this.yindao < 2)
             {
                 this.scheduleOnce(function(){
                     res.openUI("yindao");
@@ -191,9 +191,9 @@ cc.Class({
 
         var nickName = this.getNikeName(tlv);
         var nextNickName = this.getNextNikeName(tlv);
-        res.setSpriteFrame(nickName,this.currName);
+        res.setSpriteFrameAtlas("images/name",nickName,this.currName);
         if(nickName != nextNickName)
-            res.setSpriteFrame(nextNickName,this.nextName);
+            res.setSpriteFrameAtlas("images/name",nextNickName,this.nextName);
         else
             this.nextNamebg.active = false;
 
@@ -215,7 +215,7 @@ cc.Class({
             }
         }
         if(n == -1) n = res.conf_achievement.length;
-        return "images/name/"+n;
+        return n;
     },
 
     getNextNikeName: function(tlv)
@@ -230,7 +230,7 @@ cc.Class({
             }
         }
         if(n == -1) n = res.conf_achievement.length;
-        return "images/name/"+n;
+        return n;
     },
 
     getNextNikePro: function(tlv)
@@ -984,7 +984,7 @@ cc.Class({
         }
         else if(data == "shouyi")
         {
-            res.openUI("shouyi");
+            //res.openUI("shouyi");
         }
         else if(data == "up")
         {

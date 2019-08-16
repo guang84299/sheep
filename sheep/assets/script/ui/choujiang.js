@@ -54,7 +54,7 @@ cc.Class({
             icon.height = 40;
             if(data.rewardType == "0")
             {
-                res.setSpriteFrame("images/common/coin",icon);
+                res.setSpriteFrameAtlas("images/common","coin",icon);
                 desc.node.color = cc.color(225,130,6);
             }
             else if(data.rewardType == "1")

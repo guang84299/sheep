@@ -29,7 +29,7 @@ cc.Class({
 
     updateUI: function()
     {
-        this.level.string = "第"+storage.getTxLv()+"层";
+        this.level.string = "第"+storage.getTxLv()+"关";
         this.pro_num.string = this.tili+"/"+this.tiliTotal;
         this.pro.progress = this.tili/this.tiliTotal;
     },
@@ -218,11 +218,11 @@ cc.Class({
                     this.awards.push(cailiao);
                     if(cailiao.type == 1)
                     {
-                        res.setSpriteFrame("images/common/coin",item.icon);
+                        res.setSpriteFrameAtlas("images/common","coin",item.icon);
                     }
                     else if(cailiao.type == 2)
                     {
-                        res.setSpriteFrame("images/common/diamond",item.icon);
+                        res.setSpriteFrameAtlas("images/common","diamond",item.icon);
                     }
                     else if(cailiao.type == 5)
                     {

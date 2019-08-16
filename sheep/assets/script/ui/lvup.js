@@ -263,7 +263,7 @@ cc.Class({
             {
                 yangmao_btn_video.active = false;
                 yangmao_btn_tanxian.active = false;
-                yangmao_desc.string = "已满";
+                yangmao_desc.string = "收集完成";
                 p1 = true;
             }
             else
@@ -279,7 +279,7 @@ cc.Class({
             {
                 siliao_btn_video.active = false;
                 siliao_btn_tanxian.active = false;
-                siliao_desc.string = "已满";
+                siliao_desc.string = "收集完成";
                 p2 = true;
             }
             else
@@ -331,10 +331,10 @@ cc.Class({
 
             yangmao_btn_video.active = false;
             yangmao_btn_tanxian.active = false;
-            yangmao_desc.string = "已满";
+            yangmao_desc.string = "收集完成";
             siliao_btn_video.active = false;
             siliao_btn_tanxian.active = false;
-            siliao_desc.string = "已满";
+            siliao_desc.string = "收集完成";
 
             yang_peiyu_state1.active = true;
             yang_peiyu_state2.active = false;
@@ -346,12 +346,12 @@ cc.Class({
             else if(sheep == 2)
             {
                 this.sheepPeiyuState = 3;
-                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "使用";
+                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "放入羊场";
             }
             else
             {
                 this.sheepPeiyuState = 4;
-                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "已使用";
+                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "已放入羊场";
             }
         }
     },
@@ -420,7 +420,7 @@ cc.Class({
             {
                 yangmao_btn_video.active = false;
                 yangmao_btn_tanxian.active = false;
-                yangmao_desc.string = "已满";
+                yangmao_desc.string = "收集完成";
                 p1 = true;
             }
             else
@@ -436,7 +436,7 @@ cc.Class({
             {
                 siliao_btn_video.active = false;
                 siliao_btn_tanxian.active = false;
-                siliao_desc.string = "已满";
+                siliao_desc.string = "收集完成";
                 p2 = true;
             }
             else
@@ -488,10 +488,10 @@ cc.Class({
 
             yangmao_btn_video.active = false;
             yangmao_btn_tanxian.active = false;
-            yangmao_desc.string = "已满";
+            yangmao_desc.string = "收集完成";
             siliao_btn_video.active = false;
             siliao_btn_tanxian.active = false;
-            siliao_desc.string = "已满";
+            siliao_desc.string = "收集完成";
 
             yang_peiyu_state1.active = true;
             yang_peiyu_state2.active = false;
@@ -503,12 +503,12 @@ cc.Class({
             else if(buoy == 2)
             {
                 this.buoyPeiyuState = 3;
-                str.string = "使用";
+                str.string = "放入羊场";
             }
             else
             {
                 this.buoyPeiyuState = 4;
-                str.string = "已使用";
+                str.string = "已放入羊场";
             }
         }
     },
