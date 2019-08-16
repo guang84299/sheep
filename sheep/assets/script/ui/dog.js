@@ -446,6 +446,8 @@ cc.Class({
             var box = cc.find("box",card9);
             box.active = false;
 
+            var chuanqiId = -1;
+            if(type == 4) chuanqiId = Math.floor(Math.random()*9);
             var rindex = [];
             for(var i=0;i<cards.length;i++)
             {
@@ -453,6 +455,7 @@ cc.Class({
                 var desc = cc.find("desc",card);
 
                 var index = this.getChoukaIndex(type);
+                if(i == chuanqiId) index = 5;
                 var cardLv = storage.getDogCardLv(index);
                 var seldata = cc.res.conf_cardText[index-1];
 

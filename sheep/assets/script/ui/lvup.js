@@ -526,7 +526,7 @@ cc.Class({
         icon.stopAllActions();
         if(isSheep)
         {
-            cc.res.setSpriteFrame("images/lvup/peiyuchengg",title);
+            cc.res.setSpriteFrameAtlas("images/lvup","peiyuchengg",title);
             icon.scale = 0.8;
             desc.string = "获得新羊";
 
@@ -536,7 +536,7 @@ cc.Class({
         }
         else
         {
-            cc.res.setSpriteFrame("images/lvup/yjchenggong",title);
+            cc.res.setSpriteFrameAtlas("images/lvup","yjchenggong",title);
             icon.scale = 1;
             desc.string = "获得新刀";
 
