@@ -406,17 +406,20 @@ cc.Class({
             this.dog_lock.active = true;
             this.dog_lock_btn1.active = true;
             this.dog_lock_btn2.active = false;
+            this.dog_dog.active = false;
         }
         else if(this.dog == 1)
         {
             this.dog_lock.active = false;
             this.dog_dog_qipao.active = false;
+            this.dog_dog.active = true;
         }
         else if(this.dog > 1)
         {
             this.dog_lock.active = true;
             this.dog_lock_btn1.active = false;
             this.dog_lock_btn2.active = true;
+            this.dog_dog.active = false;
         }
         this.dogUnlokDt = 0;
 
@@ -447,6 +450,7 @@ cc.Class({
     {
         this.dog = 1;
         this.dog_lock.active = false;
+        this.dog_dog.active = true;
         cc.storage.setLevelDog(this.index,1);
         cc.storage.uploadLevelDog(this.index);
 
@@ -482,10 +486,16 @@ cc.Class({
     {
         var acc = this.dog_dog_qipao.getActionByTag(1);
         if(acc && !acc.isDone()) return;
-        //var i = Math.floor(Math.random()*5)+1;
+        var n = Math.floor(Math.random()*7)+1;
+
+        var sp = this.dog_dog_dog.getComponent("sp.Skeleton");
+        sp.setAnimation(0,"0"+n,true);
+        //sp.setEndListener(function(){
+        //
+        //});
         //cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+i,this.dog_dog);
 
-        this.dog_dog_dog.runAction(cc.jumpTo(0.5,this.dog_dog_dog.position,30,3));
+        //this.dog_dog_dog.runAction(cc.jumpTo(0.5,this.dog_dog_dog.position,30,3));
 
         var i = Math.floor(Math.random()*(cc.res.conf_dogText.length-1))+1;
 

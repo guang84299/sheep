@@ -169,7 +169,7 @@ cc.Class({
 
         if(carrySpeed>this.game.faccoin)
         {
-            car.coin = this.game.faccoin;
+            car.coin += this.game.faccoin;
             this.game.addFacCoin(-this.game.faccoin);
         }
         else

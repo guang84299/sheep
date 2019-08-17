@@ -1018,6 +1018,23 @@ module.exports = {
         return Number(num);
     },
 
+    setNameUp: function(nameup)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"nameup",nameup);
+    },
+    getNameUp: function()
+    {
+        var nameup = cc.sys.localStorage.getItem(this.pfix+"nameup");
+        nameup = nameup ? nameup : 0;
+        return Number(nameup);
+    },
+    uploadNameUp: function()
+    {
+        var datas = {};
+        datas.nameup = this.getNameUp();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
 
 
     scientificToNumber: function(num) {

@@ -49,11 +49,11 @@ cc.Class({
         {
             if(i<cc.gjiabeilist.length)
             {
-                cc.res.setSpriteFrame("images/shouyifanbei/touxiang",this.heads[i]);
+                cc.res.setSpriteFrameAtlas("images/shouyifanbei","touxiang",this.heads[i]);
             }
             else
             {
-                cc.res.setSpriteFrame("images/shouyifanbei/touxiangkuang",this.heads[i]);
+                cc.res.setSpriteFrameAtlas("images/shouyifanbei","touxiangkuang",this.heads[i]);
             }
         }
         this.pro.progress = cc.gjiabeilist.length/6;

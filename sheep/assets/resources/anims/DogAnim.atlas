@@ -1,0 +1,188 @@
+
+DogAnim.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body1
+  rotate: false
+  xy: 2, 149
+  size: 75, 49
+  orig: 76, 50
+  offset: 1, 0
+  index: -1
+body2
+  rotate: false
+  xy: 164, 352
+  size: 81, 67
+  orig: 82, 68
+  offset: 1, 0
+  index: -1
+brow
+  rotate: false
+  xy: 79, 144
+  size: 13, 13
+  orig: 14, 14
+  offset: 1, 0
+  index: -1
+chest
+  rotate: false
+  xy: 164, 304
+  size: 61, 46
+  orig: 62, 46
+  offset: 1, 0
+  index: -1
+ear
+  rotate: false
+  xy: 247, 359
+  size: 37, 60
+  orig: 38, 60
+  offset: 1, 0
+  index: -1
+eye1
+  rotate: false
+  xy: 247, 321
+  size: 16, 17
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+eye2
+  rotate: false
+  xy: 227, 306
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
+eye3
+  rotate: false
+  xy: 380, 408
+  size: 11, 11
+  orig: 12, 12
+  offset: 1, 0
+  index: -1
+eye4
+  rotate: false
+  xy: 313, 362
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+hair
+  rotate: false
+  xy: 79, 159
+  size: 43, 39
+  orig: 44, 40
+  offset: 1, 0
+  index: -1
+head
+  rotate: false
+  xy: 2, 301
+  size: 160, 118
+  orig: 160, 118
+  offset: 0, 0
+  index: -1
+leg1-1
+  rotate: false
+  xy: 2, 83
+  size: 31, 36
+  orig: 32, 36
+  offset: 1, 0
+  index: -1
+leg1-2
+  rotate: false
+  xy: 286, 360
+  size: 25, 40
+  orig: 26, 40
+  offset: 1, 0
+  index: -1
+leg1-3
+  rotate: false
+  xy: 247, 340
+  size: 29, 17
+  orig: 30, 18
+  offset: 1, 0
+  index: -1
+leg2-1
+  rotate: false
+  xy: 35, 84
+  size: 27, 35
+  orig: 27, 35
+  offset: 0, 0
+  index: -1
+leg2-2
+  rotate: false
+  xy: 2, 20
+  size: 24, 26
+  orig: 24, 26
+  offset: 0, 0
+  index: -1
+leg2-3
+  rotate: true
+  xy: 227, 320
+  size: 30, 18
+  orig: 30, 18
+  offset: 0, 0
+  index: -1
+mouth
+  rotate: false
+  xy: 351, 407
+  size: 27, 12
+  orig: 28, 12
+  offset: 1, 0
+  index: -1
+mouth-base
+  rotate: false
+  xy: 2, 200
+  size: 127, 99
+  orig: 128, 100
+  offset: 1, 0
+  index: -1
+mouth-up
+  rotate: false
+  xy: 2, 121
+  size: 61, 26
+  orig: 62, 26
+  offset: 0, 0
+  index: -1
+nose
+  rotate: false
+  xy: 2, 2
+  size: 23, 16
+  orig: 24, 16
+  offset: 1, 0
+  index: -1
+orbit
+  rotate: true
+  xy: 2, 48
+  size: 33, 30
+  orig: 34, 30
+  offset: 1, 0
+  index: -1
+ring
+  rotate: false
+  xy: 286, 402
+  size: 63, 17
+  orig: 64, 18
+  offset: 1, 0
+  index: -1
+sticky
+  rotate: false
+  xy: 65, 126
+  size: 12, 21
+  orig: 12, 22
+  offset: 0, 0
+  index: -1
+tail
+  rotate: false
+  xy: 131, 207
+  size: 30, 92
+  orig: 30, 92
+  offset: 0, 0
+  index: -1
+tongue
+  rotate: false
+  xy: 313, 372
+  size: 29, 28
+  orig: 30, 28
+  offset: 0, 0
+  index: -1

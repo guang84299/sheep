@@ -109,6 +109,56 @@ module.exports = {
         return this.playPlistAnim(node,atlas,name,frameNum,time,loop,callback,isRemove,isFlip);
     },
 
+    playPlistAnim3: function(atlas,time,loop,callback,isRemove,isFlip)
+    {
+        var node = new cc.Node();
+        var sp = node.addComponent(cc.Sprite);
+
+        var frames = atlas.getSpriteFrames();
+        var frameNum = frames.length;
+
+        //for(var i=0;i<=frameNum;i++)
+        //{
+        //    var frame = atlas.getSpriteFrame(name+'_'+i);
+        //    frames.push(frame);
+        //}
+
+        if(loop == -1) loop = 999999999;
+
+        sp.trim = false;
+        sp.sizeMode = cc.Sprite.SizeMode.RAW;
+        sp.unscheduleAllCallbacks();
+
+        var play = function(){
+            var i = 0;
+            if(isFlip) i = frameNum;
+            sp.schedule(function(){
+                sp.spriteFrame = frames[i];
+                if(isFlip) i--;
+                else i++;
+            },time,frameNum);
+        };
+
+        var num = 1;
+        if(loop>0)
+        {
+            play();
+        }
+        sp.schedule(function(){
+            if(num>loop)
+            {
+                if(callback) callback();
+                if(isRemove) node.destroy();
+            }
+            else if(num>1)
+                play();
+            num ++;
+        },time*(frameNum+2),loop);
+
+        return node;
+    },
+
+
     playAnim: function(path,frameNum,time,loop,callback,isRemove,isFlip)
     {
         if(loop == -1) loop = 999999999;

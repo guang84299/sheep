@@ -84,6 +84,8 @@ cc.Class({
             "images/sheep/sheep5",
             "images/sheep/sheep6",
 
+            "anims/TouchParti",
+
             "prefab/ui/coinAni",
             "prefab/ui/toast",
 
@@ -92,8 +94,10 @@ cc.Class({
             "prefab/ui/choujiang",
             "prefab/ui/dog",
             "prefab/ui/freecoin",
+            "prefab/ui/freetili",
             "prefab/ui/lixian",
             "prefab/ui/lvup",
+            "prefab/ui/nameup",
             "prefab/ui/power",
             "prefab/ui/qiandao",
             "prefab/ui/rank",
@@ -123,7 +127,7 @@ cc.Class({
         this.loadCount = 0;
 
         this.nowtime = new Date().getTime();
-        for(var i=0;i<5;i++)
+        for(var i=0;i<3;i++)
             this.loadres();
 
         var self = this;
@@ -159,7 +163,7 @@ cc.Class({
         {
             var index = this.loadCount;
             var path = this.purls[index];
-            if(path.indexOf("images/sheep/") != -1)
+            if(path.indexOf("images/sheep/") != -1 || path.indexOf("anims/") != -1)
             {
                 cc.loader.loadRes(this.purls[index],cc.SpriteAtlas, function(err, prefab)
                 {
@@ -248,7 +252,8 @@ cc.Class({
         else
             res[pifx+resource.name] = resource;
 
-        cc.log(url);
+        //cc.log(url);
+        //cc.log(res);
     },
 
     initNet: function()
@@ -413,6 +418,9 @@ cc.Class({
                 storage.setTxNum(Number(datas.txnum));
             if(datas.hasOwnProperty("txtask"))
                 storage.setTxTask(Number(datas.txtask));
+
+            if(datas.hasOwnProperty("nameup"))
+                storage.setNameUp(Number(datas.nameup));
 
 
             if(datas.hasOwnProperty("ginvitelist"))

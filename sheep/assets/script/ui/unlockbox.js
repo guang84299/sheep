@@ -45,8 +45,12 @@ cc.Class({
         else
             res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,this.yangIcon);
 
-        var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoyIcon"+data.newKnife+"_1");
-        this.daoIcon.getComponent(cc.Sprite).spriteFrame = sp;
+        //var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoyIcon"+data.newKnife+"_1");
+        //this.daoIcon.getComponent(cc.Sprite).spriteFrame = sp;
+
+        var sp = this.daoIcon.getComponent("sp.Skeleton");
+        sp.setSkin("ani_"+data.newKnife);
+
 
         var now = new Date().getTime();
 

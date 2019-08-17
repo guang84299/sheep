@@ -41,7 +41,7 @@ cc.Class({
         }
         this.selbox = cc.find("selbox",this.node);
         this.selbox.active = false;
-        this.selCardIndex = 0;
+        this.selCardIndex = storage.getDogCard()-1;
 
         this.cardColors = [
             cc.color(0,0,0),
@@ -226,9 +226,10 @@ cc.Class({
 
     },
 
-    openSelBox: function()
+    openSelBox: function(selCardIndex)
     {
         this.selbox.active = true;
+        this.openSelIndex = selCardIndex;
 
         var rate = cc.find("box/rate",this.selbox).getComponent(cc.Label);
         var name = cc.find("box/name",this.selbox).getComponent(cc.Label);
@@ -244,10 +245,10 @@ cc.Class({
         var pro = cc.find("box/card/pro",this.selbox).getComponent(cc.ProgressBar);
         var pro_num = cc.find("box/card/pro/num",this.selbox).getComponent(cc.Label);
 
-        var seldata = cc.res.conf_cardText[this.selCardIndex];
-        var cardLv = storage.getDogCardLv(this.selCardIndex+1);
+        var seldata = cc.res.conf_cardText[selCardIndex];
+        var cardLv = storage.getDogCardLv(selCardIndex+1);
         var dataGrade = cc.res.conf_cardGrade[cardLv];
-        var carNum = storage.getDogCardNum(this.selCardIndex+1);
+        var carNum = storage.getDogCardNum(selCardIndex+1);
 
         rate.string = "X"+(Number(seldata.base)+Number(seldata.ratio)*cardLv).toFixed(2);
         name.string = seldata.name;
@@ -257,13 +258,13 @@ cc.Class({
         up.string = "（上限"+seldata.top+"倍）";
 
         lv.string = "lv"+cardLv;
-        pro_num.string = carNum+"/"+dataGrade["card"+(this.selCardIndex+1)];
-        pro.progress = carNum/parseFloat(dataGrade["card"+(this.selCardIndex+1)]);
+        pro_num.string = carNum+"/"+dataGrade["card"+(selCardIndex+1)];
+        pro.progress = carNum/parseFloat(dataGrade["card"+(selCardIndex+1)]);
 
-        //grade.node.color = this.cardColors[this.selCardIndex];
+        //grade.node.color = this.cardColors[selCardIndex];
 
         var cardId = storage.getDogCard();
-        if(this.selCardIndex+1 == cardId)
+        if(selCardIndex+1 == cardId)
         {
             use.interactable = false;
             use_str.string = "使用中";
@@ -360,6 +361,7 @@ cc.Class({
             singlecard.active = true;
 
             var card = cc.find("card",singlecard);
+            card.getChildByName("ani").active = false;
             var box = cc.find("box",singlecard);
 
             var card_desc = cc.find("desc",card);
@@ -413,6 +415,7 @@ cc.Class({
                 cc.callFunc(function(){
                     box.active = true;
                     self.isChoukaing = false;
+                    card.getChildByName("ani").active = true;
                 })
             ));
 
@@ -452,6 +455,7 @@ cc.Class({
             for(var i=0;i<cards.length;i++)
             {
                 var card = cards[i];
+                card.getChildByName("ani").active = false;
                 var desc = cc.find("desc",card);
 
                 var index = this.getChoukaIndex(type);
@@ -464,12 +468,8 @@ cc.Class({
                 else cc.res.setSpriteFrameAtlas("images/dog","xin",desc);
 
                 //动画
-                card.scale = 0;
-                card.runAction(cc.sequence(
-                    cc.delayTime(0.6*i),
-                    cc.scaleTo(0.2,-1,1).easing(cc.easeSineIn()),
-                    cc.scaleTo(0.5,1,1).easing(cc.easeSineIn())
-                ));
+                this.cardAni(card,i);
+
 
                 var carNum = storage.getDogCardNum(index);
                 carNum += 1;
@@ -515,6 +515,19 @@ cc.Class({
                 })
             ));
         }
+    },
+
+    cardAni: function(card,i)
+    {
+        card.scale = 0;
+        card.runAction(cc.sequence(
+            cc.delayTime(0.6*i),
+            cc.scaleTo(0.2,-1,1).easing(cc.easeSineIn()),
+            cc.scaleTo(0.5,1,1).easing(cc.easeSineIn()),
+            cc.callFunc(function(){
+                card.getChildByName("ani").active = true;
+            })
+        ));
     },
 
     buy1: function()
@@ -585,9 +598,9 @@ cc.Class({
         var cardLv = storage.getDogCardLv(tid);
         if(cardLv>0)
         {
-            this.selCardIndex = tid-1;
-            this.updatePage2();
-            this.openSelBox();
+            //this.selCardIndex = tid-1;
+            //this.updatePage2();
+            this.openSelBox(tid-1);
         }
     },
 
@@ -621,11 +634,16 @@ cc.Class({
     use: function()
     {
         var cardId = storage.getDogCard();
-        if(cardId != this.selCardIndex+1)
+        if(cardId != this.openSelIndex+1)
         {
-            storage.setDogCard(this.selCardIndex+1);
+            this.selCardIndex = this.openSelIndex;
+            storage.setDogCard(this.openSelIndex+1);
             storage.uploadDogCard();
             this.updatePage2();
+
+            this.selbox.active = false;
+
+            this.game.updateDogcardShouyi();
         }
     },
 

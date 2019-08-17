@@ -59,12 +59,12 @@ cc.Class({
             }
             else if(data.rewardType == "1")
             {
-                res.setSpriteFrame("images/rank/quik",icon);
+                res.setSpriteFrameAtlas("images/rank","quik",icon);
                 desc.node.color = cc.color(105,12,255);
             }
             else if(data.rewardType == "2")
             {
-                res.setSpriteFrame("images/rank/up",icon);
+                res.setSpriteFrameAtlas("images/rank","up",icon);
                 desc.node.color = cc.color(189,43,7);
             }
         }

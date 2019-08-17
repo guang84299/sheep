@@ -116,8 +116,11 @@ cc.Class({
     lvup: function()
     {
         this.conf = this.box.conf;
-        this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
-        this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
+        if(this.box.dog == 1)
+        {
+            this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
+            this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
+        }
     },
 
     touchBox: function()

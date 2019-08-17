@@ -55,7 +55,8 @@ cc.Class({
             {
                 if(storage.getTxTaskLq(i) == 1)
                 {
-                    state.string = "已领取";
+                    state.node.color = cc.color(118,218,0);
+                    state.string = "已完成";
                     lingqu.active = false;
                 }
                 else
@@ -63,6 +64,7 @@ cc.Class({
             }
             else
             {
+                state.node.color = cc.color(235,6,0);
                 state.string = "未完成";
                 lingqu.active = false;
             }

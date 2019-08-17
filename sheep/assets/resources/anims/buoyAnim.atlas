@@ -1,0 +1,426 @@
+
+buoyAnim.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+buoy1
+  rotate: true
+  xy: 106, 606
+  size: 103, 95
+  orig: 103, 103
+  offset: 0, 4
+  index: -1
+buoy10
+  rotate: false
+  xy: 106, 711
+  size: 102, 101
+  orig: 103, 103
+  offset: 1, 1
+  index: -1
+buoy2
+  rotate: false
+  xy: 420, 927
+  size: 103, 95
+  orig: 103, 103
+  offset: 0, 5
+  index: -1
+buoy3
+  rotate: false
+  xy: 212, 921
+  size: 103, 101
+  orig: 103, 103
+  offset: 0, 1
+  index: -1
+buoy4
+  rotate: false
+  xy: 2, 919
+  size: 103, 103
+  orig: 103, 103
+  offset: 0, 0
+  index: -1
+buoy5
+  rotate: false
+  xy: 2, 814
+  size: 103, 103
+  orig: 103, 103
+  offset: 0, 0
+  index: -1
+buoy6
+  rotate: false
+  xy: 107, 919
+  size: 103, 103
+  orig: 103, 103
+  offset: 0, 0
+  index: -1
+buoy7
+  rotate: false
+  xy: 2, 605
+  size: 102, 102
+  orig: 103, 103
+  offset: 1, 0
+  index: -1
+buoy8
+  rotate: true
+  xy: 96, 300
+  size: 103, 88
+  orig: 103, 103
+  offset: 0, 7
+  index: -1
+buoy9
+  rotate: true
+  xy: 2, 195
+  size: 103, 89
+  orig: 103, 103
+  offset: 0, 7
+  index: -1
+buoyIcon1
+  rotate: false
+  xy: 898, 722
+  size: 62, 46
+  orig: 62, 46
+  offset: 0, 0
+  index: -1
+buoyIcon10
+  rotate: false
+  xy: 941, 955
+  size: 79, 67
+  orig: 81, 69
+  offset: 1, 1
+  index: -1
+buoyIcon2
+  rotate: true
+  xy: 203, 34
+  size: 62, 46
+  orig: 62, 46
+  offset: 0, 0
+  index: -1
+buoyIcon3
+  rotate: true
+  xy: 972, 774
+  size: 61, 50
+  orig: 61, 50
+  offset: 0, 0
+  index: -1
+buoyIcon4
+  rotate: true
+  xy: 972, 711
+  size: 61, 50
+  orig: 61, 50
+  offset: 0, 0
+  index: -1
+buoyIcon5
+  rotate: false
+  xy: 187, 98
+  size: 54, 47
+  orig: 54, 47
+  offset: 0, 0
+  index: -1
+buoyIcon6
+  rotate: false
+  xy: 211, 825
+  size: 54, 47
+  orig: 54, 47
+  offset: 0, 0
+  index: -1
+buoyIcon7
+  rotate: true
+  xy: 243, 160
+  size: 61, 52
+  orig: 61, 52
+  offset: 0, 0
+  index: -1
+buoyIcon8
+  rotate: false
+  xy: 710, 771
+  size: 75, 60
+  orig: 75, 60
+  offset: 0, 0
+  index: -1
+buoyIcon9
+  rotate: true
+  xy: 184, 223
+  size: 75, 61
+  orig: 75, 61
+  offset: 0, 0
+  index: -1
+new/buoy11
+  rotate: false
+  xy: 2, 2
+  size: 100, 86
+  orig: 103, 103
+  offset: 0, 8
+  index: -1
+new/buoy11_5
+  rotate: false
+  xy: 733, 932
+  size: 102, 90
+  orig: 103, 103
+  offset: 0, 4
+  index: -1
+new/buoy12
+  rotate: false
+  xy: 898, 770
+  size: 72, 65
+  orig: 72, 65
+  offset: 0, 0
+  index: -1
+new/buoy12_5
+  rotate: true
+  xy: 2, 300
+  size: 103, 92
+  orig: 103, 103
+  offset: 0, 5
+  index: -1
+new/buoy13
+  rotate: true
+  xy: 187, 147
+  size: 74, 54
+  orig: 74, 54
+  offset: 0, 0
+  index: -1
+new/buoy13_5
+  rotate: true
+  xy: 618, 830
+  size: 95, 90
+  orig: 103, 103
+  offset: 5, 6
+  index: -1
+new/buoy14
+  rotate: true
+  xy: 203, 608
+  size: 101, 82
+  orig: 103, 103
+  offset: 0, 16
+  index: -1
+new/buoy14_5
+  rotate: true
+  xy: 2, 90
+  size: 103, 89
+  orig: 103, 103
+  offset: 0, 9
+  index: -1
+new/buoy15
+  rotate: true
+  xy: 898, 837
+  size: 93, 85
+  orig: 103, 103
+  offset: 6, 9
+  index: -1
+new/buoy15_5
+  rotate: false
+  xy: 802, 841
+  size: 94, 89
+  orig: 103, 103
+  offset: 6, 7
+  index: -1
+new/buoy16_1
+  rotate: false
+  xy: 2, 405
+  size: 101, 95
+  orig: 103, 103
+  offset: 2, 3
+  index: -1
+new/buoy16_2
+  rotate: false
+  xy: 267, 826
+  size: 54, 46
+  orig: 62, 46
+  offset: 5, 0
+  index: -1
+new/buoy17_1
+  rotate: false
+  xy: 2, 709
+  size: 102, 103
+  orig: 103, 103
+  offset: 1, 0
+  index: -1
+new/buoy17_2
+  rotate: true
+  xy: 299, 43
+  size: 56, 45
+  orig: 62, 46
+  offset: 5, 0
+  index: -1
+new/buoy18_1
+  rotate: true
+  xy: 93, 96
+  size: 97, 92
+  orig: 103, 103
+  offset: 4, 5
+  index: -1
+new/buoy18_2
+  rotate: false
+  xy: 270, 874
+  size: 55, 45
+  orig: 62, 46
+  offset: 5, 0
+  index: -1
+new/buoy19_1
+  rotate: false
+  xy: 317, 921
+  size: 101, 101
+  orig: 103, 103
+  offset: 2, 0
+  index: -1
+new/buoy19_2
+  rotate: true
+  xy: 299, 2
+  size: 39, 38
+  orig: 62, 46
+  offset: 10, 7
+  index: -1
+new/buoy20_1
+  rotate: false
+  xy: 420, 829
+  size: 97, 96
+  orig: 103, 103
+  offset: 3, 3
+  index: -1
+new/buoy20_2
+  rotate: false
+  xy: 985, 916
+  size: 37, 37
+  orig: 62, 46
+  offset: 10, 7
+  index: -1
+new/buoy21_1
+  rotate: false
+  xy: 525, 927
+  size: 101, 95
+  orig: 103, 103
+  offset: 2, 3
+  index: -1
+new/buoy21_2
+  rotate: false
+  xy: 323, 826
+  size: 54, 46
+  orig: 62, 46
+  offset: 5, 0
+  index: -1
+new/buoy22_1
+  rotate: false
+  xy: 107, 814
+  size: 102, 103
+  orig: 103, 103
+  offset: 1, 0
+  index: -1
+new/buoy22_2
+  rotate: false
+  xy: 212, 874
+  size: 56, 45
+  orig: 62, 46
+  offset: 5, 0
+  index: -1
+new/buoy23_1
+  rotate: false
+  xy: 104, 2
+  size: 97, 92
+  orig: 103, 103
+  offset: 4, 5
+  index: -1
+new/buoy23_2
+  rotate: false
+  xy: 327, 874
+  size: 55, 45
+  orig: 62, 46
+  offset: 5, 0
+  index: -1
+new/buoy24_1
+  rotate: false
+  xy: 2, 502
+  size: 101, 101
+  orig: 103, 103
+  offset: 2, 0
+  index: -1
+new/buoy24_2
+  rotate: true
+  xy: 339, 2
+  size: 39, 38
+  orig: 62, 46
+  offset: 10, 7
+  index: -1
+new/buoy25_1
+  rotate: false
+  xy: 519, 829
+  size: 97, 96
+  orig: 103, 103
+  offset: 3, 3
+  index: -1
+new/buoy25_2
+  rotate: false
+  xy: 985, 877
+  size: 37, 37
+  orig: 62, 46
+  offset: 10, 7
+  index: -1
+new/buoy26_1
+  rotate: true
+  xy: 251, 35
+  size: 61, 46
+  orig: 62, 46
+  offset: 0, 0
+  index: -1
+new/buoy26_2
+  rotate: false
+  xy: 837, 932
+  size: 102, 90
+  orig: 103, 103
+  offset: 0, 4
+  index: -1
+new/buoy27_1
+  rotate: true
+  xy: 291, 101
+  size: 57, 46
+  orig: 62, 46
+  offset: 3, 0
+  index: -1
+new/buoy27_2
+  rotate: false
+  xy: 628, 930
+  size: 103, 92
+  orig: 103, 103
+  offset: 0, 5
+  index: -1
+new/buoy28_1
+  rotate: true
+  xy: 210, 711
+  size: 58, 44
+  orig: 62, 46
+  offset: 0, 0
+  index: -1
+new/buoy28_2
+  rotate: true
+  xy: 710, 833
+  size: 95, 90
+  orig: 103, 103
+  offset: 5, 6
+  index: -1
+new/buoy29_1
+  rotate: true
+  xy: 243, 98
+  size: 60, 46
+  orig: 62, 46
+  offset: 1, 0
+  index: -1
+new/buoy29_2
+  rotate: true
+  xy: 93, 195
+  size: 103, 89
+  orig: 103, 103
+  offset: 0, 9
+  index: -1
+new/buoy30_1
+  rotate: true
+  xy: 211, 771
+  size: 52, 45
+  orig: 62, 46
+  offset: 5, 0
+  index: -1
+new/buoy30_2
+  rotate: false
+  xy: 802, 750
+  size: 94, 89
+  orig: 103, 103
+  offset: 6, 7
+  index: -1

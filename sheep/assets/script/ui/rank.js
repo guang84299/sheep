@@ -131,7 +131,7 @@ cc.Class({
             {
                 rankIcon.active = true;
                 rank.node.active = false;
-                res.setSpriteFrame("images/rank/rank"+data.id,rankIcon);
+                res.setSpriteFrameAtlas("images/rank","rank"+data.id,rankIcon);
             }
 
             if(data.id==1)
@@ -171,7 +171,7 @@ cc.Class({
             if(storage.isRankUp(data.id))
             {
                 //state.string = "已完成";
-                res.setSpriteFrame("images/rank/btn_ylq",state);
+                res.setSpriteFrameAtlas("images/rank","btn_ylq",state);
             }
             else
             {
@@ -209,7 +209,7 @@ cc.Class({
 
             var bn = n+1;
             if(bn>4) bn = 4;
-            cc.res.setSpriteFrame("images/rank/box_" +bn,item);
+            cc.res.setSpriteFrameAtlas("images/rank","box_" +bn,item);
 
             cc.res.setSpriteFrame("images/dogcard/icon_" +data.reward3,icon3);
 
@@ -265,7 +265,7 @@ cc.Class({
         var lingqu = cc.find("lingqu",item);
 
         lingqu.active = false;
-        res.setSpriteFrame("images/rank/btn_ylq",state);
+        res.setSpriteFrameAtlas("images/rank","btn_ylq",state);
 
         var data = res.conf_rankUp[tid-1];
         var award = parseInt(data.reward)*this.game.getSecVal();

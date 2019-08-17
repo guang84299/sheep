@@ -1,0 +1,63 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "cardAni",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 3.2,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "paths": {
+      "particle": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                146
+              ]
+            },
+            {
+              "frame": 0.4,
+              "value": [
+                -102,
+                146
+              ]
+            },
+            {
+              "frame": 1.2,
+              "value": [
+                -108,
+                -146
+              ]
+            },
+            {
+              "frame": 2,
+              "value": [
+                108,
+                -146
+              ]
+            },
+            {
+              "frame": 2.8,
+              "value": [
+                108,
+                146
+              ]
+            },
+            {
+              "frame": 3.2,
+              "value": [
+                0,
+                146
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

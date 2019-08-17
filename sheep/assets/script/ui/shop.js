@@ -137,7 +137,7 @@ cc.Class({
 
             desc.string = "收益x"+data.goodsLevel+"倍";
             cost.string = storage.castNum(Number(data.cost));
-            cc.res.setSpriteFrame("images/shop/carv_"+(n+1),icon);
+            cc.res.setSpriteFrameAtlas("images/shop","carv_"+(n+1),icon);
 
             var t = storage.getShopVcarTime(n);
             item.time = t;
@@ -253,7 +253,7 @@ cc.Class({
 
             desc.string = "收益x"+data.goodsLevel+"倍";
             cost.string = storage.castNum(Number(data.cost));
-            cc.res.setSpriteFrame("images/shop/carh_"+(n+1),icon);
+            cc.res.setSpriteFrameAtlas("images/shop","carh_"+(n+1),icon);
 
             var t = storage.getShopHcarTime(n);
             item.time = t;

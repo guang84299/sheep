@@ -18,7 +18,6 @@
     "EditBox",
     "VideoPlayer",
     "WebView",
-    "Animation",
     "Collider",
     "Physics",
     "StudioComponent",

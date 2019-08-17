@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.1",
+  "uuid": "706ad2f2-9011-4f98-8434-02bafbed0658",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "TouchParti": {
+      "ver": "1.0.4",
+      "uuid": "08c98118-43f6-440f-bdbe-495f287bbd65",
+      "rawTextureUuid": "706ad2f2-9011-4f98-8434-02bafbed0658",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -22.5,
+      "offsetY": 20.5,
+      "trimX": 19,
+      "trimY": 22,
+      "width": 941,
+      "height": 939,
+      "rawWidth": 1024,
+      "rawHeight": 1024,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -243,7 +243,7 @@ module.exports = {
     {
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
-            if(this.bannerAd && node)
+            if(this.bannerAd && node && this.bannerAd.res)
             {
                 var s = cc.view.getFrameSize();
                 var dpi = cc.winSize.width/s.width;

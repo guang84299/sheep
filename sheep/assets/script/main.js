@@ -200,6 +200,16 @@ cc.Class({
         this.unLock = lock;
         this.totalLvNum = tlv;
 
+        if(!this.lastName)this.lastName = nickName;
+        else
+        {
+            if(this.lastName != nickName)
+            {
+                res.openUI("nameup");
+            }
+            this.lastName = nickName;
+        }
+
         this.task.updateUI();
     },
 
@@ -590,12 +600,51 @@ cc.Class({
             var t = (now-time)/1000-20;
             if(t>0)
             {
-                if(t>1*60*60) t = 1*60*60;
+                if(t>0.5*60*60) t = 0.5*60*60;
                 storage.setLixianTime(now);
                 var val = this.getSecVal()*t;
                 if(val>0)
                     res.openUI("lixian",null,val);
             }
+        }
+    },
+
+    updateDogcardShouyi: function()
+    {
+        var dogcard = storage.getDogCard();
+        var seldata = cc.res.conf_cardText[dogcard-1];
+        var cardLv = storage.getDogCardLv(dogcard);
+
+        var rate = Number(seldata.base)+Number(seldata.ratio)*cardLv;
+        var time = 24;
+        var to = new Date().getTime() + time*60*60*1000;
+
+        var ishave = false;
+        var isupdate = false;
+        var rateTasks = storage.getAddRateTask();
+        for(var i=0;i<rateTasks.length;i++)
+        {
+            var rateTask = rateTasks[i];
+            if(rateTask.tip.indexOf("牧羊犬") != -1)
+            {
+                ishave = true;
+                if(rateTask.reward != rate)
+                {
+                    rateTasks[i].reward = rate;
+                    rateTasks[i].time = time;
+                    rateTasks[i].to = to;
+                    rateTasks[i].tip = "牧羊犬加倍"+rate.toFixed(2);
+                    storage.updateAddRateTask(rateTasks);
+                    isupdate = true;
+                }
+                break;
+            }
+        }
+
+        if(!ishave)
+        {
+            var task = {reward:rate,time:time,tip:"牧羊犬加倍"+rate.toFixed(2),to:to};
+            storage.addAddRateTask(task);
         }
     },
 
@@ -623,6 +672,7 @@ cc.Class({
             mt.setSeconds(59);
 
             var time = (mt.getTime() - new Date().getTime())/(60*60*1000.0);
+            var to = new Date().getTime() + time*60*60*1000;
 
             var ishave = false;
             var isupdate = false;
@@ -647,11 +697,11 @@ cc.Class({
 
             if(!ishave)
             {
-                var to = new Date().getTime() + time*60*60*1000;
                 var task = {reward:rate,time:time,tip:tips,to:to};
                 storage.addAddRateTask(task);
             }
         }
+        this.updateDogcardShouyi();
 
         this.shouYiRate = 1;
 
@@ -1038,6 +1088,11 @@ cc.Class({
             //{
             //
             //}
+
+            var node = cc.res.playPlistAnim3(cc.res["TouchParti.plist"],0.04,1,null,true);
+            node.position = pos.sub(cc.v2(s.width/2, s.height/2));
+            node.scale = 2;
+            this.node.addChild(node);
 
         }, this);
         //this.scrollContent.on(cc.Node.EventType.TOUCH_MOVE, function (event) {

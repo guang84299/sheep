@@ -79,7 +79,7 @@ cc.Class({
         //填充获得的材料
         for(var i=this.cailiaos.length;i<num;i++)
         {
-            var type = Math.floor(Math.random()*3);
+            var type = Math.floor(Math.random()*5);
             if(type == 0)
             {
                 if(cls.length>0)
@@ -92,9 +92,17 @@ cc.Class({
             {
                 this.cailiaos.push({tid:-1,type:3,id:0});
             }
-            else
+            else if(type == 2)
             {
                 this.cailiaos.push({tid:-1,type:4,id:0});
+            }
+            else if(type == 3)
+            {
+                this.cailiaos.push({tid:-1,type:1,id:0});
+            }
+            else if(type == 4)
+            {
+                this.cailiaos.push({tid:-1,type:2,id:0});
             }
         }
         //为材料随机tid
@@ -183,7 +191,7 @@ cc.Class({
             this.updateUI();
 
             item.pstate = 2;//1: 可点 2：已点 3：不可点
-            res.setSpriteFrame("images/tanxian/box3",item);
+            res.setSpriteFrameAtlas("images/tanxian","box3",item);
 
             //材料
             var cailiao = null;
@@ -202,15 +210,23 @@ cc.Class({
 
                 if(cailiao.type == 3)
                 {
+                    item.icon.active = true;
+                    var par = cc.find("par", item.icon).getComponent(cc.ParticleSystem);
+                    //par.startColor = cc.color(51,253,155);
+                    par.node.active = true;
+
+                    res.setSpriteFrameAtlas("images/tanxian","tili",item.icon);
                     this.tili += 5;
                     this.updateUI();
                     res.showToast("体力+5");
                 }
                 else if(cailiao.type == 4)
                 {
-                    this.tili -= 10;
+                    item.icon.active = true;
+                    res.setSpriteFrameAtlas("images/tanxian","xianjing",item.icon);
+                    this.tili -= 3;
                     this.updateUI();
-                    res.showToast("体力-10");
+                    res.showToast("体力-3");
                 }
                 else
                 {
@@ -219,10 +235,16 @@ cc.Class({
                     if(cailiao.type == 1)
                     {
                         res.setSpriteFrameAtlas("images/common","coin",item.icon);
+                        var par = cc.find("par", item.icon).getComponent(cc.ParticleSystem);
+                        par.startColor = cc.color(220,220,13);
+                        par.node.active = true;
                     }
                     else if(cailiao.type == 2)
                     {
                         res.setSpriteFrameAtlas("images/common","diamond",item.icon);
+                        var par = cc.find("par", item.icon).getComponent(cc.ParticleSystem);
+                        par.startColor = cc.color(240,22,230);
+                        par.node.active = true;
                     }
                     else if(cailiao.type == 5)
                     {
@@ -247,10 +269,17 @@ cc.Class({
             //如果是出口
             if(tid == this.nextLvTid)
             {
-                item.icon.active = true;
-                res.setSpriteFrame("images/tanxian/xycrk",item.icon);
-                this.nextLevel();
-                return;
+                if(item.icon.active)
+                {
+                    this.nextLevel();
+                    return;
+                }
+                else
+                {
+                    item.pstate = 1;
+                    item.icon.active = true;
+                    res.setSpriteFrameAtlas("images/tanxian","xycrk",item.icon);
+                }
             }
 
 
@@ -261,7 +290,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    res.setSpriteFrame("images/tanxian/box2",item2);
+                    res.setSpriteFrameAtlas("images/tanxian","box2",item2);
                 }
             }
 
@@ -271,7 +300,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    res.setSpriteFrame("images/tanxian/box2",item2);
+                    res.setSpriteFrameAtlas("images/tanxian","box2",item2);
                 }
             }
 
@@ -281,7 +310,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    res.setSpriteFrame("images/tanxian/box2",item2);
+                    res.setSpriteFrameAtlas("images/tanxian","box2",item2);
                 }
             }
 
@@ -291,7 +320,7 @@ cc.Class({
                 if(item2.pstate == 3)
                 {
                     item2.pstate = 1;
-                    res.setSpriteFrame("images/tanxian/box2",item2);
+                    res.setSpriteFrameAtlas("images/tanxian","box2",item2);
                 }
             }
         }
@@ -304,7 +333,7 @@ cc.Class({
                 var item = this.box.children[i-1];
                 if(item.pstate == 3)//1: 可点 2：已点 3：不可点
                 {
-                    res.setSpriteFrame("images/tanxian/box1",item);
+                    res.setSpriteFrameAtlas("images/tanxian","box1",item);
                 }
             }
         }
@@ -321,7 +350,7 @@ cc.Class({
             self.initUI();
             self.updateUI();
             self.canTouch = true;
-        },1);
+        },0.1);
 
     },
 
