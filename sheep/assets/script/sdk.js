@@ -150,7 +150,7 @@ module.exports = {
             this.rewardedVideoAd.onError(function(res){
                 if(self.videocallback)
                     self.videocallback(false);
-                cc.res.showToast("视频播放出错！"+JSON.stringify(res));
+                cc.res.showToast("视频播放出错！");
                 console.error(res);
             });
         }

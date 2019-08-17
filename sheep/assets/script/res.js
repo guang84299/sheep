@@ -285,6 +285,27 @@ module.exports = {
         ));
     },
 
+    showDiamond: function(pos,parent)
+    {
+        var node = cc.instantiate(this["prefab_ui_diamondAni"]);
+        if(pos)
+            node.position = cc.v2(pos.x,pos.y+50);
+        if(!parent)parent = cc.find("Canvas");
+        parent.addChild(node,10000);
+
+        node.runAction(cc.sequence(
+            cc.spawn(
+                cc.moveTo(0.7,pos.add(cc.v2(0,200))).easing(cc.easeSineOut()),
+                cc.scaleTo(0.2,1.2).easing(cc.easeSineIn())
+            ),
+            cc.spawn(
+                cc.scaleTo(0.2,0.2).easing(cc.easeSineIn()),
+                cc.fadeOut(0.2)
+            ),
+            cc.removeSelf()
+        ));
+    },
+
     showCoinAni: function()
     {
         var toast = cc.instantiate(this["prefab_anim_coinani"]);

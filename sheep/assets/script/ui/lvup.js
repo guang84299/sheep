@@ -113,7 +113,7 @@ cc.Class({
         var pice = Number(res.conf_price[lv-1]["price"+1]);
         var pice2 = Number(res.conf_price[nlv-1]["price"+1]);
 
-        if(sheep == 2)
+        if(sheep == 3)
         {
             pice = Number(res.conf_price[lv-1]["price"+this.index]);
             pice2 = Number(res.conf_price[nlv-1]["price"+this.index]);

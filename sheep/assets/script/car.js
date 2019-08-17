@@ -143,10 +143,14 @@ cc.Class({
             this.coin += coin;
             this.addMao(y,box.type);
 
+            var isHasCoin = box.coin > 0 ? true : false;
             this.node.runAction(cc.sequence(
                 cc.delayTime(1),
                 cc.callFunc(function(){
-                    self.addCoin(y);
+                    if(isHasCoin)
+                        self.addCoin(y);
+                    else
+                        self.run();
                 })
             ));
         }

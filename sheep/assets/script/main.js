@@ -534,7 +534,7 @@ cc.Class({
         for(var i=0;i<boxs.length;i++)
         {
             var box = boxs[i];
-            if(box.y>h-y-box.height || -box.y-y>h)
+            if(box.y>h-y-box.height*2 || -box.y-y>h)
             {
                 box.sc.changeUpdate(false);
                 //s += i+":";

@@ -171,6 +171,8 @@ cc.Class({
                 }
             }
 
+            if(this.isUpdate) this.node.opacity = 255;
+            else this.node.opacity = 0;
         }
     },
 
@@ -178,7 +180,9 @@ cc.Class({
     {
         this.lv = cc.storage.getLevel(this.index);
         this.conf = cc.res.conf_base[this.lv-1];
-        this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
+        this.pice = cc.res.conf_price[this.lv-1]["price"+1];
+        if(this.isUnLockSheep == 3)
+            this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
         this.growSpeed = this.conf.growSpeed;
 
         for(var i=0;i<this.buoys.length;i++)
@@ -511,6 +515,8 @@ cc.Class({
         ac.setTag(1);
         this.dog_dog_qipao.runAction(ac);
 
+        this.game.addDiamond(1);
+        cc.res.showDiamond(this.dog_dog_dog.position, this.dog_dog);
     },
 
     useNewSheep: function()

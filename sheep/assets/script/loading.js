@@ -87,6 +87,7 @@ cc.Class({
             "anims/TouchParti",
 
             "prefab/ui/coinAni",
+            "prefab/ui/diamondAni",
             "prefab/ui/toast",
 
             "prefab/ui/carhup",
