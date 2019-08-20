@@ -241,6 +241,7 @@ cc.Class({
         var use = cc.find("box/use",this.selbox).getComponent(cc.Button);
         var use_str = cc.find("box/use/str",this.selbox).getComponent(cc.Label);
 
+        var card = cc.find("box/card",this.selbox);
         var lv = cc.find("box/card/lv",this.selbox).getComponent(cc.Label);
         var pro = cc.find("box/card/pro",this.selbox).getComponent(cc.ProgressBar);
         var pro_num = cc.find("box/card/pro/num",this.selbox).getComponent(cc.Label);
@@ -260,6 +261,7 @@ cc.Class({
         lv.string = "lv"+cardLv;
         pro_num.string = carNum+"/"+dataGrade["card"+(selCardIndex+1)];
         pro.progress = carNum/parseFloat(dataGrade["card"+(selCardIndex+1)]);
+        cc.res.setSpriteFrame("images/dogcard/card_"+(selCardIndex+1),card);
 
         //grade.node.color = this.cardColors[selCardIndex];
 

@@ -193,12 +193,29 @@ module.exports = {
             var s = cc.view.getFrameSize();
             var dpi = cc.winSize.width/s.width;
 
+            var w = s.width;
+
+            var isMoveAd = true;
+            if(cc.GAME.adCheck && !this.is_iphonex())
+            {
+                isMoveAd = false;
+                if(node && callback)
+                {
+                    node.runAction(cc.sequence(
+                        cc.delayTime(0.01),
+                        cc.callFunc(function(){
+                            callback(-30*dpi);
+                        })
+                    ));
+                }
+            }
+
             this.bannerAd = wx.createBannerAd({
                 adUnitId: 'adunit-227021c411ca786f',
                 style: {
                     left: 0,
                     top: s.height/dpi-300/3.5,
-                    width: s.width
+                    width: w
                 }
             });
             var bannerAd = this.bannerAd;
@@ -206,7 +223,7 @@ module.exports = {
                 bannerAd.style.left = s.width/2-res.width/2;
                 bannerAd.style.top = s.height-res.height-1;
                 bannerAd.res = res;
-                if(node && callback)
+                if(isMoveAd && node && callback)
                 {
                     node.runAction(cc.sequence(
                         cc.delayTime(0.4),

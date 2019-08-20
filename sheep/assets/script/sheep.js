@@ -137,7 +137,7 @@ cc.Class({
         if(this.box.isUpdate)
         {
             this.updateDt += dt;
-            if(this.updateDt>1/30.0)
+            if(this.updateDt>1/10.0)
             {
                 if(this.state == "hold")
                 {

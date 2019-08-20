@@ -382,6 +382,7 @@ cc.Class({
         cc.GAME.skipgame = null;
         cc.GAME.share = false;
         cc.GAME.lixianswitch = false;
+        cc.GAME.adCheck = true;
         cc.GAME.shares = [];
         if(cc.GAME.control.length>0)
         {
@@ -415,6 +416,10 @@ cc.Class({
                 else if(con.id == "lixian")
                 {
                     cc.GAME.lixianswitch = con.value == 1 ? true : false;
+                }
+                else if(con.id == "adCheck")
+                {
+                    cc.GAME.adCheck = con.value == 1 ? true : false;
                 }
                 else
                 {

@@ -1,0 +1,34 @@
+
+flycionAnim.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bag
+  rotate: false
+  xy: 2, 51
+  size: 61, 58
+  orig: 61, 58
+  offset: 0, 0
+  index: -1
+coin
+  rotate: false
+  xy: 65, 86
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+starlight
+  rotate: false
+  xy: 2, 2
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1
+wing
+  rotate: false
+  xy: 2, 19
+  size: 23, 30
+  orig: 23, 30
+  offset: 0, 0
+  index: -1
