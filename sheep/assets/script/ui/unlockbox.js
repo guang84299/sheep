@@ -60,7 +60,8 @@ cc.Class({
             var num = parseInt(data["reward"+(i+1)]);
             if(num>0)
             {
-                item.active = true;
+                if(i == 0 || i == 5)
+                    item.active = true;
                 var icon = cc.find("icon",item);
                 var award = cc.find("award",item).getComponent(cc.Label);
                 var cailiaoId = 0;
@@ -88,8 +89,11 @@ cc.Class({
                     cailiaoId = parseInt(data.chart);
                     cc.res.setSpriteFrame("images/cailiao/tz/"+data.chartImage,icon);
                 }
-
-                if(i>0)
+                else if(i==5)
+                {
+                    award.string = "金币*"+storage.castNum(num);
+                }
+                if(i>0 && i<5)
                 {
 
                     storage.setCailiao(i,cailiaoId,storage.getCailiao(i,cailiaoId)+num);
@@ -98,7 +102,12 @@ cc.Class({
                 }
                 else
                 {
-                    this.game.addDiamond(num);
+                    if(i ==0)
+                        this.game.addDiamond(num);
+                    else
+                    {
+                        this.game.addCoin(num);
+                    }
                 }
             }
             else
@@ -141,6 +150,8 @@ cc.Class({
             this.game.updateYindao();
             cc.res.openUI("yindao");
         }
+
+        cc.qianqista.event("解锁牧场_"+index);
     },
 
     hide: function()
@@ -152,11 +163,16 @@ cc.Class({
                 cc.scaleTo(0.2,0).easing(cc.easeSineOut()),
                 cc.callFunc(function(){
                     self.node.destroy();
+                    self.game.updateYindao();
+
                 })
             ));
         cc.sdk.hideBanner();
 
-        this.game.updateYindao();
+
+
+        if(this.index>2)
+        this.game.click(null,"down");
     },
 
     click: function(event,data)

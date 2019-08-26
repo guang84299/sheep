@@ -118,7 +118,7 @@ module.exports = {
                         //    icon: 'none',
                         //    duration: 2000
                         //})
-                        cc.res.showToast("请分享到群！");
+                        cc.res.showToast("请分享到不同的群！");
                     }
                     self.sharecallback = null;
                 }
@@ -149,7 +149,7 @@ module.exports = {
 
                 }
                 if(self.onshowmaincallback)
-                    self.onshowmaincallback();
+                    self.onshowmaincallback(res.scene);
             });
 
             wx.onHide(function(){

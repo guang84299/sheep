@@ -40,6 +40,11 @@ cc.Class({
         loadNode: {
             default: null,
             type: cc.Node
+        },
+
+        loadingAnim:{
+            default: null,
+            type: sp.Skeleton
         }
     },
 
@@ -85,11 +90,13 @@ cc.Class({
             "images/sheep/sheep6",
 
             "anims/TouchParti",
+            "anims/explosion",
 
             "prefab/ui/coinAni",
             "prefab/ui/diamondAni",
             "prefab/ui/toast",
 
+            "prefab/ui/addmini",
             "prefab/ui/carhup",
             "prefab/ui/carvup",
             "prefab/ui/choujiang",
@@ -119,7 +126,7 @@ cc.Class({
             "prefab/anim/coinani",
 
             //"prefab/particle/suijinbi",
-            //"scene/game1"
+            "scene/main"
         ];
 
 
@@ -144,6 +151,13 @@ cc.Class({
 
         this.loadNode.runAction(cc.repeatForever(cc.rotateBy(1,180)));
 
+
+        this.loadingAnim.setCompleteListener(function(){
+            self.scheduleOnce(function(){
+                self.loadingAnim.setAnimation(0,"animation",false);
+            },2);
+        });
+
         this.isFirst = false;
         if(storage.getFirst() == 0)
         {
@@ -152,7 +166,7 @@ cc.Class({
             storage.setMusic(1);
             storage.setSound(1);
             storage.setVibrate(1);
-            storage.setCoin(100);
+            storage.setCoin(10000);
             storage.setDogCardLv(1,1)
         }
     },
@@ -199,6 +213,7 @@ cc.Class({
         }
         else{
             this.loadres();
+            //this.scheduleOnce(this.loadres.bind(this),0.1);
         }
 
         this.setRes(resource,index);
@@ -422,6 +437,9 @@ cc.Class({
 
             if(datas.hasOwnProperty("nameup"))
                 storage.setNameUp(Number(datas.nameup));
+
+            if(datas.hasOwnProperty("addmini"))
+                cc.GAME.addmini = Number(datas.addmini);
 
 
             if(datas.hasOwnProperty("ginvitelist"))

@@ -1,188 +1,237 @@
 
 DogAnim.png
-size: 512,512
+size: 256,256
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 body1
   rotate: false
-  xy: 2, 149
-  size: 75, 49
-  orig: 76, 50
-  offset: 1, 0
+  xy: 215, 229
+  size: 38, 25
+  orig: 38, 25
+  offset: 0, 0
   index: -1
 body2
   rotate: false
-  xy: 164, 352
-  size: 81, 67
-  orig: 82, 68
-  offset: 1, 0
+  xy: 2, 65
+  size: 41, 34
+  orig: 41, 34
+  offset: 0, 0
+  index: -1
+body3
+  rotate: false
+  xy: 2, 101
+  size: 63, 37
+  orig: 65, 39
+  offset: 2, 1
+  index: -1
+body4
+  rotate: false
+  xy: 150, 229
+  size: 63, 25
+  orig: 65, 39
+  offset: 2, 13
   index: -1
 brow
   rotate: false
-  xy: 79, 144
-  size: 13, 13
-  orig: 14, 14
-  offset: 1, 0
+  xy: 166, 203
+  size: 7, 7
+  orig: 7, 7
+  offset: 0, 0
   index: -1
 chest
   rotate: false
-  xy: 164, 304
-  size: 61, 46
-  orig: 62, 46
-  offset: 1, 0
+  xy: 2, 40
+  size: 31, 23
+  orig: 31, 23
+  offset: 0, 0
   index: -1
 ear
   rotate: false
-  xy: 247, 359
-  size: 37, 60
-  orig: 38, 60
-  offset: 1, 0
+  xy: 45, 69
+  size: 19, 30
+  orig: 19, 30
+  offset: 0, 0
+  index: -1
+eye
+  rotate: false
+  xy: 151, 193
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
   index: -1
 eye1
   rotate: false
-  xy: 247, 321
-  size: 16, 17
-  orig: 16, 18
+  xy: 75, 131
+  size: 8, 9
+  orig: 8, 9
   offset: 0, 0
   index: -1
 eye2
   rotate: false
-  xy: 227, 306
-  size: 12, 12
-  orig: 12, 12
+  xy: 67, 119
+  size: 6, 6
+  orig: 6, 6
   offset: 0, 0
   index: -1
 eye3
   rotate: false
-  xy: 380, 408
-  size: 11, 11
-  orig: 12, 12
-  offset: 1, 0
+  xy: 75, 123
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
   index: -1
 eye4
   rotate: false
-  xy: 313, 362
-  size: 8, 8
-  orig: 8, 8
+  xy: 50, 43
+  size: 4, 4
+  orig: 4, 4
   offset: 0, 0
   index: -1
 hair
   rotate: false
-  xy: 79, 159
-  size: 43, 39
-  orig: 44, 40
-  offset: 1, 0
+  xy: 116, 182
+  size: 22, 20
+  orig: 22, 20
+  offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 2, 301
-  size: 160, 118
-  orig: 160, 118
+  xy: 2, 195
+  size: 80, 59
+  orig: 80, 59
+  offset: 0, 0
+  index: -1
+head1
+  rotate: false
+  xy: 2, 140
+  size: 71, 53
+  orig: 71, 53
+  offset: 0, 0
+  index: -1
+leg1
+  rotate: false
+  xy: 2, 14
+  size: 30, 24
+  orig: 30, 24
   offset: 0, 0
   index: -1
 leg1-1
-  rotate: false
-  xy: 2, 83
-  size: 31, 36
-  orig: 32, 36
-  offset: 1, 0
+  rotate: true
+  xy: 86, 162
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
   index: -1
 leg1-2
   rotate: false
-  xy: 286, 360
-  size: 25, 40
-  orig: 26, 40
-  offset: 1, 0
+  xy: 35, 43
+  size: 13, 20
+  orig: 13, 20
+  offset: 0, 0
   index: -1
 leg1-3
   rotate: false
-  xy: 247, 340
-  size: 29, 17
-  orig: 30, 18
-  offset: 1, 0
+  xy: 2, 3
+  size: 15, 9
+  orig: 15, 9
+  offset: 0, 0
   index: -1
 leg2-1
   rotate: false
-  xy: 35, 84
-  size: 27, 35
-  orig: 27, 35
+  xy: 50, 49
+  size: 14, 18
+  orig: 14, 18
   offset: 0, 0
   index: -1
 leg2-2
   rotate: false
-  xy: 2, 20
-  size: 24, 26
-  orig: 24, 26
+  xy: 106, 165
+  size: 12, 13
+  orig: 12, 13
   offset: 0, 0
   index: -1
 leg2-3
   rotate: true
-  xy: 227, 320
-  size: 30, 18
-  orig: 30, 18
+  xy: 140, 187
+  size: 15, 9
+  orig: 15, 9
   offset: 0, 0
+  index: -1
+legS
+  rotate: false
+  xy: 86, 180
+  size: 28, 22
+  orig: 30, 24
+  offset: 1, 1
   index: -1
 mouth
   rotate: false
-  xy: 351, 407
-  size: 27, 12
-  orig: 28, 12
-  offset: 1, 0
+  xy: 150, 204
+  size: 14, 6
+  orig: 14, 6
+  offset: 0, 0
   index: -1
 mouth-base
   rotate: false
-  xy: 2, 200
-  size: 127, 99
-  orig: 128, 100
-  offset: 1, 0
+  xy: 84, 204
+  size: 64, 50
+  orig: 64, 50
+  offset: 0, 0
   index: -1
 mouth-up
   rotate: false
-  xy: 2, 121
-  size: 61, 26
-  orig: 62, 26
+  xy: 198, 214
+  size: 31, 13
+  orig: 31, 13
   offset: 0, 0
   index: -1
 nose
   rotate: false
-  xy: 2, 2
-  size: 23, 16
-  orig: 24, 16
-  offset: 1, 0
+  xy: 19, 4
+  size: 12, 8
+  orig: 12, 8
+  offset: 0, 0
   index: -1
 orbit
   rotate: true
-  xy: 2, 48
-  size: 33, 30
-  orig: 34, 30
-  offset: 1, 0
+  xy: 75, 142
+  size: 17, 15
+  orig: 17, 15
+  offset: 0, 0
   index: -1
 ring
-  rotate: false
-  xy: 286, 402
-  size: 63, 17
-  orig: 64, 18
-  offset: 1, 0
+  rotate: true
+  xy: 75, 161
+  size: 32, 9
+  orig: 32, 9
+  offset: 0, 0
+  index: -1
+rings
+  rotate: true
+  xy: 231, 203
+  size: 24, 23
+  orig: 24, 23
+  offset: 0, 0
   index: -1
 sticky
   rotate: false
-  xy: 65, 126
-  size: 12, 21
-  orig: 12, 22
+  xy: 67, 127
+  size: 6, 11
+  orig: 6, 11
   offset: 0, 0
   index: -1
 tail
-  rotate: false
-  xy: 131, 207
-  size: 30, 92
-  orig: 30, 92
+  rotate: true
+  xy: 150, 212
+  size: 15, 46
+  orig: 15, 46
   offset: 0, 0
   index: -1
 tongue
-  rotate: false
-  xy: 313, 372
-  size: 29, 28
-  orig: 30, 28
+  rotate: true
+  xy: 92, 145
+  size: 15, 14
+  orig: 15, 14
   offset: 0, 0
   index: -1

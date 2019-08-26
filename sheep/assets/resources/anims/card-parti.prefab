@@ -8,7 +8,8 @@
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "asyncLoadAssets": false,
+    "readonly": false
   },
   {
     "__type__": "cc.Node",
@@ -21,7 +22,7 @@
       }
     ],
     "_active": true,
-    "_level": 3,
+    "_level": 1,
     "_components": [
       {
         "__id__": 5
@@ -60,18 +61,18 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0,
-      "w": 1
+      "z": 0
     },
     "_skewX": 0,
     "_skewY": 0,
+    "_is3DNode": false,
     "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -122,18 +123,18 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0,
-      "w": 1
+      "z": 0
     },
     "_skewX": 0,
     "_skewY": 0,
+    "_is3DNode": false,
     "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -144,15 +145,20 @@
       "__id__": 2
     },
     "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 1,
     "_custom": true,
     "_file": {
-      "__uuid__": "be8dbaa8-522a-4de1-965f-6d37661defd8"
+      "__uuid__": "458ae726-da7c-4704-9410-395c66f15112"
     },
     "_spriteFrame": null,
     "_texture": null,
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 30,
@@ -208,6 +214,7 @@
       "x": 5,
       "y": -5
     },
+    "_positionType": 0,
     "positionType": 0,
     "emitterMode": 0,
     "gravity": {
@@ -237,7 +244,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0cb5e8f5-8112-4bf7-8ce5-1757b0b2193a"
+      "__uuid__": "fd52a8b7-7926-4f79-b6b5-c1816d8e99a8"
     },
     "fileId": "39DveG5vBGw40I8OTaN1vT",
     "sync": false
@@ -250,10 +257,12 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_defaultClip": null,
+    "_defaultClip": {
+      "__uuid__": "23371c01-6d43-4e34-8021-0f83cefe95b0"
+    },
     "_clips": [
       {
-        "__uuid__": "2fc649d3-abce-4d3d-891b-22e6c86f3314"
+        "__uuid__": "23371c01-6d43-4e34-8021-0f83cefe95b0"
       }
     ],
     "playOnLoad": false,
@@ -265,7 +274,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0cb5e8f5-8112-4bf7-8ce5-1757b0b2193a"
+      "__uuid__": "fd52a8b7-7926-4f79-b6b5-c1816d8e99a8"
     },
     "fileId": "31WNFRhuBDJZJi15PwQJ/5",
     "sync": false

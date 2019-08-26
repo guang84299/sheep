@@ -46,7 +46,14 @@ cc.Class({
 
         //获取未解锁材料
         var cls = [];
-        for(var i=0;i<this.game.unLock;i++)
+        var index = this.game.unLock;
+        var indexNum = 0;
+        if(this.index)
+        {
+            index = this.index;
+            indexNum = index-1;
+        }
+        for(var i=indexNum;i<index;i++)
         {
             var data = cc.res.conf_compose[i];
             //是否已经解锁 0：未解锁 1:解锁 2：使用
@@ -55,20 +62,27 @@ cc.Class({
             {
                 var wool = storage.getCailiao(1,parseInt(data.wool));
                 var feed = storage.getCailiao(2,parseInt(data.feed));
-                var ore = storage.getCailiao(3,parseInt(data.ore));
-                var chart = storage.getCailiao(4,parseInt(data.chart));
+
 
                 if(wool<parseInt(data.woolCost))
                     cls.push({type:1,id:parseInt(data.wool),img:data.woolImage});
                 if(feed<parseInt(data.feedCost))
                     cls.push({type:2,id:parseInt(data.feed),img:data.feedImage});
+            }
+
+            var buoy = storage.getBuoy(parseInt(data.newKnife));
+            if(buoy == 0)
+            {
+                var ore = storage.getCailiao(3,parseInt(data.ore));
+                var chart = storage.getCailiao(4,parseInt(data.chart));
+
                 if(ore<parseInt(data.oreCost))
                     cls.push({type:3,id:parseInt(data.ore),img:data.oreImage});
                 if(chart<parseInt(data.chartCost))
                     cls.push({type:4,id:parseInt(data.chart),img:data.chartImage});
-
-                if(cls.length>0) break;
             }
+
+            if(cls.length>0) break;
 
         }
 
@@ -106,6 +120,9 @@ cc.Class({
             }
         }
         //为材料随机tid
+        this.tids = [];
+        for(var i=1;i<=25;i++)
+            this.tids.push(i);
         for(var i=0;i<this.cailiaos.length;i++)
         {
             this.cailiaos[i].tid = this.geneTid();
@@ -132,7 +149,9 @@ cc.Class({
 
     geneTid: function()
     {
-        var tid = Math.floor(Math.random()*25)+1;
+        var tidIndex = Math.floor(Math.random()*this.tids.length);
+        var tid = this.tids[tidIndex];
+        this.tids.splice(tidIndex,1);
         var l = true;
         var r = true;
         var t = true;
@@ -193,6 +212,8 @@ cc.Class({
             item.pstate = 2;//1: 可点 2：已点 3：不可点
             res.setSpriteFrameAtlas("images/tanxian","box3",item);
 
+            item.icon.width = 60;
+            item.icon.height = 60;
             //材料
             var cailiao = null;
             for(var i=0;i<this.cailiaos.length;i++)
@@ -223,6 +244,9 @@ cc.Class({
                 else if(cailiao.type == 4)
                 {
                     item.icon.active = true;
+                    item.icon.width = 90;
+                    item.icon.height = 90;
+
                     res.setSpriteFrameAtlas("images/tanxian","xianjing",item.icon);
                     this.tili -= 3;
                     this.updateUI();
@@ -278,6 +302,8 @@ cc.Class({
                 {
                     item.pstate = 1;
                     item.icon.active = true;
+                    item.icon.width = 90;
+                    item.icon.height = 90;
                     res.setSpriteFrameAtlas("images/tanxian","xycrk",item.icon);
                 }
             }
@@ -360,8 +386,9 @@ cc.Class({
         this.updateUI();
     },
 
-    show: function()
+    show: function(index)
     {
+        this.index = index;
         this.awards = [];
         this.canTouch = true;
         this.tiliTotal = 30;
@@ -383,6 +410,8 @@ cc.Class({
             if(dis<0)
                 self.bg.y -= dis;
         });
+
+        cc.qianqista.event("探险游戏_打开");
     },
 
     hide: function()

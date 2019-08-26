@@ -86,6 +86,7 @@ cc.Class({
         if(cc.GAME.share)
         {
             var rad = parseInt(cc.GAME.qiandaoAd);
+            if(!cc.GAME.hasVideo) rad = 100;
             if(Math.random()*100 < rad)
             {
                 this.useShare = true;
@@ -168,6 +169,7 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        cc.qianqista.event("签到_打开");
     },
 
     hide: function()
@@ -194,6 +196,7 @@ cc.Class({
         else if(data == "lingqu")
         {
             this.lingqu();
+            cc.qianqista.event("签到_直接领取");
         }
         else if(data == "lingqu2")
         {
@@ -206,6 +209,8 @@ cc.Class({
                         self.lingqu(true);
                     }
                 },"qiandao");
+
+                cc.qianqista.event("签到_分享领取");
             }
             else
             {
@@ -215,6 +220,7 @@ cc.Class({
                         self.lingqu(true);
                     }
                 });
+                cc.qianqista.event("签到_视频领取");
             }
 
 

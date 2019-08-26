@@ -1036,6 +1036,14 @@ module.exports = {
         cc.qianqista.uploaddatas(data);
     },
 
+    uploadAddmini: function()
+    {
+        var datas = {};
+        datas.addmini = 1;
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
 
     scientificToNumber: function(num) {
         var str = num.toString();
@@ -1130,6 +1138,20 @@ module.exports = {
     getCountDown: function(t1,t2,fnum)
     {
         var time = t2 - t1;
+        var str = "";
+        if(!fnum) fnum = 3;
+
+        if(time<=0)
+        {
+            if(fnum == 1)
+                str = "00";
+            else if(fnum == 2)
+                str = "00:00";
+            else if(fnum == 3)
+                str = "00:00:00";
+
+            return str;
+        }
 
         var d = Math.floor(time/(24*60*60*1000));
         var h = Math.floor((time - d*24*60*60*1000)/(60*60*1000));
@@ -1140,9 +1162,6 @@ module.exports = {
         var sm = m < 10 ? "0"+m : m;
         var ss = s < 10 ? "0"+s : s;
 
-        var str = "";
-
-        if(!fnum) fnum = 3;
 
         if(fnum == 1)
             str = ss;

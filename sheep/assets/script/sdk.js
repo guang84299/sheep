@@ -129,6 +129,7 @@ module.exports = {
         {
             this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'adunit-f3f018f8225dd66b'});
             this.rewardedVideoAd.onLoad(function(){
+                cc.GAME.hasVideo = true;
                 console.log('激励视频 广告加载成功')
             });
             this.rewardedVideoAd.onClose(function(res){
@@ -148,9 +149,13 @@ module.exports = {
                 //storage.playMusic(cc.sdk.main.res.audio_mainBGM);
             });
             this.rewardedVideoAd.onError(function(res){
+                cc.GAME.hasVideo = false;
                 if(self.videocallback)
+                {
                     self.videocallback(false);
-                cc.res.showToast("视频播放出错！");
+                    cc.res.showToast("视频正在准备中...");
+                }
+
                 console.error(res);
             });
         }
@@ -162,6 +167,7 @@ module.exports = {
         this.videocallback = callback;
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
+            cc.GAME.hasVideo = false;
             this.rewardedVideoAd.show().catch(function(err){
                 self.rewardedVideoAd.load().then(function(){
                     self.rewardedVideoAd.show();

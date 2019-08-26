@@ -92,7 +92,7 @@ cc.Class({
                 }
             }
         }
-
+        if(type>=5) val*=10;
         return val;
     },
 

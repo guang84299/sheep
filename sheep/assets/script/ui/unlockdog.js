@@ -22,6 +22,8 @@ cc.Class({
         this.btn_lingqu = cc.find("btns/lingqu",this.bg).getComponent(cc.Button);
         this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg).getComponent(cc.Button);
 
+        this.dogcard = cc.find("box/dogcard",this.bg);
+
         this.btn_lingqu2.mcolor = this.btn_lingqu2.node.color;
 
     },
@@ -30,6 +32,8 @@ cc.Class({
     {
         var conf = cc.res.conf_ranch[this.index-1];
         this.award = Number(conf.dogCost);
+        if(this.index>1)
+            this.award = this.game.boxs[this.index-1].sc.getUnlockCost()*this.award;
         this.isUseCoin = true;
         if(conf.costType == "1") this.isUseCoin = false;
 
@@ -46,6 +50,8 @@ cc.Class({
         {
             cc.res.setSpriteFrameAtlas("images/common","diamond",this.coinicon);
         }
+
+        cc.res.setSpriteFrame("images/dogcard/card_"+storage.getDogCard(),this.dogcard);
         //else
         //{
         //    this.btn_lingqu.node.active = false;
@@ -87,6 +93,8 @@ cc.Class({
                 this.game.boxs[this.index-1].sc.tounlockdog();
                 res.showToast("解锁成功！");
                 this.hide();
+
+                cc.qianqista.event("解锁牧羊犬_"+this.index);
             }
             else
             {
@@ -101,6 +109,8 @@ cc.Class({
                 this.game.boxs[this.index-1].sc.tounlockdog();
                 res.showToast("解锁成功！");
                 this.hide();
+
+                cc.qianqista.event("解锁牧羊犬_"+this.index);
             }
             else
             {
@@ -121,19 +131,24 @@ cc.Class({
         this.node.sc = this;
         this.initUI();
         this.updateUI();
-
+        var self = this;
         this.node.active = true;
         this.bg.runAction(cc.sequence(
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
-                cc.scaleTo(0.2,1).easing(cc.easeSineOut())
+                cc.scaleTo(0.2,1).easing(cc.easeSineOut()),
+                cc.callFunc(function(){
+                    self.game.updateYindao();
+                })
             ));
-        var self = this;
+
         cc.sdk.showBanner(this.bg,function(dis){
             if(dis<0)
                 self.bg.y -= dis;
         });
 
-        this.game.updateYindao();
+
+
+        cc.qianqista.event("解锁牧羊犬_打开");
     },
 
     hide: function()

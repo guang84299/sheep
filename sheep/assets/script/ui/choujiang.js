@@ -24,6 +24,8 @@ cc.Class({
         this.btn_lingqu = cc.find("bg/btns/lingqu",this.node).getComponent("cc.Button");
         this.btn_lingqu_ban = cc.find("bg/btns/lingqu",this.node);
 
+        this.tiliBtn = cc.find("bg/tiliBtn",this.node).getComponent("cc.Button");
+
         this.deng1 = cc.find("box/deng1",this.bg);
         this.deng2 = cc.find("box/deng2",this.bg);
         this.deng3 = cc.find("box/deng3",this.bg);
@@ -67,6 +69,11 @@ cc.Class({
                 res.setSpriteFrameAtlas("images/rank","up",icon);
                 desc.node.color = cc.color(189,43,7);
             }
+            else if(data.rewardType == "3")
+            {
+                res.setSpriteFrameAtlas("images/common","diamond",icon);
+                desc.node.color = cc.color(225,130,6);
+            }
         }
     },
 
@@ -81,9 +88,9 @@ cc.Class({
         var now = new Date().getTime();
         if(choujiangNum < 5)
         {
-            if(now - choujiangTime>5*60*1000)
+            if(now - choujiangTime>10*60*1000)
             {
-                var num = Math.floor((now - choujiangTime)/(5*60*1000));
+                var num = Math.floor((now - choujiangTime)/(10*60*1000));
                 choujiangNum += num;
                 if(choujiangNum>5) choujiangNum = 5;
                 storage.setChoujiangNum(choujiangNum);
@@ -94,6 +101,8 @@ cc.Class({
 
             this.updateTime();
         }
+
+        this.tiliBtn.node.active = choujiangNum>0 ? false : true;
     },
 
     updateTime: function()
@@ -106,7 +115,7 @@ cc.Class({
         {
             var choujiangTime = storage.getChoujiangTime();
             var now = new Date().getTime();
-            var time = 5*60*1000 - (now - choujiangTime);
+            var time = 10*60*1000 - (now - choujiangTime);
 
             var h = Math.floor(time/(60*60*1000));
             var m = Math.floor((time - h*60*60*1000)/(60*1000));
@@ -300,7 +309,7 @@ cc.Class({
         if(awardData.rewardType == "0")
         {
             var award = this.game.getSecVal()*Number(awardData.reward);
-            if(isVedio) award*=2;
+            if(isVedio) award*=5;
             this.game.addCoin(award);
             res.showToast("金币+"+storage.castNum(award));
             cc.res.showCoinAni();
@@ -325,6 +334,14 @@ cc.Class({
 
             res.showToast(awardData.tips);
         }
+        else if(awardData.rewardType == "3")
+        {
+            var award = Number(awardData.reward);
+            if(isVedio) award*=5;
+            this.game.addDiamond(award);
+            res.showToast("钻石+"+storage.castNum(award));
+            //cc.res.showCoinAni();
+        }
 
         this.btn_choujiang.interactable = true;
         this.btn_vedio_lingqu.node.active = false;
@@ -338,6 +355,7 @@ cc.Class({
         if(cc.GAME.share)
         {
             var rad = parseInt(cc.GAME.choujiangAd);
+            if(!cc.GAME.hasVideo) rad = 100;
             if(Math.random()*100 < rad)
             {
                 this.useShare = true;
@@ -354,6 +372,29 @@ cc.Class({
         {
             this.btn_vedio_lingqu.node.getChildByName("share").active = false;
             this.btn_vedio_lingqu.node.getChildByName("video").active = true;
+        }
+
+        this.useShare2 = false;
+        if(cc.GAME.share)
+        {
+            var rad = parseInt(cc.GAME.choujiangTiliAd);
+            if(!cc.GAME.hasVideo) rad = 100;
+            if(Math.random()*100 < rad)
+            {
+                this.useShare2 = true;
+                this.tiliBtn.node.getChildByName("share").active = true;
+                this.tiliBtn.node.getChildByName("video").active = false;
+            }
+            else
+            {
+                this.tiliBtn.node.getChildByName("share").active = false;
+                this.tiliBtn.node.getChildByName("video").active = true;
+            }
+        }
+        else
+        {
+            this.tiliBtn.node.getChildByName("share").active = false;
+            this.tiliBtn.node.getChildByName("video").active = true;
         }
     },
 
@@ -395,6 +436,33 @@ cc.Class({
                 });
             }
             cc.qianqista.event("抽奖_2倍领取");
+        }
+        else if(data == "tili")
+        {
+            var self = this;
+            if(this.useShare2)
+            {
+                cc.sdk.share(function(r){
+                    if(r)
+                    {
+                        storage.setChoujiangNum(2);
+                        self.updateUI();
+                    }
+                },"choujiangtili");
+            }
+            else
+            {
+                cc.sdk.showVedio(function(r){
+                    if(r)
+                    {
+                        storage.setChoujiangNum(2);
+                        self.updateUI();
+                    }
+                });
+
+            }
+            cc.qianqista.event("抽奖_加次数");
+
         }
 
         storage.playSound(res.audio_button);

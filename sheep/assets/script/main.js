@@ -31,7 +31,7 @@ cc.Class({
         this.addListener();
 
         this.updateRed();
-        this.updateFlyCoin();
+
 
         if(this.yindao < 22)//22
         {
@@ -48,6 +48,8 @@ cc.Class({
                 this.scheduleOnce(function(){
                     res.openUI("yindao");
                 },0.5);
+
+                this.scroll.vertical = false;
             }
             else
             {
@@ -98,6 +100,7 @@ cc.Class({
         this.uploadCoinDt = 0;
         this.shouyiDt = 0;
         this.yindao = storage.getYinDao();
+        this.rate7 = 1;
 
         qianqista.onshowmaincallback = this.updateLixian.bind(this);
 
@@ -451,7 +454,7 @@ cc.Class({
                 cc.log(this.boxs.length);
 
                 this.updateBox();
-                this.scheduleOnce(this.addBox.bind(this),0.05);
+                this.scheduleOnce(this.addBox.bind(this),0.1);
 
                 if(this.boxs.length == lock)
                     this.updateLixian();
@@ -566,7 +569,7 @@ cc.Class({
         //}
 
         this.saveCoinDt += dt;
-        if(this.saveCoinDt>3)
+        if(this.saveCoinDt>5)
         {
             this.saveCoinDt = 0;
             storage.setCoin(this.coin);
@@ -596,20 +599,57 @@ cc.Class({
         }
     },
 
-    updateLixian: function()
+    updateLixian: function(scene)
     {
         if(this.yindao == 14 || this.yindao >= 22)
         {
             var now = new Date().getTime();
             var time = storage.getLixianTime();
-            var t = (now-time)/1000-20;
+            var t = (now-time)/1000-60;
             if(t>0)
             {
-                if(t>0.5*60*60) t = 0.5*60*60;
+                if(t>300) t = 300;
                 storage.setLixianTime(now);
                 var val = this.getSecVal()*t;
                 if(val>0)
                     res.openUI("lixian",null,val);
+            }
+        }
+
+        //更新addmini 1022
+        var btn_addmini = cc.find("btn_addmini",this.node_main);
+        if(cc.GAME.addmini == 1)
+        {
+            btn_addmini.active = false;
+        }
+        else
+        {
+            btn_addmini.active = true;
+            var isadd = false;
+            if(scene)
+            {
+                if(scene == 1022 || scene == 1089 || scene == 1131) isadd = true;
+            }
+            else
+            {
+                if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+                {
+                    var opts = wx.getLaunchOptionsSync();
+                    if (opts)
+                    {
+                        if(opts.scene == 1022 || opts.scene == 1089 || scene == 1131)
+                            isadd = true;
+                    }
+                }
+            }
+
+            if(isadd)
+            {
+                btn_addmini.active = false;
+                cc.GAME.addmini = 1;
+                this.addDiamond(30);
+                storage.uploadAddmini();
+                cc.res.showToast("添加到小程序成功！钻石+30");
             }
         }
     },
@@ -743,6 +783,7 @@ cc.Class({
             this.shouyiDt = 0;
 
             var rate = 1;
+            var is7rate = 1;
             if(this.rateTask && this.rateTask.length>0)
             {
                 var now = new Date().getTime();
@@ -752,6 +793,7 @@ cc.Class({
                     if(task.to>now)
                     {
                         rate += task.reward;
+                        if(task.reward == 7) is7rate = 7;
                     }
                     else
                     {
@@ -774,6 +816,11 @@ cc.Class({
                 //}
             }
             this.shouYiRate = rate;
+
+            if(this.rate7 != is7rate)
+            {
+                this.rate7 = is7rate;
+            }
 
             var speed = 1;
             if(this.speedTask && this.speedTask.length>0)
@@ -807,6 +854,8 @@ cc.Class({
                 //}
             }
             this.shouYiSpeed = speed;
+
+            this.updateFlyCoin();
         }
     },
 
@@ -922,6 +971,8 @@ cc.Class({
                 if(node.zIndex != 999) node.zIndex = 999;
                 node.getComponent("yindao").updateYindao();
             }
+
+            if(this.yindao>8) this.scroll.vertical = true;
         }
     },
 
@@ -937,18 +988,32 @@ cc.Class({
     updateFlyCoin: function()
     {
         var now = new Date().getTime();
+        var b = false;
         if(!this.flyCoinTime)
         {
             this.flyCoinTime = now;
+            b = true;
+        }
+        else
+        {
+            var t = (now - this.flyCoinTime)/1000;
+            if(t>60)
+            {
+                this.flyCoinTime = now;
+                b = true;
+            }
+        }
 
+        if(b)
+        {
             var flycoin = cc.find("top/flycoin",this.node_main);
             flycoin.active = true;
             flycoin.x = -cc.winSize.width/2-flycoin.width;
 
-            flycoin.runAction(cc.repeatForever(cc.sequence(
+            flycoin.runAction(cc.sequence(
                 cc.moveBy(8,cc.winSize.width+flycoin.width,0),
                 cc.moveBy(8,-cc.winSize.width-flycoin.width,0)
-            )));
+            ));
         }
     },
 
@@ -986,6 +1051,8 @@ cc.Class({
     click: function(event,data)
     {
         var self = this;
+        if(this.yindao < 2)
+            return;
         if(data == "game1")
         {
             sdk.hideClub();
@@ -1055,7 +1122,8 @@ cc.Class({
         }
         else if(data == "skill")
         {
-            res.openUI("skill");
+            if(this.yindao>3)
+                res.openUI("skill");
         }
         else if(data == "shouyifanbei")
         {
@@ -1076,6 +1144,11 @@ cc.Class({
         else if(data == "tanxian")
         {
             res.openUI("tanxian");
+        }
+        else if(data == "addmini")
+        {
+            if(this.yindao>3)
+                res.openUI("addmini");
         }
         storage.playSound(res.audio_button);
         cc.log(data);

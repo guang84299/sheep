@@ -101,7 +101,7 @@ cc.Class({
             this.goTime = now;
         }
         car.runAction(cc.sequence(
-            cc.moveBy(this.speed+dtv,-350,0),
+            cc.moveBy((this.speed+dtv)*(1.0/this.game.rate7),-350,0),
             cc.callFunc(function(){
                 self.addCoin(car);
             })
@@ -112,7 +112,7 @@ cc.Class({
         if(this.isUp)
         {
             this.isUp = false;
-            var dt = Math.random();
+            var dt = Math.random()*(1.0/this.game.rate7);
             this.node.runAction(cc.sequence(
                 cc.delayTime(dt),
                 cc.callFunc(function(){
@@ -126,7 +126,7 @@ cc.Class({
     {
         var self = this;
         car.runAction(cc.sequence(
-            cc.moveBy(this.speed,350,0),
+            cc.moveBy(this.speed*(1.0/this.game.rate7),350,0),
             cc.callFunc(function(){
                 self.subCoin(car);
             })
@@ -148,7 +148,7 @@ cc.Class({
         {
             var self = this;
             car.runAction(cc.sequence(
-                cc.delayTime(0.3),
+                cc.delayTime(0.3*(1.0/this.game.rate7)),
                 cc.callFunc(function(){
                     self.carBack(car);
                 })
@@ -180,7 +180,7 @@ cc.Class({
 
         var self = this;
         coin.runAction(cc.sequence(
-            cc.moveBy(0.3,cc.v2(100,0)).easing(cc.easeSineIn()),
+            cc.moveBy(0.3*(1.0/this.game.rate7),cc.v2(100,0)).easing(cc.easeSineIn()),
             cc.callFunc(function(){
                 coin.destroy();
                 car.coinsp.active = true;
@@ -188,7 +188,7 @@ cc.Class({
         ));
 
         this.node.runAction(cc.sequence(
-            cc.delayTime(1),
+            cc.delayTime(1*(1.0/this.game.rate7)),
             cc.callFunc(function(){
                 self.addCoin(car);
             })
@@ -206,7 +206,7 @@ cc.Class({
         coin.parent = this.node.parent;
 
         coin.runAction(cc.sequence(
-            cc.moveBy(0.3,cc.v2(0,100)).easing(cc.easeSineIn()),
+            cc.moveBy(0.3*(1.0/this.game.rate7),cc.v2(0,100)).easing(cc.easeSineIn()),
             cc.removeSelf()
         ));
 
@@ -214,7 +214,7 @@ cc.Class({
 
         var self = this;
         car.runAction(cc.sequence(
-            cc.delayTime(0.3),
+            cc.delayTime(0.3*(1.0/this.game.rate7)),
             cc.callFunc(function(){
                 self.game.addCoin(car.coin,self.game.shouYiRate);
                 car.coin = 0;

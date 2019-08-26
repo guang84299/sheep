@@ -159,6 +159,7 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        cc.qianqista.event("收益翻倍_打开");
     },
 
     hide: function()
@@ -202,6 +203,8 @@ cc.Class({
                     }
                 });
             }
+
+            cc.qianqista.event("收益翻倍_分享");
 
         }
         storage.playSound(res.audio_button);

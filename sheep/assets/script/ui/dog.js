@@ -73,7 +73,7 @@ cc.Class({
         var val = this.game.getSecVal();
         this.cost1 = val*10;
         this.cost2 = val*80;
-        this.cost3 = 100;
+        this.cost3 = 50;
         this.card1_btn1_desc.string = storage.castNum(this.cost1);
         this.card1_btn2_desc.string = storage.castNum(this.cost2);
         this.card2_btn1_desc.string = storage.castNum(this.cost3);
@@ -219,7 +219,11 @@ cc.Class({
             {
                 var btn = cc.find("btn",card);
                 btn.active = false;
-                if(carNum>0 && cardLv==0)btn.active = true;
+                if(carNum>0 && cardLv==0)
+                {
+                    btn.active = true;
+                    this.jiesuo(i+1);
+                }
             }
         }
 
@@ -240,6 +244,7 @@ cc.Class({
 
         var use = cc.find("box/use",this.selbox).getComponent(cc.Button);
         var use_str = cc.find("box/use/str",this.selbox).getComponent(cc.Label);
+        var shiyongzhong = cc.find("box/shiyongzhong",this.selbox);
 
         var card = cc.find("box/card",this.selbox);
         var lv = cc.find("box/card/lv",this.selbox).getComponent(cc.Label);
@@ -268,13 +273,18 @@ cc.Class({
         var cardId = storage.getDogCard();
         if(selCardIndex+1 == cardId)
         {
-            use.interactable = false;
-            use_str.string = "使用中";
+            //use.interactable = false;
+            //use_str.string = "使用中";
+            shiyongzhong.active = true;
+            use.node.active = false;
         }
         else
         {
+            use.node.active = true;
             use.interactable = true;
             use_str.string = "启用";
+
+            shiyongzhong.active = false;
         }
     },
 
@@ -356,6 +366,7 @@ cc.Class({
     {
         var self = this;
         self.isChoukaing = true;
+        this.lastChoukaType = type;
         //单抽
         if(type == 1 || type == 3)
         {
@@ -370,17 +381,21 @@ cc.Class({
 
             var title = cc.find("title",box);
             var info2 = cc.find("info2",box).getComponent(cc.Label);
-            var info = cc.find("info",box);
+            //var info = cc.find("info",box);
+            //var btns = cc.find("btns",box);
 
-            var name = cc.find("name",info).getComponent(cc.Label);
-            var desc = cc.find("desc",info).getComponent(cc.Label);
-            var grade = cc.find("grade",info).getComponent(cc.Label);
-            var base = cc.find("base",info).getComponent(cc.Label);
+            //var name = cc.find("name",info).getComponent(cc.Label);
+            //var desc = cc.find("desc",info).getComponent(cc.Label);
+            //var grade = cc.find("grade",info).getComponent(cc.Label);
+            //var base = cc.find("base",info).getComponent(cc.Label);
 
 
             var index = this.getChoukaIndex(type);
             var cardLv = storage.getDogCardLv(index);
             var seldata = cc.res.conf_cardText[index-1];
+
+            info2.node.active = true;
+            info2.string = seldata.character+"牧羊犬 经验+1";
 
             cc.res.setSpriteFrame("images/dogcard/card_"+index,card);
             if(cardLv>0)
@@ -388,9 +403,8 @@ cc.Class({
                 //title.string = "相同品质卡片自动转为升级经验";
                 cc.res.setSpriteFrameAtlas("images/dog","wenzi03",title);
                 cc.res.setSpriteFrameAtlas("images/dog","yiyongyou",card_desc);
-                info2.node.active = true;
-                info2.string = seldata.character+"牧羊犬 经验+1";
-                info.active = false;
+
+                //info.active = false;
             }
             else
             {
@@ -398,12 +412,12 @@ cc.Class({
                 cc.res.setSpriteFrameAtlas("images/dog","wenzi04",title);
                 cc.res.setSpriteFrameAtlas("images/dog","xin",card_desc);
                 info2.node.active = false;
-                info.active = true;
+                //info.active = true;
 
-                name.string = seldata.name;
-                desc.string = seldata.tips;
-                grade.string = seldata.character;
-                base.string = seldata.base+"倍"+"（上限："+seldata.top+"倍）";
+                //name.string = seldata.name;
+                //desc.string = seldata.tips;
+                //grade.string = seldata.character;
+                //base.string = seldata.base+"倍"+"（上限："+seldata.top+"倍）";
 
                 //grade.node.color = this.cardColors[index-1];
             }
@@ -440,6 +454,12 @@ cc.Class({
                 }
             }
             storage.uploadDogCardNum(index);
+
+            //特效
+            var node = cc.res.playPlistAnim3(cc.res["explosion.plist"],0.04,1,null,true);
+            node.position = card.position;
+            node.scale = 6;
+            node.parent = card.parent;
         }
         //9连抽
         else
@@ -524,12 +544,21 @@ cc.Class({
         card.scale = 0;
         card.runAction(cc.sequence(
             cc.delayTime(0.6*i),
+            cc.callFunc(function(){
+                var node = cc.res.playPlistAnim3(cc.res["explosion.plist"],0.04,1,null,true);
+                //node.position = card.position;
+                node.scale = 6;
+                node.parent = card;
+            }),
             cc.scaleTo(0.2,-1,1).easing(cc.easeSineIn()),
             cc.scaleTo(0.5,1,1).easing(cc.easeSineIn()),
             cc.callFunc(function(){
                 card.getChildByName("ani").active = true;
             })
         ));
+
+        //特效
+
     },
 
     buy1: function()
@@ -537,7 +566,7 @@ cc.Class({
         if(this.game.coin >= this.cost1)
         {
             this.game.addCoin(-this.cost1);
-            storage.setDogCardTime(1,new Date().getTime()+120*1000);
+            storage.setDogCardTime(1,new Date().getTime()+0);
             this.updatePage1();
             this.chouka(1);
         }
@@ -552,7 +581,7 @@ cc.Class({
         if(this.game.coin >= this.cost2)
         {
             this.game.addCoin(-this.cost2);
-            storage.setDogCardTime(2,new Date().getTime()+240*1000);
+            storage.setDogCardTime(2,new Date().getTime()+0);
             this.updatePage1();
             this.chouka(2);
         }
@@ -567,7 +596,7 @@ cc.Class({
         if(this.game.diamond >= this.cost3)
         {
             this.game.addDiamond(-this.cost3);
-            storage.setDogCardTime(3,new Date().getTime()+60*1000);
+            storage.setDogCardTime(3,new Date().getTime()+0);
             this.updatePage1();
             this.chouka(3);
         }
@@ -593,6 +622,21 @@ cc.Class({
             this.updatePage1();
             res.showToast("再看"+(3-adNum)+"次抽卡");
         }
+    },
+
+    again: function()
+    {
+        cc.find("singlecard",this.node).active = false;
+        cc.find("card9",this.node).active = false;
+
+        if(this.lastChoukaType == 1)
+            this.buy1();
+        else if(this.lastChoukaType == 2)
+            this.buy2();
+        else if(this.lastChoukaType == 3)
+            this.buy3();
+        else if(this.lastChoukaType == 4)
+            this.buy4();
     },
 
     selcard: function(tid)
@@ -730,6 +774,17 @@ cc.Class({
         else if(data == "use")
         {
             this.use();
+        }
+        else if(data == "again")
+        {
+            this.again();
+        }
+        else if(data == "beibao")
+        {
+            cc.find("singlecard",this.node).active = false;
+            cc.find("card9",this.node).active = false;
+            cc.find("bg/toggles/toggle2",this.node).getComponent(cc.Toggle).isChecked = true;
+            this.open2();
         }
         storage.playSound(res.audio_button);
         cc.log(data);

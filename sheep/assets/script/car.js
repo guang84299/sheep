@@ -48,9 +48,9 @@ cc.Class({
         this.index = -1;
         var h = this.game.boxs[0].height;
         var num = (-this.node.y+this.ny)/h;
-        var t = this.speed*num;
+        var t = this.speed*num*(1.0/this.game.rate7);
         var y = this.ny;
-        var dt = 0.5;
+        var dt = 0.5*(1.0/this.game.rate7);
         cc.res.setSpriteFrameAtlas("images/main","car_up"+carId,this.node);
         this.node.runAction(cc.sequence(
             cc.moveTo(t,cc.v2(this.node.x,y)),
@@ -82,7 +82,7 @@ cc.Class({
         var h = this.game.boxs[0].height;
         var y = 0;
         var dt = 0.5;
-        var t = this.speed;
+        var t = this.speed*(1.0/this.game.rate7);
 
         var coin = Number(this.conf.capacity)-this.coin;
 
@@ -145,7 +145,7 @@ cc.Class({
 
             var isHasCoin = box.coin > 0 ? true : false;
             this.node.runAction(cc.sequence(
-                cc.delayTime(1),
+                cc.delayTime(1*(1.0/this.game.rate7)),
                 cc.callFunc(function(){
                     if(isHasCoin)
                         self.addCoin(y);
@@ -174,7 +174,7 @@ cc.Class({
 
         var self = this;
         mao.runAction(cc.sequence(
-            cc.moveTo(0.3,this.node.position).easing(cc.easeSineIn()),
+            cc.moveTo(0.3*(1.0/this.game.rate7),this.node.position).easing(cc.easeSineIn()),
             cc.callFunc(function(){
                 self.maosp.active = true;
                 cc.res.setSpriteFrameAtlas("images/main","car_mao"+icon,self.maosp);
@@ -194,7 +194,7 @@ cc.Class({
 
             var self = this;
             mao.runAction(cc.sequence(
-                cc.moveBy(0.3,cc.v2(0,100)).easing(cc.easeSineIn()),
+                cc.moveBy(0.3*(1.0/this.game.rate7),cc.v2(0,100)).easing(cc.easeSineIn()),
                 cc.callFunc(function(){
                     self.game.addFacCoin(self.coin);
                     self.coin = 0;

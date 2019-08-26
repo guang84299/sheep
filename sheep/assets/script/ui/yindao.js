@@ -31,7 +31,7 @@ cc.Class({
     {
         this.node.opacity = 0;
         this.desc.string = "";
-        this.scheduleOnce(this.updateUI.bind(this),0.4);
+        this.scheduleOnce(this.updateUI.bind(this),0);
     },
 
     updateUI: function()

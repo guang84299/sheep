@@ -51,6 +51,7 @@ cc.Class({
             cc.find("toggles/toggle3",this.bg).active = false;
         }
 
+        this.updateRed();
         this.open1();
     },
 
@@ -83,6 +84,32 @@ cc.Class({
         this.game.updateYindao();
     },
 
+    updateRed: function()
+    {
+        if(this.index > 1)
+        {
+            var data = cc.res.conf_compose[this.index-1];
+            var sheep = storage.getSheep(parseInt(data.id));
+            var buoy = storage.getBuoy(parseInt(data.newKnife));
+
+            var red1 = cc.find("toggles/toggle2/red",this.bg);
+            var red2 = cc.find("toggles/toggle3/red",this.bg);
+            red1.active = sheep == 3 ? false : true
+            red2.active = buoy == 3 ? false : true;
+
+            if(red1.active && !red1.isAni)
+            {
+                red1.isAni = true;
+                red1.runAction(cc.repeatForever(cc.jumpBy(1,0,0,16,2)));
+            }
+            if(red2.active && !red2.isAni)
+            {
+                red2.isAni = true;
+                red2.runAction(cc.repeatForever(cc.jumpBy(1,0,0,16,2)));
+            }
+        }
+    },
+
     updateUI: function()
     {
         var lv = storage.getLevel(this.index);
@@ -110,13 +137,13 @@ cc.Class({
         var datacompose = cc.res.conf_compose[this.index-1];
         var sheep = storage.getSheep(parseInt(datacompose.id));
 
-        var pice = Number(res.conf_price[lv-1]["price"+1]);
-        var pice2 = Number(res.conf_price[nlv-1]["price"+1]);
+        var pice = Number(res.conf_price[lv-1]["price"+this.index]);
+        var pice2 = Number(res.conf_price[nlv-1]["price"+this.index]);
 
         if(sheep == 3)
         {
-            pice = Number(res.conf_price[lv-1]["price"+this.index]);
-            pice2 = Number(res.conf_price[nlv-1]["price"+this.index]);
+            pice *= 1.3;
+            pice2 *= 1.3;
         }
 
         this.icon2_val.string = storage.castNum(pice);
@@ -206,16 +233,15 @@ cc.Class({
         this.unscheduleAllCallbacks();
         this.sheepPeiyuState = 0;
 
+        var btn_video = cc.find("btn_video",this.box2);
+        var btn_tanxian = cc.find("btn_tanxian",this.box2);
+
         var yangmao_icon = cc.find("yangmao/icon",this.box2);
-        var yangmao_btn_video = cc.find("yangmao/btn_video",this.box2);
-        var yangmao_btn_tanxian = cc.find("yangmao/btn_tanxian",this.box2);
         var yangmao_pro = cc.find("yangmao/pro",this.box2).getComponent(cc.ProgressBar);
         var yangmao_pro_num = cc.find("yangmao/pro/num",this.box2).getComponent(cc.Label);
         var yangmao_desc = cc.find("yangmao/desc",this.box2).getComponent(cc.Label);
 
         var siliao_icon = cc.find("siliao/icon",this.box2);
-        var siliao_btn_video = cc.find("siliao/btn_video",this.box2);
-        var siliao_btn_tanxian = cc.find("siliao/btn_tanxian",this.box2);
         var siliao_pro = cc.find("siliao/pro",this.box2).getComponent(cc.ProgressBar);
         var siliao_pro_num = cc.find("siliao/pro/num",this.box2).getComponent(cc.Label);
         var siliao_desc = cc.find("siliao/desc",this.box2).getComponent(cc.Label);
@@ -233,6 +259,10 @@ cc.Class({
         cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,yang_icon);
         yang_icon.color = sheepConf.color;
 
+        btn_video.active = true;
+        btn_tanxian.active = true;
+        yang_peiyu.active = true;
+
         //是否已经解锁 0：未解锁 1:解锁 2：使用
         var sheep = storage.getSheep(parseInt(data.id));
         if(sheep == 0)
@@ -244,52 +274,55 @@ cc.Class({
             var woolTime = storage.getCailiaoTime(1,parseInt(data.wool));
             var addWool = Math.floor(((now-woolTime)/1000)/parseInt(data.woolTime));
             var wool = storage.getCailiao(1,parseInt(data.wool));
-            wool += addWool;
-            if(wool>parseInt(data.woolCost)) wool = parseInt(data.woolCost);
-            storage.setCailiao(1,parseInt(data.wool),wool);
-            storage.setCailiaoTime(1,parseInt(data.wool),now);
+            if(addWool>0)
+            {
+                wool += addWool;
+                if(wool>parseInt(data.woolCost)) wool = parseInt(data.woolCost);
+                storage.setCailiao(1,parseInt(data.wool),wool);
+                storage.setCailiaoTime(1,parseInt(data.wool),now);
+            }
+
 
             var feedTime = storage.getCailiaoTime(2,parseInt(data.feed));
             var addFeed = Math.floor(((now-feedTime)/1000)/parseInt(data.feedTime));
             var feed = storage.getCailiao(2,parseInt(data.feed));
-            feed += addFeed;
-            if(feed>parseInt(data.feedCost)) feed=parseInt(data.feedCost);
-            storage.setCailiao(2,parseInt(data.feed),feed);
-            storage.setCailiaoTime(2,parseInt(data.feed),now);
+            if(addFeed>0)
+            {
+                feed += addFeed;
+                if(feed>parseInt(data.feedCost)) feed=parseInt(data.feedCost);
+                storage.setCailiao(2,parseInt(data.feed),feed);
+                storage.setCailiaoTime(2,parseInt(data.feed),now);
+            }
 
             yangmao_pro.progress = wool/parseFloat(data.woolCost);
             yangmao_pro_num.string = wool+"/"+data.woolCost;
             if(wool>=parseInt(data.woolCost))
             {
-                yangmao_btn_video.active = false;
-                yangmao_btn_tanxian.active = false;
-                yangmao_desc.string = "收集完成";
+                yangmao_desc.string = "00:00";//"收集完成";
                 p1 = true;
             }
             else
             {
-                yangmao_btn_video.active = true;
-                yangmao_btn_tanxian.active = true;
-                yangmao_desc.string = "每"+data.woolTime+"秒增加1个";
+                //yangmao_desc.string = "每"+data.woolTime+"秒增加1个";
+                var t2 = Number(data.woolTime)*(parseInt(data.woolCost)-wool)*1000+now - (now-woolTime);
+                yangmao_desc.string = storage.getCountDown(now,t2,2);
             }
 
             siliao_pro.progress = feed/parseFloat(data.feedCost);
             siliao_pro_num.string = feed+"/"+data.feedCost;
             if(feed>=parseInt(data.feedCost))
             {
-                siliao_btn_video.active = false;
-                siliao_btn_tanxian.active = false;
-                siliao_desc.string = "收集完成";
+                siliao_desc.string = "00:00";//"收集完成";
                 p2 = true;
             }
             else
             {
-                siliao_btn_video.active = true;
-                siliao_btn_tanxian.active = true;
-                siliao_desc.string = "每"+data.feedTime+"秒增加1个";
+                //siliao_desc.string = "每"+data.feedTime+"秒增加1个";
+                var t2 = Number(data.feedTime)*(parseInt(data.feedCost)-feed)*1000+now-(now-feedTime);
+                siliao_desc.string = storage.getCountDown(now,t2,2);
             }
 
-            var updateTime = 10;
+            var updateTime = 1;
             if(p1 && p2)
             {
                 var peiyuTime = storage.getPeiyuTime(1,parseInt(data.id));
@@ -329,29 +362,32 @@ cc.Class({
             siliao_pro.progress = 1;
             siliao_pro_num.string = data.feedCost+"/"+data.feedCost;
 
-            yangmao_btn_video.active = false;
-            yangmao_btn_tanxian.active = false;
-            yangmao_desc.string = "收集完成";
-            siliao_btn_video.active = false;
-            siliao_btn_tanxian.active = false;
-            siliao_desc.string = "收集完成";
+            btn_video.active = false;
+            btn_tanxian.active = false;
+            yangmao_desc.string = "00:00";
+            siliao_desc.string = "00:00";
 
             yang_peiyu_state1.active = true;
             yang_peiyu_state2.active = false;
             if(sheep == 1)
             {
                 this.sheepPeiyuState = 2;
-                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "培育";
+                cc.find("str1",yang_peiyu_state1).active = true;
+                cc.find("str2",yang_peiyu_state1).active = false;
+                //cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "培育";
             }
             else if(sheep == 2)
             {
                 this.sheepPeiyuState = 3;
-                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "放入羊场";
+                cc.find("str1",yang_peiyu_state1).active = false;
+                cc.find("str2",yang_peiyu_state1).active = true;
+                //cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "放入羊场";
             }
             else
             {
                 this.sheepPeiyuState = 4;
-                cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "已放入羊场";
+                yang_peiyu.active = false;
+                //cc.find("str",yang_peiyu_state1).getComponent(cc.Label).string = "已放入羊场";
             }
         }
     },
@@ -361,16 +397,15 @@ cc.Class({
         this.unscheduleAllCallbacks();
         this.buoyPeiyuState = 0;
 
+        var btn_video = cc.find("btn_video",this.box3);
+        var btn_tanxian = cc.find("btn_tanxian",this.box3);
+
         var yangmao_icon = cc.find("yangmao/icon",this.box3);
-        var yangmao_btn_video = cc.find("yangmao/btn_video",this.box3);
-        var yangmao_btn_tanxian = cc.find("yangmao/btn_tanxian",this.box3);
         var yangmao_pro = cc.find("yangmao/pro",this.box3).getComponent(cc.ProgressBar);
         var yangmao_pro_num = cc.find("yangmao/pro/num",this.box3).getComponent(cc.Label);
         var yangmao_desc = cc.find("yangmao/desc",this.box3).getComponent(cc.Label);
 
         var siliao_icon = cc.find("siliao/icon",this.box3);
-        var siliao_btn_video = cc.find("siliao/btn_video",this.box3);
-        var siliao_btn_tanxian = cc.find("siliao/btn_tanxian",this.box3);
         var siliao_pro = cc.find("siliao/pro",this.box3).getComponent(cc.ProgressBar);
         var siliao_pro_num = cc.find("siliao/pro/num",this.box3).getComponent(cc.Label);
         var siliao_desc = cc.find("siliao/desc",this.box3).getComponent(cc.Label);
@@ -380,7 +415,11 @@ cc.Class({
         var yang_peiyu_state1 = cc.find("yang/peiyu/state1",this.box3);
         var yang_peiyu_state2 = cc.find("yang/peiyu/state2",this.box3);
 
-        var str = cc.find("str",yang_peiyu_state1).getComponent(cc.Label);
+        btn_video.active = true;
+        btn_tanxian.active = true;
+        yang_peiyu.active = true;
+
+        //var str = cc.find("str",yang_peiyu_state1).getComponent(cc.Label);
 
         var data = cc.res.conf_compose[this.index-1];
 
@@ -401,52 +440,58 @@ cc.Class({
             var oreTime = storage.getCailiaoTime(3,parseInt(data.ore));
             var addore = Math.floor(((now-oreTime)/1000)/parseInt(data.oreTime));
             var ore = storage.getCailiao(3,parseInt(data.ore));
-            ore += addore;
-            if(ore>parseInt(data.oreCost)) ore = parseInt(data.oreCost);
-            storage.setCailiao(3,parseInt(data.ore),ore);
-            storage.setCailiaoTime(3,parseInt(data.ore),now);
+            if(addore>0)
+            {
+                ore += addore;
+                if(ore>parseInt(data.oreCost)) ore = parseInt(data.oreCost);
+                storage.setCailiao(3,parseInt(data.ore),ore);
+                storage.setCailiaoTime(3,parseInt(data.ore),now);
+            }
+
 
             var chartTime = storage.getCailiaoTime(4,parseInt(data.chart));
             var addchart = Math.floor(((now-chartTime)/1000)/parseInt(data.chartTime));
             var chart = storage.getCailiao(4,parseInt(data.chart));
-            chart += addchart;
-            if(chart>parseInt(data.chartCost)) chart=parseInt(data.chartCost);
-            storage.setCailiao(4,parseInt(data.chart),chart);
-            storage.setCailiaoTime(4,parseInt(data.chart),now);
+            if(addchart>0)
+            {
+                chart += addchart;
+                if(chart>parseInt(data.chartCost)) chart=parseInt(data.chartCost);
+                storage.setCailiao(4,parseInt(data.chart),chart);
+                storage.setCailiaoTime(4,parseInt(data.chart),now);
+            }
+
 
             yangmao_pro.progress = ore/parseFloat(data.oreCost);
             yangmao_pro_num.string = ore+"/"+data.oreCost;
             if(ore>=parseInt(data.oreCost))
             {
-                yangmao_btn_video.active = false;
-                yangmao_btn_tanxian.active = false;
-                yangmao_desc.string = "收集完成";
+                yangmao_desc.string = "00:00";//"收集完成";
                 p1 = true;
             }
             else
             {
-                yangmao_btn_video.active = true;
-                yangmao_btn_tanxian.active = true;
-                yangmao_desc.string = "每"+data.oreTime+"秒增加1个";
+                //yangmao_btn_video.active = true;
+                //yangmao_btn_tanxian.active = true;
+                //yangmao_desc.string = "每"+data.oreTime+"秒增加1个";
+
+                var t2 = Number(data.oreTime)*(parseInt(data.oreCost)-ore)*1000+now - (now-oreTime);
+                yangmao_desc.string = storage.getCountDown(now,t2,2);
             }
 
             siliao_pro.progress = chart/parseFloat(data.chartCost);
             siliao_pro_num.string = chart+"/"+data.chartCost;
             if(chart>=parseInt(data.chartCost))
             {
-                siliao_btn_video.active = false;
-                siliao_btn_tanxian.active = false;
-                siliao_desc.string = "收集完成";
+                siliao_desc.string = "00:00";
                 p2 = true;
             }
             else
             {
-                siliao_btn_video.active = true;
-                siliao_btn_tanxian.active = true;
-                siliao_desc.string = "每"+data.chartTime+"秒增加1个";
+                var t2 = Number(data.chartTime)*(parseInt(data.chartCost)-chart)*1000+now - (now-chartTime);
+                siliao_desc.string = storage.getCountDown(now,t2,2);
             }
 
-            var updateTime = 10;
+            var updateTime = 1;
             if(p1 && p2)
             {
                 var peiyuTime = storage.getPeiyuTime(2,parseInt(data.newKnife));
@@ -486,29 +531,32 @@ cc.Class({
             siliao_pro.progress = 1;
             siliao_pro_num.string = data.chartCost+"/"+data.chartCost;
 
-            yangmao_btn_video.active = false;
-            yangmao_btn_tanxian.active = false;
-            yangmao_desc.string = "收集完成";
-            siliao_btn_video.active = false;
-            siliao_btn_tanxian.active = false;
-            siliao_desc.string = "收集完成";
+            btn_video.active = false;
+            btn_tanxian.active = false;
+            yangmao_desc.string = "00:00";
+            siliao_desc.string = "00:00";
 
             yang_peiyu_state1.active = true;
             yang_peiyu_state2.active = false;
             if(buoy == 1)
             {
                 this.buoyPeiyuState = 2;
-                str.string = "研发";
+                //str.string = "研发";
+                cc.find("str1",yang_peiyu_state1).active = true;
+                cc.find("str2",yang_peiyu_state1).active = false;
             }
             else if(buoy == 2)
             {
                 this.buoyPeiyuState = 3;
-                str.string = "放入羊场";
+                //str.string = "放入羊场";
+                cc.find("str1",yang_peiyu_state1).active = false;
+                cc.find("str2",yang_peiyu_state1).active = true;
             }
             else
             {
                 this.buoyPeiyuState = 4;
-                str.string = "已放入羊场";
+                //str.string = "已放入羊场";
+                yang_peiyu.active = false;
             }
         }
     },
@@ -551,6 +599,7 @@ cc.Class({
         if(cc.GAME.share)
         {
             var rad = parseInt(cc.GAME.peiyusucAd);
+            if(!cc.GAME.hasVideo) rad = 100;
             if(Math.random()*100 < rad)
             {
                 this.useShare = true;
@@ -595,11 +644,24 @@ cc.Class({
         }
         else if(this.sheepPeiyuState == 2)
         {
+            //var data = cc.res.conf_compose[this.index-1];
+            //storage.setSheep(parseInt(data.id),2);
+            //storage.uploadSheep(parseInt(data.id));
+            //this.updatePage2();
+            //this.sheepPeiyuState = 3;
+
             var data = cc.res.conf_compose[this.index-1];
-            storage.setSheep(parseInt(data.id),2);
+            storage.setSheep(parseInt(data.id),3);
             storage.uploadSheep(parseInt(data.id));
             this.updatePage2();
-            this.sheepPeiyuState = 3;
+            this.sheepPeiyuState = 4;
+
+            this.game.boxs[this.index-1].sc.useNewSheep();
+
+            this.game.updateYindao();
+
+            this.updateRed();
+
             this.openpeiyangsuc(true);
         }
         else if(this.sheepPeiyuState == 3)
@@ -613,6 +675,8 @@ cc.Class({
             this.game.boxs[this.index-1].sc.useNewSheep();
 
             this.game.updateYindao();
+
+            this.updateRed();
         }
     },
 
@@ -639,11 +703,24 @@ cc.Class({
         }
         else if(this.buoyPeiyuState == 2)
         {
+            //var data = cc.res.conf_compose[this.index-1];
+            //storage.setBuoy(parseInt(data.newKnife),2);
+            //storage.uploadBuoy(parseInt(data.newKnife));
+            //this.updatePage3();
+            //this.buoyPeiyuState = 3;
+
             var data = cc.res.conf_compose[this.index-1];
-            storage.setBuoy(parseInt(data.newKnife),2);
+            storage.setBuoy(parseInt(data.newKnife),3);
             storage.uploadBuoy(parseInt(data.newKnife));
             this.updatePage3();
-            this.buoyPeiyuState = 3;
+            this.buoyPeiyuState = 4;
+
+            this.game.boxs[this.index-1].sc.useNewBuoy();
+
+            this.game.updateYindao();
+
+            this.updateRed();
+
             this.openpeiyangsuc();
         }
         else if(this.buoyPeiyuState == 3)
@@ -657,6 +734,8 @@ cc.Class({
             this.game.boxs[this.index-1].sc.useNewBuoy();
 
             this.game.updateYindao();
+
+            this.updateRed();
         }
     },
 
@@ -668,6 +747,7 @@ cc.Class({
             {
                 var data = cc.res.conf_compose[self.index-1];
                 storage.setCailiao(1,parseInt(data.wool),parseInt(data.woolCost));
+                storage.setCailiao(2,parseInt(data.feed),parseInt(data.feedCost));
                 self.updatePage2();
             }
         });
@@ -682,6 +762,7 @@ cc.Class({
             {
                 var data = cc.res.conf_compose[self.index-1];
                 storage.setCailiao(3,parseInt(data.ore),parseInt(data.oreCost));
+                storage.setCailiao(4,parseInt(data.chart),parseInt(data.chartCost));
                 self.updatePage3();
             }
         });
@@ -718,8 +799,8 @@ cc.Class({
 
     tanxian: function()
     {
-        cc.res.openUI("tanxian");
-        this.hide();
+        cc.res.openUI("tanxian",null,this.index);
+        //this.hide();
     },
 
     lingqu: function(x2)

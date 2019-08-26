@@ -20,10 +20,14 @@ cc.Class({
         this.namesp = cc.find("box/name",this.bg);
 
         this.btns = [];
+        this.lvs = [];
         for(var i=1;i<=3;i++)
         {
             var btn = cc.find("box/btn"+i,this.bg).getComponent(cc.Button);
             this.btns.push(btn);
+
+            var lv = cc.find("box/lv"+i,this.bg).getComponent(cc.Label);
+            this.lvs.push(lv);
         }
 
     },
@@ -39,6 +43,8 @@ cc.Class({
         if(nickName>=19) num+=1;
         if(nickName>=30) num+=1;
 
+        var alvs = [9,19,30];
+
         var lingquNum = storage.getNameUp();
         for(var i=0;i<this.btns.length;i++)
         {
@@ -46,21 +52,33 @@ cc.Class({
             if(num>i && lingquNum<num && lingquNum<i+1)
             {
                 btn.interactable = true;
+                this.lvs[i].string = "0";
             }
             else
             {
                 btn.interactable = false;
+
+                if(lingquNum>i)
+                {
+                    this.lvs[i].string = "0";
+                    cc.res.setSpriteFrame("images/nameup/yilingqu",btn.node.getChildByName("txt_lingqu"));
+                }
+                else
+                {
+                    this.lvs[i].string = parseInt(cc.res.conf_achievement[alvs[i]-1].condition) - tlv;
+                }
             }
         }
     },
 
     lingqu: function(x2)
     {
-        var award = 500;
+        var lingquNum = storage.getNameUp();
+
+        var award = 50*(lingquNum+1);
         //if(x2) award *= 2;
         this.game.addDiamond(award);
 
-        var lingquNum = storage.getNameUp();
         storage.setNameUp(lingquNum+1);
         storage.uploadNameUp();
 

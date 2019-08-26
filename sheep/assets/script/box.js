@@ -29,9 +29,9 @@ cc.Class({
         this.isUnLockSheep = cc.storage.getSheep(parseInt(this.compose.id));
         this.isUnLockBuoy = cc.storage.getBuoy(parseInt(this.compose.newKnife));
         this.conf = cc.res.conf_base[this.lv-1];
-        this.pice = cc.res.conf_price[this.lv-1]["price"+1];
+        this.pice = cc.res.conf_price[this.lv-1]["price"+index];
         if(this.isUnLockSheep == 3)
-            this.pice = cc.res.conf_price[this.lv-1]["price"+index];
+            this.pice *= 1.3 ;
         this.knifeType = cc.res.conf_grade[1-1].knifeType;
         if(this.isUnLockBuoy == 3)
             this.knifeType = cc.res.conf_grade[index-1].knifeType;
@@ -180,9 +180,9 @@ cc.Class({
     {
         this.lv = cc.storage.getLevel(this.index);
         this.conf = cc.res.conf_base[this.lv-1];
-        this.pice = cc.res.conf_price[this.lv-1]["price"+1];
+        this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
         if(this.isUnLockSheep == 3)
-            this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
+            this.pice *= 1.3;
         this.growSpeed = this.conf.growSpeed;
 
         for(var i=0;i<this.buoys.length;i++)
@@ -293,7 +293,7 @@ cc.Class({
     {
         var conf = cc.res.conf_ranch[this.index-1];
         var cost = 0;
-        for(var i=1;i<=14;i++)
+        for(var i=1;i<=29;i++)
         {
             var c = parseInt(conf["cost"+i]);
             if(c == 0) break;
@@ -304,7 +304,7 @@ cc.Class({
                 cost += pirce/speed;
             }
         }
-        cost = cost*48*parseInt(conf.time);
+        cost = cost*36*parseInt(conf.time);
         return cost;
     },
 
@@ -370,7 +370,8 @@ cc.Class({
             pos2.y -= this.node.height/2;
             if(pos2.sub(pos).mag()<this.node.height/2)
             {
-                this.game.updateYindao();
+                if(this.game.yindao == 2)
+                    this.game.updateYindao();
 
                 for(var i=0;i<this.buoys.length;i++)
                 {
@@ -387,7 +388,7 @@ cc.Class({
 
     touchBoxAddCoin: function()
     {
-        this.coin += this.pice*(1/this.growSpeed)*1*2;
+        this.coin += this.pice*(1/this.growSpeed)*1*3;
         this.coinnum.string = cc.storage.castNum(this.coin);
 
         cc.storage.setLevelCoin(this.index,this.coin);
@@ -411,6 +412,16 @@ cc.Class({
             this.dog_lock_btn1.active = true;
             this.dog_lock_btn2.active = false;
             this.dog_dog.active = false;
+
+            this.dog_lock_btn1.runAction(cc.repeatForever(
+                cc.sequence(
+                    cc.rotateTo(0.1,20).easing(cc.easeSineIn()),
+                    cc.rotateTo(0.1,0).easing(cc.easeSineIn()),
+                    cc.rotateTo(0.1,-20).easing(cc.easeSineIn()),
+                    cc.rotateTo(0.1,0).easing(cc.easeSineIn()),
+                    cc.delayTime(1)
+                )
+            ));
         }
         else if(this.dog == 1)
         {
@@ -493,10 +504,11 @@ cc.Class({
         var n = Math.floor(Math.random()*7)+1;
 
         var sp = this.dog_dog_dog.getComponent("sp.Skeleton");
-        sp.setAnimation(0,"0"+n,true);
-        //sp.setEndListener(function(){
-        //
-        //});
+        sp.setAnimation(0,"99",false);
+        sp.setCompleteListener(function(){
+            sp.setAnimation(0,"0"+n,true);
+            //cc.log("setEndListener");
+        });
         //cc.res.setSpriteFrame("images/sheepIcon/sheepIcon"+i,this.dog_dog);
 
         //this.dog_dog_dog.runAction(cc.jumpTo(0.5,this.dog_dog_dog.position,30,3));
@@ -522,9 +534,9 @@ cc.Class({
     useNewSheep: function()
     {
         this.isUnLockSheep = cc.storage.getSheep(parseInt(this.compose.id));
-        this.pice = cc.res.conf_price[this.lv-1]["price"+1];
+        this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
         if(this.isUnLockSheep == 3)
-            this.pice = cc.res.conf_price[this.lv-1]["price"+this.index];
+            this.pice *= 1.3;
         for(var i=0;i<this.sheeps.length;i++)
         {
             this.sheeps[i].sc.updateAniconfig();
@@ -547,7 +559,8 @@ cc.Class({
     {
         if(data == "up")
         {
-            cc.res.openUI("lvup",null,this.index);
+            if(this.game.yindao>2)
+                cc.res.openUI("lvup",null,this.index);
         }
         else if(data == "unlock")
         {

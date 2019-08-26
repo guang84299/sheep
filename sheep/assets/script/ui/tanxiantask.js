@@ -118,6 +118,7 @@ cc.Class({
             ));
         //cc.sdk.showBanner();
 
+        cc.qianqista.event("探险奖励_打开");
     },
 
     hide: function()

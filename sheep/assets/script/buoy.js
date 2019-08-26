@@ -67,9 +67,9 @@ cc.Class({
     updateMove: function(dt)
     {
         //旋转
-        this.node.angle += this.rotateSpeed*dt;
+        this.node.angle += this.rotateSpeed*dt*this.game.rate7;
         //移动
-        var pos = this.node.position.add(this.dir.mul(this.moveSpeed*dt));
+        var pos = this.node.position.add(this.dir.mul(this.moveSpeed*dt*this.game.rate7));
         var w = this.node.parent.width/2 - this.collradius;
         var h = this.node.parent.height - this.collradius;
         if(pos.x>w)
@@ -130,7 +130,7 @@ cc.Class({
             this.rotateSpeed = cc.config.buoyRotateSpeed*this.conf.buoySpeed;
             this.moveSpeed = cc.config.buoyMoveSpeed*this.conf.buoySpeed;
 
-            this.touchTime = 1;
+            this.touchTime = 3;
         }
     },
 
@@ -149,7 +149,7 @@ cc.Class({
     update: function(dt)
     {
         this.updateDt += dt;
-        if(this.box.isUpdate && this.updateDt>1/30.0)
+        if(this.box.isUpdate && this.updateDt>1/20.0)
         {
             this.updateMove(this.updateDt);
 

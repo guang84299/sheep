@@ -31,6 +31,7 @@ cc.Class({
         if(cc.GAME.share)
         {
             var rad = parseInt(cc.GAME.lixianAd);
+            if(!cc.GAME.hasVideo) rad = 100;
             if(Math.random()*100 < rad)
             {
                 this.useShare = true;
@@ -53,7 +54,7 @@ cc.Class({
     lingqu: function(x2)
     {
         var award = this.award;
-        if(x2) award *= 2;
+        if(x2) award *= 5;
         this.game.addCoin(award);
         this.hide();
         cc.res.showCoinAni();
@@ -75,6 +76,7 @@ cc.Class({
             ));
         cc.sdk.showBanner();
 
+        cc.qianqista.event("离线收益_打开");
     },
 
     hide: function()
@@ -101,6 +103,7 @@ cc.Class({
         else if(data == "lingqu")
         {
             this.lingqu();
+            cc.qianqista.event("离线收益_直接领取");
         }
         else if(data == "lingqu2")
         {
@@ -113,6 +116,8 @@ cc.Class({
                         self.lingqu(true);
                     }
                 },"lixian");
+
+                cc.qianqista.event("离线收益_分享领取");
             }
             else
             {
@@ -122,6 +127,7 @@ cc.Class({
                         self.lingqu(true);
                     }
                 });
+                cc.qianqista.event("离线收益_视频领取");
             }
 
         }

@@ -26,11 +26,12 @@ cc.Class({
 
     updateUI: function()
     {
-        this.award = this.game.getSecVal()*60;
+        this.award = this.game.getSecVal()*100;
         this.useShare = false;
         if(cc.GAME.share)
         {
             var rad = parseInt(cc.GAME.freecoinAd);
+            if(!cc.GAME.hasVideo) rad = 100;
             if(Math.random()*100 < rad)
             {
                 this.useShare = true;
@@ -62,6 +63,8 @@ cc.Class({
         this.updateUI();
 
         cc.res.showCoinAni();
+
+        this.hide();
     },
 
     show: function()
@@ -84,6 +87,7 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        cc.qianqista.event("免费金币_打开");
     },
 
     hide: function()
@@ -117,6 +121,8 @@ cc.Class({
                         self.lingqu(true);
                     }
                 },"qiandao");
+
+                cc.qianqista.event("免费金币_分享领取");
             }
             else
             {
@@ -126,6 +132,8 @@ cc.Class({
                         self.lingqu(true);
                     }
                 });
+
+                cc.qianqista.event("免费金币_视频领取");
             }
 
         }

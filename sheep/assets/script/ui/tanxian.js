@@ -20,6 +20,7 @@ cc.Class({
         this.tili = cc.find("box/tililay/tili",this.bg).getComponent(cc.Label);
         this.level = cc.find("box/levellay/level",this.bg).getComponent(cc.Label);
         this.num = cc.find("box/numlay/num",this.bg).getComponent(cc.Label);
+        this.timeLabel = cc.find("box/numlay/time",this.bg).getComponent(cc.Label);
 
         var txTime = storage.getTxTime();
         if(txTime==0)
@@ -34,6 +35,7 @@ cc.Class({
         this.tili.string = "30";
         this.level.string = storage.getTxLv();
         this.num.string = storage.getTxNum()+"/5";
+        this.timeLabel.string = "";
 
         var txTime = storage.getTxTime();
         if(txTime>0)
@@ -48,7 +50,7 @@ cc.Class({
             }
             else
             {
-                this.num.string = this.num.string+"("+storage.getCountDown(now,txTime,3)+")";
+                this.timeLabel.string = "("+storage.getCountDown(now,txTime,3)+")";
                 this.scheduleOnce(this.updateUI.bind(this),1);
             }
         }
@@ -62,11 +64,11 @@ cc.Class({
             var txTime = storage.getTxTime();
             if(txTime == 0)
             {
-                storage.setTxTime(new Date().getTime()+60*60*1000);
+                storage.setTxTime(new Date().getTime()+5*60*1000);
             }
             storage.setTxNum(num-1);
             storage.uploadTxNum();
-            res.openUI("tanxiangame");
+            res.openUI("tanxiangame",null,this.index);
             this.hide();
 
             this.game.updateRed();
@@ -79,6 +81,10 @@ cc.Class({
 
     show: function(jisuandata)
     {
+        if(typeof jisuandata == "number")
+        {
+            this.index = jisuandata;
+        }
 
         //this.main.wxQuanState(false);
         this.game = cc.find("Canvas").getComponent("main");
@@ -98,10 +104,12 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
-        if(jisuandata)
+        if(jisuandata && typeof jisuandata == "object")
         {
             res.openUI("tanxianjiesuan",null,jisuandata);
         }
+
+        cc.qianqista.event("探险主界面_打开");
     },
 
     hide: function()

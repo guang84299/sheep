@@ -4943,8 +4943,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 217.38
+      "width": 1084.18,
+      "height": 108.69
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4959,8 +4959,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4,
-      "y": 0.4,
+      "x": 0.8,
+      "y": 0.8,
       "z": 1
     },
     "_eulerAngles": {
@@ -4990,9 +4990,9 @@
     ],
     "paused": false,
     "defaultSkin": "",
-    "defaultAnimation": "",
-    "_preCacheMode": 0,
-    "_cacheMode": 0,
+    "defaultAnimation": "01",
+    "_preCacheMode": 1,
+    "_cacheMode": 1,
     "loop": true,
     "premultipliedAlpha": true,
     "timeScale": 1,
@@ -5001,7 +5001,7 @@
     "_frameCache": null,
     "_curFrame": null,
     "_skeletonCache": null,
-    "_animationName": "",
+    "_animationName": "01",
     "_animationQueue": [],
     "_headAniInfo": null,
     "_playTimes": 0,
@@ -5009,11 +5009,11 @@
     "_N$skeletonData": {
       "__uuid__": "6d8b4062-683c-4953-9eb7-c3236ee97c09"
     },
-    "_N$_defaultCacheMode": 0,
+    "_N$_defaultCacheMode": 1,
     "_N$debugSlots": false,
     "_N$debugBones": false,
     "_N$useTint": false,
-    "_N$enableBatch": false,
+    "_N$enableBatch": true,
     "_id": ""
   },
   {
@@ -5823,7 +5823,7 @@
         "__id__": 166
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 4,
     "_components": [
       {

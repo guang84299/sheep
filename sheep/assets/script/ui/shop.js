@@ -390,7 +390,7 @@ cc.Class({
 
     video_dia: function()
     {
-        var award = 100;
+        var award = 30;
         this.game.addDiamond(award);
         storage.setFreeDiaNum(0);
         res.showToast("钻石+"+storage.castNum(award));
@@ -426,13 +426,19 @@ cc.Class({
         var cost = Number(data.cost);
         if(this.game.diamond>=cost)
         {
-            var time = 24;
+            var mt = new Date();
+            mt.setHours(23);
+            mt.setMinutes(59);
+            mt.setSeconds(59);
+
+            var time =  (mt.getTime() - new Date().getTime())/(60*60*1000.0);
+
             var to = new Date().getTime() + time*60*60*1000;
             var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"采集车加倍",to:to};
             storage.addAddRateTask(task);
             this.game.initShouYi();
 
-            storage.setShopVcarTime(tid,new Date().getTime()+24*60*60*1000);
+            storage.setShopVcarTime(tid,to);
             this.game.addDiamond(-cost);
             this.updateItem2(tid);
         }
@@ -451,13 +457,19 @@ cc.Class({
         var cost = Number(data.cost);
         if(adNum>=cost)
         {
-            storage.setShopVcarTime(tid,new Date().getTime()+24*60*60*1000);
+            var mt = new Date();
+            mt.setHours(23);
+            mt.setMinutes(59);
+            mt.setSeconds(59);
 
-            var time = 24;
+            var time =  (mt.getTime() - new Date().getTime())/(60*60*1000.0);
             var to = new Date().getTime() + time*60*60*1000;
             var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"采集车加倍",to:to};
             storage.addAddRateTask(task);
             this.game.initShouYi();
+
+            storage.setShopVcarTime(tid,to);
+
         }
         this.updateItem2(tid);
     },
@@ -469,15 +481,23 @@ cc.Class({
         var cost = Number(data.cost);
         if(this.game.diamond>=cost)
         {
-            storage.setShopHcarTime(tid,new Date().getTime()+24*60*60*1000);
             this.game.addDiamond(-cost);
-            this.updateItem3(tid);
 
-            var time = 24;
+
+            var mt = new Date();
+            mt.setHours(23);
+            mt.setMinutes(59);
+            mt.setSeconds(59);
+
+            var time =  (mt.getTime() - new Date().getTime())/(60*60*1000.0);
+
             var to = new Date().getTime() + time*60*60*1000;
             var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"运输车加倍",to:to};
             storage.addAddRateTask(task);
             this.game.initShouYi();
+
+            storage.setShopHcarTime(tid,to);
+            this.updateItem3(tid);
         }
         else
         {
@@ -494,13 +514,18 @@ cc.Class({
         var cost = Number(data.cost);
         if(adNum>=cost)
         {
-            storage.setShopHcarTime(tid,new Date().getTime()+24*60*60*1000);
+            var mt = new Date();
+            mt.setHours(23);
+            mt.setMinutes(59);
+            mt.setSeconds(59);
 
-            var time = 24;
+            var time =  (mt.getTime() - new Date().getTime())/(60*60*1000.0);
             var to = new Date().getTime() + time*60*60*1000;
             var task = {reward:parseFloat(data.goodsLevel),time:time,tip:"运输车加倍",to:to};
             storage.addAddRateTask(task);
             this.game.initShouYi();
+
+            storage.setShopHcarTime(tid,to);
         }
         this.updateItem3(tid);
     },

@@ -109,16 +109,23 @@ cc.Class({
 
     lingqu: function()
     {
-        this.game.addCoin(this.award);
-        var taskId = storage.getTask();
-        storage.setTask(taskId+1);
-        storage.uploadTask();
-        res.showToast("金币+"+this.num.string);
-        this.awardCom = -1;
-        this.updateUI();
+        if(this.game.yindao == 5 || this.game.yindao == 9 || this.game.yindao == 13 || this.game.yindao>=14)
+        {
+            this.game.addCoin(this.award);
+            var taskId = storage.getTask();
+            storage.setTask(taskId+1);
+            storage.uploadTask();
+            res.showToast("金币+"+this.num.string);
+            this.awardCom = -1;
+            this.updateUI();
 
-        this.game.updateYindao();
-        cc.res.showCoinAni();
+
+
+            cc.res.showCoinAni();
+
+            this.game.updateYindao();
+        }
+
     },
 
     getCurrNickId: function()

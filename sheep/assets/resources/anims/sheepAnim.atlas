@@ -1,0 +1,335 @@
+
+sheepAnim.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01/0
+  rotate: true
+  xy: 2, 126
+  size: 65, 53
+  orig: 66, 54
+  offset: 0, 1
+  index: -1
+01/1
+  rotate: false
+  xy: 94, 67
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+01/body
+  rotate: false
+  xy: 57, 156
+  size: 35, 35
+  orig: 36, 36
+  offset: 0, 1
+  index: -1
+01/eye-R
+  rotate: false
+  xy: 233, 169
+  size: 18, 17
+  orig: 18, 18
+  offset: 0, 1
+  index: -1
+01/head
+  rotate: false
+  xy: 131, 134
+  size: 28, 32
+  orig: 28, 32
+  offset: 0, 0
+  index: -1
+01/leg
+  rotate: true
+  xy: 57, 63
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+02/leg
+  rotate: true
+  xy: 57, 63
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+03/leg
+  rotate: true
+  xy: 57, 63
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+01/neck
+  rotate: false
+  xy: 73, 56
+  size: 15, 15
+  orig: 16, 16
+  offset: 0, 1
+  index: -1
+02/neck
+  rotate: false
+  xy: 73, 56
+  size: 15, 15
+  orig: 16, 16
+  offset: 0, 1
+  index: -1
+03/neck
+  rotate: false
+  xy: 73, 56
+  size: 15, 15
+  orig: 16, 16
+  offset: 0, 1
+  index: -1
+01/shadow
+  rotate: false
+  xy: 57, 73
+  size: 31, 7
+  orig: 32, 8
+  offset: 0, 1
+  index: -1
+02/0
+  rotate: false
+  xy: 68, 200
+  size: 65, 53
+  orig: 66, 54
+  offset: 0, 1
+  index: -1
+02/1
+  rotate: false
+  xy: 131, 107
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+02/body
+  rotate: false
+  xy: 57, 119
+  size: 35, 35
+  orig: 36, 36
+  offset: 0, 1
+  index: -1
+03/body
+  rotate: false
+  xy: 57, 119
+  size: 35, 35
+  orig: 36, 36
+  offset: 0, 1
+  index: -1
+02/head
+  rotate: false
+  xy: 131, 168
+  size: 32, 30
+  orig: 36, 36
+  offset: 4, 2
+  index: -1
+03/head
+  rotate: false
+  xy: 131, 168
+  size: 32, 30
+  orig: 36, 36
+  offset: 4, 2
+  index: -1
+03/0
+  rotate: false
+  xy: 2, 6
+  size: 65, 51
+  orig: 66, 54
+  offset: 0, 3
+  index: -1
+03/1
+  rotate: false
+  xy: 2, 193
+  size: 64, 60
+  orig: 64, 60
+  offset: 0, 0
+  index: -1
+03/2
+  rotate: false
+  xy: 128, 80
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+03/3
+  rotate: false
+  xy: 124, 53
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+03/4
+  rotate: true
+  xy: 161, 138
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+03/5
+  rotate: true
+  xy: 161, 108
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+06/5
+  rotate: true
+  xy: 161, 108
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+03/6
+  rotate: false
+  xy: 188, 135
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+06/6
+  rotate: false
+  xy: 188, 135
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+03/99
+  rotate: true
+  xy: 188, 162
+  size: 7, 8
+  orig: 8, 8
+  offset: 1, 0
+  index: -1
+04/0
+  rotate: true
+  xy: 2, 59
+  size: 65, 53
+  orig: 66, 54
+  offset: 0, 1
+  index: -1
+04/1
+  rotate: false
+  xy: 188, 108
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+04/body
+  rotate: false
+  xy: 57, 82
+  size: 35, 35
+  orig: 36, 36
+  offset: 0, 1
+  index: -1
+04/head
+  rotate: false
+  xy: 200, 162
+  size: 31, 24
+  orig: 36, 36
+  offset: 4, 4
+  index: -1
+04/leg
+  rotate: true
+  xy: 90, 57
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+04/neck
+  rotate: false
+  xy: 69, 39
+  size: 15, 15
+  orig: 16, 16
+  offset: 0, 1
+  index: -1
+05/0
+  rotate: false
+  xy: 135, 200
+  size: 65, 53
+  orig: 66, 54
+  offset: 0, 1
+  index: -1
+05/body
+  rotate: false
+  xy: 94, 163
+  size: 35, 35
+  orig: 36, 36
+  offset: 0, 1
+  index: -1
+05/head
+  rotate: false
+  xy: 165, 171
+  size: 33, 27
+  orig: 36, 36
+  offset: 3, 3
+  index: -1
+05/leg
+  rotate: true
+  xy: 106, 57
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+05/neck
+  rotate: false
+  xy: 69, 22
+  size: 15, 15
+  orig: 16, 16
+  offset: 0, 1
+  index: -1
+06/0
+  rotate: true
+  xy: 202, 188
+  size: 65, 51
+  orig: 66, 54
+  offset: 0, 3
+  index: -1
+06/2
+  rotate: false
+  xy: 218, 105
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+06/3
+  rotate: true
+  xy: 218, 132
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+06/99
+  rotate: false
+  xy: 154, 54
+  size: 7, 8
+  orig: 8, 8
+  offset: 1, 0
+  index: -1
+06/body
+  rotate: false
+  xy: 94, 126
+  size: 35, 35
+  orig: 36, 36
+  offset: 0, 1
+  index: -1
+06/head
+  rotate: false
+  xy: 94, 94
+  size: 32, 30
+  orig: 36, 36
+  offset: 4, 2
+  index: -1
+06/leg
+  rotate: false
+  xy: 154, 64
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+06/neck
+  rotate: false
+  xy: 69, 5
+  size: 15, 15
+  orig: 16, 16
+  offset: 0, 1
+  index: -1

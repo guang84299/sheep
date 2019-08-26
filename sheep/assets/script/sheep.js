@@ -13,11 +13,6 @@ cc.Class({
         this.box = this.node.parent.parent.getComponent("box");
         this.node.sc = this;
 
-        this.anim = new cc.Node();
-        this.anim.addComponent(cc.Sprite);
-        this.node.addChild(this.anim);
-        this.anim.scale = 0.8;
-
         if(this.box.isUnLockSheep == 3)
             this.aniconfig = cc.config.sheepAnim[this.box.type];
         else
@@ -25,7 +20,24 @@ cc.Class({
 
         this.conf = this.box.conf;
 
-        this.anim.color = this.aniconfig.color;
+        this.isUseSpine = false;
+        if(this.isUseSpine)
+        {
+            this.node.color = this.aniconfig.color;
+            this.node.scale = 0.8;
+
+            this.anim = this.node.getComponent("sp.Skeleton");
+            this.anim.setSkin("sheep_"+this.aniconfig.lv);
+        }
+        else
+        {
+            this.anim = new cc.Node();
+            this.anim.addComponent(cc.Sprite);
+            this.node.addChild(this.anim);
+            this.anim.scale = 0.8;
+            this.anim.color = this.aniconfig.color;
+        }
+
 
         this.holdTime = this.conf.growSpeed;
         this.holdTimeDt = 0;
@@ -39,18 +51,28 @@ cc.Class({
     {
         this.state = "cut";
         var self = this;
-        cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.cutAnim,this.aniconfig.cutframeNum,0.03,1,function(){
-            self.playHoldAni();
-        });
-        //同时播放掉落
-        var node = cc.res.playPlistAnim2(cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.dropAnim,this.aniconfig.dropframeNum,0.035,1,null,true);
-        this.node.addChild(node);
-        node.runAction(cc.sequence(
-            cc.moveTo(0.3,cc.v2(0,50)).easing(cc.easeSineIn()),
-            cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeSineIn())
-        ));
-        node.scale = 0.8;
-        node.color = this.aniconfig.color;
+        if(this.isUseSpine)
+        {
+            this.anim.setAnimation(0,"cutAnim",false);
+            this.anim.setCompleteListener(function(){
+                self.playHoldAni();
+            });
+        }
+        else
+        {
+            cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.cutAnim,this.aniconfig.cutframeNum,0.03,1,function(){
+                self.playHoldAni();
+            });
+            //同时播放掉落
+            //var node = cc.res.playPlistAnim2(cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.dropAnim,this.aniconfig.dropframeNum,0.035,1,null,true);
+            //this.node.addChild(node);
+            //node.runAction(cc.sequence(
+            //    cc.moveTo(0.3,cc.v2(0,50)).easing(cc.easeSineIn()),
+            //    cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeSineIn())
+            //));
+            //node.scale = 0.8;
+            //node.color = this.aniconfig.color;
+        }
         //if(this.game.totalLvNum < 10)
         //    this.game.addCoin(this.box.pice);
     },
@@ -59,21 +81,50 @@ cc.Class({
     {
         this.state = "grow1";
         var self = this;
-        cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.growAnim1,this.aniconfig.growframeNum1,0.01,1,function(){
-            self.playGrowAni2();
-        });
+        if(this.isUseSpine)
+        {
+            this.anim.setAnimation(0,"growAnim1",false);
+            this.anim.setCompleteListener(function(){
+                self.playGrowAni2();
+            });
+        }
+        else
+        {
+            cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.growAnim1,this.aniconfig.growframeNum1,0.01,1,function(){
+                self.playGrowAni2();
+            });
+        }
+
     },
 
     playGrowAni2: function()
     {
         this.state = "grow";
-        cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.growAnim2,this.aniconfig.growframeNum2,0.08,-1);
+        if(this.isUseSpine)
+        {
+            this.anim.setAnimation(0,"growAnim2",true);
+            this.anim.setCompleteListener(null);
+        }
+        else
+        {
+            cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.growAnim2,this.aniconfig.growframeNum2,0.08,-1);
+        }
     },
 
     playHoldAni: function()
     {
         this.state = "hold";
-        cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.holdAnim,this.aniconfig.holdframeNum,0.05,-1);
+        if(this.isUseSpine)
+        {
+            this.anim.setAnimation(0,"holdAnim",true);
+            this.anim.setCompleteListener(null);
+        }
+        else
+        {
+            cc.res.playPlistAnim(this.anim,cc.res["sheep_sheep"+this.aniconfig.lv+".plist"],this.aniconfig.holdAnim,this.aniconfig.holdframeNum,0.1,-1);
+
+        }
+
     },
 
     changeUpdate: function(update)
@@ -129,6 +180,8 @@ cc.Class({
             this.aniconfig = cc.config.sheepAnim[this.box.type];
         else
             this.aniconfig = cc.config.sheepAnim[0];
+
+        this.anim.color = this.aniconfig.color;
         this.playCutAni();
     },
 

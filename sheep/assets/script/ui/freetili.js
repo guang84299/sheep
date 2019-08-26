@@ -31,6 +31,7 @@ cc.Class({
         if(cc.GAME.share)
         {
             var rad = parseInt(cc.GAME.freetiliAd);
+            if(!cc.GAME.hasVideo) rad = 100;
             if(Math.random()*100 < rad)
             {
                 this.useShare = true;
@@ -82,6 +83,7 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        cc.qianqista.event("探险体力_打开");
     },
 
     hide: function()
@@ -115,6 +117,7 @@ cc.Class({
                         self.lingqu(true);
                     }
                 },"tili");
+                cc.qianqista.event("探险体力_分享领取");
             }
             else
             {
@@ -124,6 +127,7 @@ cc.Class({
                         self.lingqu(true);
                     }
                 });
+                cc.qianqista.event("探险体力_视频领取");
             }
 
         }

@@ -60,8 +60,9 @@ cc.Class({
 
         res.showToast(task.tip);
 
-        this.updateUI();
+        //this.updateUI();
 
+        this.hide();
         //cc.res.showCoinAni();
     },
 
@@ -83,6 +84,8 @@ cc.Class({
             if(dis<0)
                 self.bg.y -= dis;
         });
+
+        cc.qianqista.event("超级技能_打开");
 
     },
 
@@ -117,6 +120,8 @@ cc.Class({
                         self.lingqu(true);
                     }
                 },"skill");
+
+                cc.qianqista.event("超级技能_分享使用");
             }
             else
             {
@@ -126,6 +131,7 @@ cc.Class({
                         self.lingqu(true);
                     }
                 });
+                cc.qianqista.event("超级技能_视频使用");
             }
 
         }
