@@ -137,18 +137,21 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
-            if(dis<0)
-                self.bg.y -= dis;
-        });
 
-        this.game.hideYindao();
 
-        if(this.game.yindao == 14)
+        if(this.game.yindao == 1)
         {
-            this.game.updateYindao();
-            cc.res.openUI("yindao");
+            this.node.opacity = 0;
+            this.game.hideYindao();
+            this.hide();
+        }
+        else
+        {
+            var self = this;
+            cc.sdk.showBanner(this.bg,function(dis){
+                if(dis<0)
+                    self.bg.y -= dis;
+            });
         }
 
         cc.qianqista.event("解锁牧场_"+index);
@@ -163,13 +166,20 @@ cc.Class({
                 cc.scaleTo(0.2,0).easing(cc.easeSineOut()),
                 cc.callFunc(function(){
                     self.node.destroy();
-                    self.game.updateYindao();
 
                 })
             ));
-        cc.sdk.hideBanner();
 
 
+
+        if(this.game.yindao == 1)
+        {
+            this.game.updateYindao();
+        }
+        else
+        {
+            cc.sdk.hideBanner();
+        }
 
         if(this.index>2)
         this.game.click(null,"down");

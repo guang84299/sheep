@@ -70,7 +70,6 @@ cc.Class({
 
         this.updatePage2();
 
-        this.game.updateYindao();
     },
 
     open3: function()
@@ -81,7 +80,6 @@ cc.Class({
 
         this.updatePage3();
 
-        this.game.updateYindao();
     },
 
     updateRed: function()
@@ -217,8 +215,7 @@ cc.Class({
                 storage.uploadLevel(this.index);
                 this.updateUI();
                 this.game.lvupBox(this.index);
-                if(this.game.yindao<14)
-                    this.game.updateYindao();
+
             }
             else
             {
@@ -618,7 +615,6 @@ cc.Class({
             btn.node.getChildByName("video").active = true;
         }
 
-        this.game.hideYindao();
     },
 
     peiyu_sheep: function()
@@ -658,8 +654,6 @@ cc.Class({
 
             this.game.boxs[this.index-1].sc.useNewSheep();
 
-            this.game.updateYindao();
-
             this.updateRed();
 
             this.openpeiyangsuc(true);
@@ -673,8 +667,6 @@ cc.Class({
             this.sheepPeiyuState = 4;
 
             this.game.boxs[this.index-1].sc.useNewSheep();
-
-            this.game.updateYindao();
 
             this.updateRed();
         }
@@ -717,8 +709,6 @@ cc.Class({
 
             this.game.boxs[this.index-1].sc.useNewBuoy();
 
-            this.game.updateYindao();
-
             this.updateRed();
 
             this.openpeiyangsuc();
@@ -732,8 +722,6 @@ cc.Class({
             this.buoyPeiyuState = 4;
 
             this.game.boxs[this.index-1].sc.useNewBuoy();
-
-            this.game.updateYindao();
 
             this.updateRed();
         }
@@ -811,7 +799,6 @@ cc.Class({
 
         res.showToast("钻石+"+storage.castNum(award));
         this.peiyangsuc.active = false;
-        this.game.updateYindao();
         //cc.res.showCoinAni();
     },
 
@@ -831,14 +818,22 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
-            if(dis<0)
-                self.bg.y -= dis;
-        });
 
-        if(this.game.yindao<14)
-            this.game.updateYindao();
+
+        if(this.game.yindao == 5)
+        {
+            this.node.opacity = 0;
+            this.lvup(10);
+            this.hide();
+        }
+        else
+        {
+            var self = this;
+            cc.sdk.showBanner(this.bg,function(dis){
+                if(dis<0)
+                    self.bg.y -= dis;
+            });
+        }
         //storage.playSound(res.audio_win);
     },
 
@@ -853,10 +848,17 @@ cc.Class({
                     self.node.destroy();
                 })
             ));
-        cc.sdk.hideBanner();
 
-        if(this.game.yindao<14)
+
+        if(this.game.yindao == 5)
+        {
             this.game.updateYindao();
+            this.node.destroy();
+        }
+        else
+        {
+            cc.sdk.hideBanner();
+        }
     },
 
     click: function(event,data)

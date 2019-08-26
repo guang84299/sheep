@@ -33,7 +33,7 @@ cc.Class({
         this.updateRed();
 
 
-        if(this.yindao < 22)//22
+        if(this.yindao < 6)//22
         {
             //this.yindao = 14;
             //if(this.yindao == 4) this.yindao = 3;
@@ -53,7 +53,7 @@ cc.Class({
             }
             else
             {
-                this.yindao = 22;
+                this.yindao = 6;
             }
         }
 
@@ -206,7 +206,7 @@ cc.Class({
         if(!this.lastName)this.lastName = nickName;
         else
         {
-            if(this.lastName != nickName)
+            if(this.yindao>=6 && this.lastName != nickName)
             {
                 res.openUI("nameup");
             }
@@ -601,7 +601,7 @@ cc.Class({
 
     updateLixian: function(scene)
     {
-        if(this.yindao == 14 || this.yindao >= 22)
+        if(this.yindao >= 6)
         {
             var now = new Date().getTime();
             var time = storage.getLixianTime();
@@ -957,7 +957,7 @@ cc.Class({
 
     updateYindao: function()
     {
-        if(this.yindao<22)
+        if(this.yindao<6)
         {
             this.yindao += 1;
             storage.setYinDao(this.yindao);
@@ -972,16 +972,19 @@ cc.Class({
                 node.getComponent("yindao").updateYindao();
             }
 
-            if(this.yindao>8) this.scroll.vertical = true;
+            if(this.yindao>=6) this.scroll.vertical = true;
         }
     },
 
     hideYindao: function()
     {
-        var node = this.node.getChildByName("ui_yindao");
-        if(node)
+        if(this.yindao<6)
         {
-            node.active = false;
+            var node = this.node.getChildByName("ui_yindao");
+            if(node)
+            {
+                node.active = false;
+            }
         }
     },
 
@@ -1051,8 +1054,19 @@ cc.Class({
     click: function(event,data)
     {
         var self = this;
-        if(this.yindao < 2)
+        if(this.yindao < 6)
+        {
+            if(data == "carhup")
+            {
+                res.openUI("carhup");
+            }
+            else if(data == "carvup")
+            {
+                res.openUI("carvup");
+            }
             return;
+        }
+
         if(data == "game1")
         {
             sdk.hideClub();
@@ -1122,8 +1136,7 @@ cc.Class({
         }
         else if(data == "skill")
         {
-            if(this.yindao>3)
-                res.openUI("skill");
+            res.openUI("skill");
         }
         else if(data == "shouyifanbei")
         {
@@ -1147,8 +1160,7 @@ cc.Class({
         }
         else if(data == "addmini")
         {
-            if(this.yindao>3)
-                res.openUI("addmini");
+            res.openUI("addmini");
         }
         storage.playSound(res.audio_button);
         cc.log(data);

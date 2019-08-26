@@ -370,9 +370,6 @@ cc.Class({
             pos2.y -= this.node.height/2;
             if(pos2.sub(pos).mag()<this.node.height/2)
             {
-                if(this.game.yindao == 2)
-                    this.game.updateYindao();
-
                 for(var i=0;i<this.buoys.length;i++)
                 {
                     this.buoys[i].sc.touchBox();
@@ -559,8 +556,7 @@ cc.Class({
     {
         if(data == "up")
         {
-            if(this.game.yindao>2)
-                cc.res.openUI("lvup",null,this.index);
+            cc.res.openUI("lvup",null,this.index);
         }
         else if(data == "unlock")
         {

@@ -19,6 +19,7 @@ cc.Class({
         this.desc = cc.find("desc",this.node).getComponent(cc.Label);
         this.num = cc.find("num",this.node).getComponent(cc.Label);
         this.node_lingqu = cc.find("lingqu",this.node);
+        this.node_go = cc.find("go",this.node);
 
         this.awardCom = -1;
     },
@@ -40,7 +41,7 @@ cc.Class({
                 if(this.awardCom>0) this.award = this.awardCom;
                 this.num.string = storage.castNum(this.award);
                 this.node_lingqu.active = this.judgeUnLock();
-
+                this.node_go.active = !this.node_lingqu.active;
                 this.awardCom = this.award;
             }
         }
@@ -109,22 +110,15 @@ cc.Class({
 
     lingqu: function()
     {
-        if(this.game.yindao == 5 || this.game.yindao == 9 || this.game.yindao == 13 || this.game.yindao>=14)
-        {
-            this.game.addCoin(this.award);
-            var taskId = storage.getTask();
-            storage.setTask(taskId+1);
-            storage.uploadTask();
-            res.showToast("金币+"+this.num.string);
-            this.awardCom = -1;
-            this.updateUI();
+        this.game.addCoin(this.award);
+        var taskId = storage.getTask();
+        storage.setTask(taskId+1);
+        storage.uploadTask();
+        res.showToast("金币+"+this.num.string);
+        this.awardCom = -1;
+        this.updateUI();
 
-
-
-            cc.res.showCoinAni();
-
-            this.game.updateYindao();
-        }
+        cc.res.showCoinAni();
 
     },
 

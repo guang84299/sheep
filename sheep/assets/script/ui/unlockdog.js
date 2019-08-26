@@ -137,16 +137,25 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut()),
                 cc.callFunc(function(){
-                    self.game.updateYindao();
+                    //self.game.updateYindao();
                 })
             ));
 
-        cc.sdk.showBanner(this.bg,function(dis){
-            if(dis<0)
-                self.bg.y -= dis;
-        });
 
 
+        if(this.game.yindao == 2)
+        {
+            this.node.opacity = 0;
+            this.lingqu();
+            this.hide();
+        }
+        else
+        {
+            cc.sdk.showBanner(this.bg,function(dis){
+                if(dis<0)
+                    self.bg.y -= dis;
+            });
+        }
 
         cc.qianqista.event("解锁牧羊犬_打开");
     },
@@ -162,9 +171,17 @@ cc.Class({
                     self.node.destroy();
                 })
             ));
-        cc.sdk.hideBanner();
 
-        this.game.updateYindao();
+
+        if(this.game.yindao == 2)
+        {
+            this.game.updateYindao();
+            this.node.destroy();
+        }
+        else
+        {
+            cc.sdk.hideBanner();
+        }
     },
 
     click: function(event,data)

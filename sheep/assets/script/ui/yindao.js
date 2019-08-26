@@ -18,12 +18,17 @@ cc.Class({
         this.mask = cc.find("mask",this.node);
         this.hand = cc.find("hand",this.node);
         this.game = cc.find("Canvas").getComponent("main");
-        this.desc = cc.find("desc",this.node).getComponent(cc.Label);
+        this.descbg = cc.find("descbg",this.node);
+        this.desc = cc.find("descbg/desc",this.node);
 
         this.hand.runAction(cc.repeatForever(cc.sequence(
-            cc.scaleTo(0.5,0.3).easing(cc.easeSineIn()),
-            cc.scaleTo(0.5,0.4).easing(cc.easeSineIn())
+            cc.scaleTo(0.5,0.8).easing(cc.easeSineIn()),
+            cc.scaleTo(0.5,1).easing(cc.easeSineIn())
         )));
+
+        //this.mask2 = cc.find("mask2",this.node);
+        //this.mask3 = cc.find("mask3",this.node);
+
         this.updateYindao();
     },
 
@@ -39,117 +44,75 @@ cc.Class({
         this.node.opacity = 255;
         var box = null;
         var pos = null;
-        if(this.game.yindao == 1 || this.game.yindao == 2)
+        //this.desc.string = "引导"+this.game.yindao;
+        cc.res.setSpriteFrame("images/yindao/ydwz0"+this.game.yindao,this.desc);
+
+        if(this.game.yindao == 1)
         {
             box = this.game.boxs[0].getChildByName("box").getChildByName("border");
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
             pos.y -= box.height/2;
-
-            if(this.game.yindao == 2)
-            {
-                this.desc.string = "点击小羊，让飞刀动起来吧！";
-            }
         }
-        else if(this.game.yindao == 3)
+        else if(this.game.yindao == 2)
         {
             box = cc.find("box_dog/lock/btn1",this.game.boxs[0]);
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
-        else if(this.game.yindao == 4)
-        {
-            box = cc.find("ui_unlockdog/bg/btns/lingqu",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 5 || this.game.yindao == 9 || this.game.yindao == 13)
-        {
-            box = this.game.task.node;
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-            pos.x += box.width/2;
-        }
-        else if(this.game.yindao == 6)
+        else if(this.game.yindao == 3)
         {
             box = cc.find("head/carvup",this.game.scrollContent);
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+
+
+            //this.mask2.active = true;
+            //this.mask3.active = true;
+            //
+            //var box2 = cc.find("head/carhup",this.game.scrollContent);
+            //var pos2 = box2.parent.convertToWorldSpaceAR(box2.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            //this.mask2.getComponent(cc.Mask).spriteFrame = box2.getComponent(cc.Sprite).spriteFrame;
+            //this.mask2.position = pos2;
+            //this.mask2.setContentSize(box2.getContentSize());
+            //
+            //var box3 = this.game.boxs[0].getChildByName("box_lvup");
+            //var pos3 = box3.parent.convertToWorldSpaceAR(box3.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            //this.mask3.getComponent(cc.Mask).spriteFrame = box3.getComponent(cc.Sprite).spriteFrame;
+            //this.mask3.position = pos3;
+            //this.mask3.setContentSize(box3.getContentSize());
         }
-        else if(this.game.yindao == 7)
-        {
-            box = cc.find("ui_carvup/bg/box/up1",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 8)
-        {
-            box = cc.find("ui_carvup/bg/close",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 10)
+        else if(this.game.yindao == 4)
         {
             box = cc.find("head/carhup",this.game.scrollContent);
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
-        else if(this.game.yindao == 11)
+        else if(this.game.yindao == 5)
         {
-            box = cc.find("ui_carhup/bg/box/up1",this.game.node);
+            box = this.game.boxs[0].getChildByName("box_lvup");
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
-        else if(this.game.yindao == 12)
+        else if(this.game.yindao == 6)
         {
-            box = cc.find("ui_carhup/bg/close",this.game.node);
+            box = this.game.boxs[1].getChildByName("box").getChildByName("border");
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        //else if(this.game.yindao == 11)
-        //{
-        //    box = this.game.boxs[0].getChildByName("box_lvup");
-        //    pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        //}
-        //else if(this.game.yindao == 12)
-        //{
-        //    box = cc.find("ui_lvup/bg/box/up1",this.game.node);
-        //    pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        //}
-        //else if(this.game.yindao == 13)
-        //{
-        //    box = cc.find("ui_lvup/bg/close",this.game.node);
-        //    pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        //}
-        else if(this.game.yindao == 14)
-        {
+            pos.y -= box.height/2;
+
             this.hide();
         }
-        else if(this.game.yindao == 15)
-        {
-            box = cc.find("ui_unlockbox/bg/btns/lingqu2",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 16)
-        {
-            box = cc.find("ui_lvup/bg/toggles/toggle2/Background",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 17 || this.game.yindao == 18)
-        {
-            box = cc.find("ui_lvup/bg/box2/yang/peiyu",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 19)
-        {
-            box = cc.find("ui_lvup/bg/toggles/toggle3/Background",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 20 || this.game.yindao == 21)
-        {
-            box = cc.find("ui_lvup/bg/box2/yang/peiyu",this.game.node);
-            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
-        }
-        else if(this.game.yindao == 22)
-        {
-            this.hide();
-        }
+
         if(box)
         {
-            this.mask.setContentSize(box.getContentSize());
-            if(this.game.yindao == 1 || this.game.yindao == 2 || this.game.yindao == 5 || this.game.yindao == 9 || this.game.yindao == 13)
+            if(this.game.yindao == 2 || this.game.yindao == 3 || this.game.yindao == 4 || this.game.yindao == 5)
             {
-                cc.log("this.game.yindao="+this.game.yindao);
+                var s = box.getContentSize();
+                s.width *= 1.3;
+                s.height *= 1.4;
+                this.mask.setContentSize(s);
+            }
+            else
+            {
+                this.mask.setContentSize(box.getContentSize());
+            }
+            if(this.game.yindao == 1 || this.game.yindao == 6)
+            {
                 this.mask.getComponent(cc.Mask).spriteFrame = box.getChildByName("yindao").getComponent(cc.Sprite).spriteFrame;
             }
             else
@@ -159,6 +122,13 @@ cc.Class({
             this.mask.position = pos;
             this.hand.position = pos;
             this.hand.y -= 50;
+
+            this.descbg.position = pos.add(cc.v2(0,this.mask.getContentSize().height/2+40));
+            if(this.game.yindao == 2 || this.game.yindao == 3)
+                this.descbg.x += 60;
+            else if(this.game.yindao == 4 || this.game.yindao == 5)
+                this.descbg.x -= 50;
+
         }
 
     },
@@ -175,7 +145,14 @@ cc.Class({
 
     hide: function()
     {
-        this.node.destroy();
+        var self = this;
+        this.node.runAction(cc.sequence(
+            cc.delayTime(2),
+            cc.callFunc(function(){
+                self.node.destroy();
+            })
+        ));
+
     },
 
     click: function(event,data)

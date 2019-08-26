@@ -149,16 +149,26 @@ cc.Class({
         this.node.active = true;
         this.bg.runAction(cc.sequence(
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
-                cc.scaleTo(0.2,1).easing(cc.easeSineOut()),
-                cc.callFunc(function(){
-                    self.game.updateYindao();
-                })
+                cc.scaleTo(0.2,1).easing(cc.easeSineOut())
+                //cc.callFunc(function(){
+                //    self.game.updateYindao();
+                //})
             ));
-        var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
-            if(dis<0)
-                self.bg.y -= dis;
-        });
+
+
+        if(this.game.yindao == 3)
+        {
+            this.node.opacity = 0;
+            this.lvup(10);
+            this.hide();
+        }
+        else
+        {
+            cc.sdk.showBanner(this.bg,function(dis){
+                if(dis<0)
+                    self.bg.y -= dis;
+            });
+        }
 
         //storage.playSound(res.audio_win);
     },
@@ -174,9 +184,17 @@ cc.Class({
                     self.node.destroy();
                 })
             ));
-        cc.sdk.hideBanner();
 
-        this.game.updateYindao();
+
+        if(this.game.yindao == 3)
+        {
+            this.game.updateYindao();
+            this.node.destroy();
+        }
+        else
+        {
+            cc.sdk.hideBanner();
+        }
     },
 
     click: function(event,data)
