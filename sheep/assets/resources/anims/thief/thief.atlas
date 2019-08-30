@@ -1,0 +1,48 @@
+
+thief.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bag
+  rotate: false
+  xy: 2, 97
+  size: 51, 27
+  orig: 51, 27
+  offset: 0, 0
+  index: -1
+body
+  rotate: true
+  xy: 55, 96
+  size: 28, 46
+  orig: 28, 46
+  offset: 0, 0
+  index: -1
+coin
+  rotate: true
+  xy: 2, 2
+  size: 15, 19
+  orig: 22, 22
+  offset: 1, 2
+  index: -1
+head
+  rotate: false
+  xy: 2, 58
+  size: 39, 37
+  orig: 39, 37
+  offset: 0, 0
+  index: -1
+head1
+  rotate: false
+  xy: 2, 19
+  size: 39, 37
+  orig: 39, 37
+  offset: 0, 0
+  index: -1
+leg
+  rotate: false
+  xy: 43, 64
+  size: 10, 31
+  orig: 10, 31
+  offset: 0, 0
+  index: -1

@@ -30,10 +30,12 @@ cc.Class({
             this.lvs.push(lv);
         }
 
+        this.coin_label = cc.find("box/coin",this.bg).getComponent(cc.Label);
     },
 
     updateUI: function()
     {
+        this.coin_label.string = storage.castNum(this.award);
         var tlv = this.game.totalLvNum;
         var nickName = this.game.getNikeName(tlv);
         res.setSpriteFrameAtlas("images/name",nickName,this.namesp);
@@ -89,12 +91,24 @@ cc.Class({
         //cc.res.showCoinAni();
     },
 
+    sharelingqu: function()
+    {
+        this.game.addCoin(this.award);
+        res.showToast("金币+"+storage.castNum(this.award));
+        cc.res.showCoinAni();
+
+        cc.find("btns/lingqu2",this.bg).getComponent(cc.Button).interactable = false;
+    },
+
     show: function()
     {
 
         //this.main.wxQuanState(false);
         this.game = cc.find("Canvas").getComponent("main");
         this.node.sc = this;
+
+        this.award = this.game.getSecVal()*100;
+
         this.initUI();
         this.updateUI();
 
@@ -109,6 +123,7 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        cc.qianqista.event("等级成长_打开");
     },
 
     hide: function()
@@ -127,6 +142,7 @@ cc.Class({
 
     click: function(event,data)
     {
+        var self = this;
         if(data == "close")
         {
             this.hide();
@@ -136,13 +152,12 @@ cc.Class({
             cc.sdk.share(function(r){
                 if(r)
                 {
-
+                    self.sharelingqu();
                 }
             },"nameup");
         }
         else if(data == "lingqu")
         {
-            var self = this;
             self.lingqu(true);
             //if(this.useShare)
             //{

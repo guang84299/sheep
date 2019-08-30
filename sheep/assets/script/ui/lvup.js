@@ -216,6 +216,16 @@ cc.Class({
                 this.updateUI();
                 this.game.lvupBox(this.index);
 
+                if(!this.isPlaySheep)
+                {
+                    this.isPlaySheep = true;
+                    var self = this;
+                    cc.storage.playSound(cc.res.audio_sheep);
+                    this.scheduleOnce(function(){
+                        self.isPlaySheep = false;
+                    },10);
+                }
+
             }
             else
             {
@@ -858,6 +868,15 @@ cc.Class({
         else
         {
             cc.sdk.hideBanner();
+        }
+
+        if(this.index == 3 && this.game.needYindaoxiaotou)
+        {
+            this.game.needYindaoxiaotou = false;
+            this.game.openXiaotou(3);
+            this.game.scheduleOnce(function(){
+                res.openUI("yindao",null,7);
+            },0.5);
         }
     },
 

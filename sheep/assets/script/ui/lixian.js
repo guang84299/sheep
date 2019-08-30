@@ -19,13 +19,24 @@ cc.Class({
         //this.title = cc.find("title",this.bg).getComponent(cc.Label);
 
         this.coin_val = cc.find("coin",this.bg).getComponent(cc.Label);
-
+        this.time_val = cc.find("time",this.bg).getComponent(cc.Label);
         this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg).getComponent(cc.Button);
+
     },
 
     updateUI: function()
     {
         this.coin_val.string = storage.castNum(this.award);
+
+        var h = Math.floor(this.time/(60*60*1000));
+        var m = Math.floor((this.time-60*60*1000*h)/(60*1000));
+        var s = Math.floor((this.time-60*60*1000*h - m*60*1000)/1000);
+
+        var t = s+"秒";
+        if(h>0) t = h+"小时"+m+"分钟";
+        else if(m>0) t = m+"分钟"+s+"秒";
+
+        this.time_val.string = t;
 
         this.useShare = false;
         if(cc.GAME.share)
@@ -60,9 +71,12 @@ cc.Class({
         cc.res.showCoinAni();
     },
 
-    show: function(award)
+    show: function(data)
     {
-        this.award = award;
+        this.award = data.val;
+        this.time = data.time;
+        if(this.time>24*60*60*1000) this.time = 24*60*60*1000;
+
         //this.main.wxQuanState(false);
         this.game = cc.find("Canvas").getComponent("main");
         this.node.sc = this;
@@ -91,6 +105,20 @@ cc.Class({
                 })
             ));
         cc.sdk.hideBanner();
+
+        //小偷
+        if(this.game.btn_garglewool.active)
+        {
+            var now = new Date().getTime();
+            var t = storage.getGwxiaotouTime();
+            if(now-t>1*60*60*1000)
+            {
+                var gwxiaotou = storage.getGwxiaotou();
+                if(gwxiaotou.length < 5)
+                    res.openUI("gwnotify");
+            }
+        }
+
     },
 
     click: function(event,data)

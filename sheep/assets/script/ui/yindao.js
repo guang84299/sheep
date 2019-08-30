@@ -10,7 +10,7 @@ cc.Class({
 
     onLoad: function()
     {
-        this.initUI();
+
     },
 
     initUI: function()
@@ -29,7 +29,12 @@ cc.Class({
         //this.mask2 = cc.find("mask2",this.node);
         //this.mask3 = cc.find("mask3",this.node);
 
-        this.updateYindao();
+        if(this.yindao == 0)
+            this.updateYindao();
+        else
+        {
+            this.scheduleOnce(this.updateYindao2.bind(this),0.1);
+        }
     },
 
     updateYindao: function()
@@ -86,7 +91,7 @@ cc.Class({
         }
         else if(this.game.yindao == 5)
         {
-            box = this.game.boxs[0].getChildByName("box_lvup");
+            box = this.game.boxs[0].getChildByName("box_lvup").getChildByName("yindao");
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
         else if(this.game.yindao == 6)
@@ -133,21 +138,74 @@ cc.Class({
 
     },
 
-
-    show: function()
+    updateYindao2: function()
     {
+        var box = null;
+        var pos = null;
+        cc.res.setSpriteFrame("images/yindao/ydwz0"+this.yindao,this.desc);
+
+        this.game.yindao = this.yindao;
+        storage.setYinDao(this.yindao);
+        storage.uploadYinDao();
+
+        if(this.yindao == 7)
+        {
+            box = this.game.alarm_btn;
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+            this.node.runAction(cc.sequence(
+                cc.delayTime(14),
+                cc.removeSelf()
+            ));
+        }
+        else if(this.yindao == 8)
+        {
+            box = this.game.thief_btn;
+            pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+        }
+
+        if(box)
+        {
+            var s = box.getContentSize();
+            //s.width *= 1.2;
+            //s.height *= 1.2;
+            this.mask.setContentSize(s);
+
+            this.mask.getComponent(cc.Mask).spriteFrame = box.getChildByName("yindao").getComponent(cc.Sprite).spriteFrame;
+
+            this.mask.position = pos;
+            this.hand.position = pos;
+            this.hand.y -= 50;
+
+            this.descbg.position = pos.add(cc.v2(0,this.mask.getContentSize().height/2+40));
+
+            if(this.yindao ==7)
+                this.descbg.x += 180;
+            else if(this.yindao == 8)
+                this.descbg.x += 50;
+        }
+    },
+
+
+    show: function(yindao)
+    {
+        this.yindao = yindao;
+        if(!this.yindao) this.yindao = 0;
         this.game = cc.find("Canvas").getComponent("main");
         this.node.sc = this;
 
 
         this.node.active = true;
+        this.node.stopAllActions();
+        this.initUI();
+
+        cc.log("yindao:",yindao);
     },
 
     hide: function()
     {
         var self = this;
         this.node.runAction(cc.sequence(
-            cc.delayTime(2),
+            cc.delayTime(0.2),
             cc.callFunc(function(){
                 self.node.destroy();
             })
@@ -159,7 +217,11 @@ cc.Class({
     {
         if(data == "close")
         {
-            this.hide();
+            if(this.yindao>6)
+            {
+                this.hide();
+            }
+
         }
 
         storage.playSound(res.audio_button);

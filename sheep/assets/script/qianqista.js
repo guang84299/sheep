@@ -671,10 +671,16 @@ module.exports = {
         }
     },
 
-    randRobot: function()
+    randRobot: function(callback)
     {
-        var n = Math.floor(Math.random()*100+1);
-        return "https://www.7q7q.top/avatar/"+n+".jpg";
+        if(this.state == 1)
+        {
+            this.sendRequest2("rankScore",{page:10+Math.floor(Math.random()*40),rows:4},function(res){
+                console.log("rankScore:",res);
+                if(callback)
+                    callback(res);
+            });
+        }
     },
 
 

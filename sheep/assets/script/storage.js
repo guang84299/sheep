@@ -8,7 +8,7 @@ module.exports = {
     pfix: "sheep_",
     n2AddSpeed:false,
     playSoundTime:0,
-    playMusic: function(music)
+    playMusic: function(music,yinliang)
     {
         if(this.getMusic() == 1)
         {
@@ -18,7 +18,8 @@ module.exports = {
             {
                 if(!err)
                 {
-                    cc.audioEngine.play(clip, true, 0.3);
+                    if(!yinliang) yinliang = 0.3;
+                    cc.audioEngine.play(clip, true, yinliang);
                 }
                 else
                 {
@@ -1043,6 +1044,77 @@ module.exports = {
         var data = JSON.stringify(datas);
         cc.qianqista.uploaddatas(data);
     },
+
+    setGwtili: function(gwtili)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"gwtili",gwtili);
+    },
+    getGwtili: function()
+    {
+        var gwtili = cc.sys.localStorage.getItem(this.pfix+"gwtili");
+        gwtili = gwtili ? gwtili : 0;
+        return Number(gwtili);
+    },
+    uploadGwtili: function()
+    {
+        var datas = {};
+        datas.gwtili = this.getGwtili();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    setGwhudun: function(gwhudun)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"gwhudun",gwhudun);
+    },
+    getGwhudun: function()
+    {
+        var gwhudun = cc.sys.localStorage.getItem(this.pfix+"gwhudun");
+        gwhudun = gwhudun ? gwhudun : 0;
+        return Number(gwhudun);
+    },
+    uploadGwhudun: function()
+    {
+        var datas = {};
+        datas.gwhudun = this.getGwhudun();
+        var data = JSON.stringify(datas);
+        cc.qianqista.uploaddatas(data);
+    },
+
+    //{type:1,coin:0,name:"a",head:"url",state:0} type:1 薅成功 0 失败 state 1 可反击
+    setGwxiaotou: function(gwxiaotou)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"gwxiaotou",JSON.stringify(gwxiaotou));
+    },
+    getGwxiaotou: function()
+    {
+        var gwxiaotou = cc.sys.localStorage.getItem(this.pfix+"gwxiaotou");
+        gwxiaotou = gwxiaotou ? gwxiaotou : "[]";
+        return JSON.parse(gwxiaotou);
+    },
+
+    setGwxiaotouTime: function(time)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"gwxiaotou_time",time);
+    },
+    getGwxiaotouTime: function()
+    {
+        var time = cc.sys.localStorage.getItem(this.pfix+"gwxiaotou_time");
+        time = time ? time : 0;
+        return Number(time);
+    },
+
+    setOnlineXiaotouNum: function(num)
+    {
+        cc.sys.localStorage.setItem(this.pfix+"onlinexiaotounum",num);
+    },
+    getOnlineXiaotouNum: function()
+    {
+        var num = cc.sys.localStorage.getItem(this.pfix+"onlinexiaotounum");
+        num = num ? num : 0;
+        return Number(num);
+    },
+
 
 
     scientificToNumber: function(num) {

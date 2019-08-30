@@ -120,6 +120,7 @@ cc.Class({
 
         cc.res.showCoinAni();
 
+        cc.qianqista.event("任务_领取");
     },
 
     getCurrNickId: function()
@@ -161,6 +162,8 @@ cc.Class({
         {
             this.game.click(null,"up");
         }
+
+        cc.qianqista.event("任务_前往");
     },
 
 

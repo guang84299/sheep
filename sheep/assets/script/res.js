@@ -10,6 +10,10 @@ module.exports = {
     audio_button:"audio/button",
     audio_win:"audio/win",
     audio_baozha:"audio/baozha",
+    audio_dog:"audio/dog",
+    audio_sheep:"audio/sheep",
+    audio_alarm:"audio/alarm",
+    audio_choujiang:"audio/choujiang",
 
 
     initPools: function()
@@ -285,6 +289,31 @@ module.exports = {
         ));
     },
 
+    showSubcoin: function(pos,parent,coin)
+    {
+        var node = cc.instantiate(this["prefab_ui_coinAni"]);
+        node.color = cc.color(0,255,0);
+        var label = node.getComponent("cc.Label");
+        label.fontSize = 30;
+        label.string = coin;
+        if(pos)
+            node.position = cc.v2(pos.x,pos.y+50);
+        if(!parent)parent = cc.find("Canvas");
+        parent.addChild(node,10000);
+
+        node.runAction(cc.sequence(
+            cc.spawn(
+                cc.moveTo(0.7,pos.add(cc.v2(0,100))).easing(cc.easeSineOut()),
+                cc.scaleTo(0.2,1.2).easing(cc.easeSineIn())
+            ),
+            cc.spawn(
+                cc.scaleTo(0.2,0.2).easing(cc.easeSineIn()),
+                cc.fadeOut(0.2)
+            ),
+            cc.removeSelf()
+        ));
+    },
+
     showDiamond: function(pos,parent)
     {
         var node = cc.instantiate(this["prefab_ui_diamondAni"]);
@@ -316,6 +345,35 @@ module.exports = {
         ));
     },
 
+    showHand: function(parent,num)
+    {
+        this.game = cc.find("Canvas").getComponent("main");
+        var pos = this.game.scrollContent.convertToNodeSpaceAR(parent.parent.convertToWorldSpaceAR(parent.position));
+        pos.y -= 30;
+
+        var hand = cc.instantiate(this["prefab_ui_hand"]);
+        this.setSpriteFrame("images/yindao/wz"+num,cc.find("desc",hand));
+        hand.position = pos;
+        hand.zIndex = 999999;
+        this.game.scrollContent.addChild(hand);
+
+        cc.find("shou",hand).runAction(cc.repeatForever(cc.sequence(
+            cc.scaleTo(0.5,0.8).easing(cc.easeSineIn()),
+            cc.scaleTo(0.5,1).easing(cc.easeSineIn())
+        )));
+
+        this.autoHand = hand;
+    },
+
+    hideHand: function()
+    {
+        if(this.autoHand)
+        {
+            this.autoHand.destroy();
+            this.autoHand = null;
+        }
+    },
+
     openUI: function(name,parent,showType)
     {
         if(!parent) parent = cc.find("Canvas");
@@ -328,9 +386,16 @@ module.exports = {
                 node.getComponent(name).show(showType);
                 return;
             }
+
+            if(parent["opening_"+name])
+            {
+                return;
+            }
         }
+        parent["opening_"+name] = true;
         cc.loader.loadRes("prefab/ui/"+name, function(err, prefab)
         {
+            parent["opening_"+name] = false;
             if(err)
             {
                 console.log("init error "+name,err);

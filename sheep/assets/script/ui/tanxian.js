@@ -22,12 +22,15 @@ cc.Class({
         this.num = cc.find("box/numlay/num",this.bg).getComponent(cc.Label);
         this.timeLabel = cc.find("box/numlay/time",this.bg).getComponent(cc.Label);
 
+        this.btn_enter = cc.find("btns/enter",this.bg);
+
         var txTime = storage.getTxTime();
         if(txTime==0)
         {
             storage.setTxNum(5);
             storage.uploadTxNum();
         }
+
     },
 
     updateUI: function()
@@ -54,6 +57,46 @@ cc.Class({
                 this.scheduleOnce(this.updateUI.bind(this),1);
             }
         }
+
+    },
+
+    updateVedio: function()
+    {
+        var txNum = storage.getTxNum();
+        if(txNum<=0)
+        {
+            this.btn_enter.getChildByName("state1").active = false;
+            var state2 = this.btn_enter.getChildByName("state2");
+            state2.active = true;
+
+            this.useShare = false;
+            if(cc.GAME.share)
+            {
+                var rad = parseInt(cc.GAME.txnumAd);
+                if(!cc.GAME.hasVideo) rad = 100;
+                if(Math.random()*100 < rad)
+                {
+                    this.useShare = true;
+                    state2.getChildByName("share").active = true;
+                    state2.getChildByName("video").active = false;
+                }
+                else
+                {
+                    state2.getChildByName("share").active = false;
+                    state2.getChildByName("video").active = true;
+                }
+            }
+            else
+            {
+                state2.getChildByName("share").active = false;
+                state2.getChildByName("video").active = true;
+            }
+        }
+        else
+        {
+            this.btn_enter.getChildByName("state1").active = true;
+            this.btn_enter.getChildByName("state2").active = false;
+        }
     },
 
     enter: function()
@@ -75,8 +118,17 @@ cc.Class({
         }
         else
         {
-            res.showToast("剩余次数为0！");
+            //res.showToast("剩余次数为0！");
+            this.click(null,"lingqu2");
         }
+    },
+
+    lingqu: function()
+    {
+        var num = storage.getTxNum();
+        storage.setTxNum(num+4);
+        storage.uploadTxNum();
+        this.updateVedio();
     },
 
     show: function(jisuandata)
@@ -91,6 +143,7 @@ cc.Class({
         this.node.sc = this;
         this.initUI();
         this.updateUI();
+        this.updateVedio();
 
         this.node.active = true;
         this.bg.runAction(cc.sequence(
@@ -150,7 +203,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                },"qiandao");
+                },"tanxian");
             }
             else
             {

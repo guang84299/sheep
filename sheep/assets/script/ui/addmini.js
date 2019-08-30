@@ -51,6 +51,7 @@ cc.Class({
                 self.bg.y -= dis;
         });
 
+        cc.qianqista.event("钻石礼包_打开");
     },
 
     hide: function()

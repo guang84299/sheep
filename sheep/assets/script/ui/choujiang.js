@@ -26,10 +26,10 @@ cc.Class({
 
         this.tiliBtn = cc.find("bg/tiliBtn",this.node).getComponent("cc.Button");
 
-        this.deng1 = cc.find("box/deng1",this.bg);
-        this.deng2 = cc.find("box/deng2",this.bg);
-        this.deng3 = cc.find("box/deng3",this.bg);
-        this.deng4 = cc.find("box/deng4",this.bg);
+        this.deng1 = cc.find("box/deng",this.bg);
+        //this.deng2 = cc.find("box/deng2",this.bg);
+        //this.deng3 = cc.find("box/deng3",this.bg);
+        //this.deng4 = cc.find("box/deng4",this.bg);
 
         this.btn_lingqu.node.active = false;
         this.btn_vedio_lingqu.node.active = false;
@@ -248,10 +248,17 @@ cc.Class({
 
         if(num < 8)
         {
-            this.deng1.runAction(cc.blink(0.8,2));
-            this.deng2.runAction(cc.blink(0.8,3));
-            this.deng3.runAction(cc.blink(0.8,4));
-            this.deng4.runAction(cc.blink(0.8,5));
+            this.deng1.active = true;
+
+            var i = 1;
+            this.schedule(function(){
+                cc.res.setSpriteFrame("images/choujiang/deng"+i,self.deng1);
+                i ++;
+                if(i>4) i = 1;
+            },0.1,8);
+            //this.deng2.runAction(cc.blink(0.8,3));
+            //this.deng3.runAction(cc.blink(0.8,4));
+            //this.deng4.runAction(cc.blink(0.8,5));
         }
 
     },
@@ -280,6 +287,8 @@ cc.Class({
             box.mask.opacity = 0;
             box.guang.opacity = 255;
 
+            self.deng1.active = false;
+
             self.btn_vedio_lingqu.node.active = true;
             self.btn_lingqu.node.active = true;
             var dis = cc.sdk.getBannerDis(self.btn_lingqu.node);
@@ -301,6 +310,8 @@ cc.Class({
         storage.uploadChoujiangToalNum();
 
         this.game.task.updateUI();
+
+        cc.storage.playSound(cc.res.audio_choujiang);
     },
 
     lingqu: function(isVedio)

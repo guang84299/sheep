@@ -1,0 +1,161 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "thief",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.6,
+  "sample": 15,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "thief0/thief1": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255
+            },
+            {
+              "frame": 0.8,
+              "value": 0
+            },
+            {
+              "frame": 1.6,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "thief0": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0
+              ],
+              "motionPath": [
+                [
+                  -3.55,
+                  1.53,
+                  -1.79,
+                  1.59,
+                  -4.6,
+                  1.5
+                ]
+              ],
+              "curve": "cubicInOut"
+            },
+            {
+              "frame": 0.4,
+              "value": [
+                -6,
+                -0.2
+              ],
+              "motionPath": [
+                [
+                  -9.95,
+                  1.85,
+                  -7.88,
+                  1.93,
+                  -11.7,
+                  1.78
+                ]
+              ],
+              "curve": "cubicInOut"
+            },
+            {
+              "frame": 0.8,
+              "value": [
+                -13.7,
+                -0.5
+              ],
+              "motionPath": [
+                [
+                  -9.8,
+                  2,
+                  -11.9,
+                  1.9,
+                  -8,
+                  2
+                ]
+              ],
+              "curve": "cubicInOut"
+            },
+            {
+              "frame": 1.2,
+              "value": [
+                -6,
+                -0.2
+              ],
+              "motionPath": [
+                [
+                  -2.9,
+                  2.4,
+                  -4.6,
+                  2.3,
+                  -1.6,
+                  2.5
+                ]
+              ],
+              "curve": "cubicInOut"
+            },
+            {
+              "frame": 1.6,
+              "value": [
+                0,
+                0
+              ],
+              "motionPath": []
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.7333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.8,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": -1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 1.5333333333333334,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": -1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 1.6,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

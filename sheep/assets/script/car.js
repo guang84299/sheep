@@ -32,6 +32,11 @@ cc.Class({
         this.maosp = this.node.children[0];
         this.maosp.active = false;
 
+        //特效
+        this.ani = cc.instantiate(cc.res["prefab_anim_carspeedup"]);
+        this.ani.scale = 1;
+        this.ani.parent = this.node;
+
         this.scheduleOnce(this.run.bind(this),1);
     },
 
@@ -60,6 +65,16 @@ cc.Class({
             cc.delayTime(dt),
             cc.callFunc(this.run.bind(this))
         ));
+
+        if(this.game.rate7 != 1)
+        {
+            this.ani.active = true;
+            this.ani.position = cc.v2(0,-50);
+        }
+        else
+        {
+            this.ani.active = false;
+        }
     },
 
     run: function()
@@ -127,6 +142,16 @@ cc.Class({
             //cc.delayTime(dt),
             //cc.callFunc(this.run.bind(this))
         ));
+
+        if(this.game.rate7 != 1)
+        {
+            this.ani.active = true;
+            this.ani.position = cc.v2(0,60);
+        }
+        else
+        {
+            this.ani.active = false;
+        }
     },
 
     addCoin: function(y)
@@ -141,7 +166,7 @@ cc.Class({
             if(coin>carrySpeed) coin = carrySpeed;
             coin = box.getCoin(coin);
             this.coin += coin;
-            this.addMao(y,box.type);
+            this.addMao(y,box.type,box.isUnLockSheep);
 
             var isHasCoin = box.coin > 0 ? true : false;
             this.node.runAction(cc.sequence(
@@ -160,9 +185,10 @@ cc.Class({
         }
     },
 
-    addMao: function(h,type)
+    addMao: function(h,type,isUnLockSheep)
     {
         var icon = type+1;
+        if(isUnLockSheep != 3) icon = 1;
 
         var mao = new cc.Node();
         mao.addComponent(cc.Sprite);
@@ -204,6 +230,27 @@ cc.Class({
         }
 
         this.maosp.active = false;
+
+        //判断升级提示
+        if(this.game.yindao>=6 && !cc.res.autoHand && this.game.unLock<5 && Math.random()<0.5)
+        {
+            var boxs = this.game.boxs;
+            var zcoin = 0;
+            for(var i=0;i<boxs.length;i++)
+            {
+                var box = boxs[i].getComponent("box");
+                if(box.isUnLock)
+                {
+                    zcoin += box.coin;
+                }
+            }
+
+            if(zcoin > 2*Number(this.conf.capacity))
+            {
+                //this.game.scrollBox(0);
+                cc.res.showHand(cc.find("head/carvup/shengji",this.game.scrollContent),3);
+            }
+        }
     },
 
     lvup: function()

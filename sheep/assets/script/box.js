@@ -327,6 +327,40 @@ cc.Class({
         return gcoin;
     },
 
+    addXiaotou: function()
+    {
+        this.isXiaotou = true;
+        this.coinnum.node.color = cc.color(255,0,0);
+
+        this.schedule(this.xiaotouCoin,2);
+    },
+
+    subXiaotou: function()
+    {
+        this.isXiaotou = false;
+        this.coinnum.node.color = cc.color(255,255,255);
+        this.unschedule(this.xiaotouCoin);
+    },
+
+    xiaotouCoin: function()
+    {
+        if(this.coin>0)
+        {
+            var cost = this.pice*(1/this.growSpeed)*36*2;
+            if(this.coin<cost)  cost = this.coin;
+            this.coin -= cost;
+            this.coinnum.string = cc.storage.castNum(this.coin);
+
+            if(this.game.thief_btn && this.game.thief_btn.coinLabel)
+            {
+                this.game.thief_btn.coinLabel.coin += cost;
+                this.game.thief_btn.coinLabel.string = cc.storage.castNum(this.game.thief_btn.coinLabel.coin);
+            }
+            //cc.res.showSubcoin(cc.v2(-170,-50), this.node,cc.storage.castNum(cost));
+        }
+
+    },
+
     update: function(dt)
     {
         if(this.isUnLock)
@@ -474,7 +508,13 @@ cc.Class({
         this.dog_dog_qipao.active = true;
         this.dog_dog_qipao_txt.string = cc.res.conf_dogText[0].text;
         this.dog_dog_qipao.scale = 0;
-        this.dog_dog_qipao.runAction(cc.scaleTo(0.2,1).easing(cc.easeSineIn()));
+        this.dog_dog_qipao.runAction(cc.sequence(
+            cc.scaleTo(0.2,1).easing(cc.easeSineIn()),
+            cc.delayTime(5),
+            cc.fadeOut(1)
+        ));
+
+        cc.storage.playSound(cc.res.audio_dog);
     },
 
     tounlockdog: function()
@@ -526,6 +566,8 @@ cc.Class({
 
         this.game.addDiamond(1);
         cc.res.showDiamond(this.dog_dog_dog.position, this.dog_dog);
+
+        cc.storage.playSound(cc.res.audio_dog);
     },
 
     useNewSheep: function()
@@ -580,6 +622,10 @@ cc.Class({
         else if(data == "dog")
         {
             this.updatedog();
+        }
+        else if(data == "lock2")
+        {
+            cc.res.openUI("boxtishi",null,this.index);
         }
         cc.storage.playSound(cc.res.audio_button);
         cc.log(data);

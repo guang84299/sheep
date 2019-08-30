@@ -151,10 +151,18 @@ cc.Class({
         }
         else
         {
-            cc.sdk.showBanner(this.bg,function(dis){
-                if(dis<0)
-                    self.bg.y -= dis;
-            });
+            if(this.index>4)
+            {
+                cc.sdk.showSpot();
+            }
+            else
+            {
+                cc.sdk.showBanner(this.bg,function(dis){
+                    if(dis<0)
+                        self.bg.y -= dis;
+                });
+            }
+
         }
 
         cc.qianqista.event("解锁牧羊犬_打开");
@@ -180,8 +188,11 @@ cc.Class({
         }
         else
         {
-            cc.sdk.hideBanner();
+
         }
+
+        if(this.index<=4)
+            cc.sdk.hideBanner();
     },
 
     click: function(event,data)

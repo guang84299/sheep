@@ -119,6 +119,7 @@ cc.Class({
 
     lingqu: function(x2)
     {
+        this.isClickLvup = true;
         cc.res.openUI("lvup",null,this.index);
         this.hide();
     },
@@ -147,11 +148,19 @@ cc.Class({
         }
         else
         {
-            var self = this;
-            cc.sdk.showBanner(this.bg,function(dis){
-                if(dis<0)
-                    self.bg.y -= dis;
-            });
+            if(this.index>4)
+            {
+                cc.sdk.showSpot();
+            }
+            else
+            {
+                var self = this;
+                cc.sdk.showBanner(this.bg,function(dis){
+                    if(dis<0)
+                        self.bg.y -= dis;
+                });
+            }
+
         }
 
         cc.qianqista.event("解锁牧场_"+index);
@@ -178,11 +187,28 @@ cc.Class({
         }
         else
         {
-            cc.sdk.hideBanner();
+
         }
 
         if(this.index>2)
-        this.game.click(null,"down");
+            this.game.click(null,"down");
+
+        if(this.index == 3 && !this.isClickLvup)
+        {
+            this.game.openXiaotou(3);
+            this.game.scheduleOnce(function(){
+                res.openUI("yindao",null,7);
+            },0.5);
+
+        }
+        else
+        {
+            if(this.index == 3)
+                this.game.needYindaoxiaotou = true;
+        }
+
+        if(this.index<=4)
+            cc.sdk.hideBanner();
     },
 
     click: function(event,data)

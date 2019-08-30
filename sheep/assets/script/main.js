@@ -101,6 +101,9 @@ cc.Class({
         this.shouyiDt = 0;
         this.yindao = storage.getYinDao();
         this.rate7 = 1;
+        this.xiaotouIndex = [];
+        this.xiaotouDt = 0;
+        this.xiaotouTime = 0;
 
         qianqista.onshowmaincallback = this.updateLixian.bind(this);
 
@@ -138,6 +141,8 @@ cc.Class({
         this.scrollControlUp = cc.find("scrollControl/up",this.node_main);
         this.scrollControlDown = cc.find("scrollControl/down",this.node_main);
         this.scrollControlUp.active = false;
+
+        this.btn_garglewool = cc.find("btn_garglewool",this.node_main);
 
         //res.loadPic(qianqista.avatarUrl,this.headIcon);
 
@@ -189,7 +194,7 @@ cc.Class({
         var nextPro = this.getNextNikePro(tlv);
 
         this.totalLv.string = tlv;
-        this.pro.progress = tlv/parseInt(nextPro);
+        //this.pro.progress = tlv/parseInt(nextPro);
         this.pro_num.string = tlv+"/"+parseInt(nextPro);
 
         var nickName = this.getNikeName(tlv);
@@ -213,7 +218,69 @@ cc.Class({
             this.lastName = nickName;
         }
 
+        this.btn_garglewool.active = this.unLock>=4 ? true : false;
+
         this.task.updateUI();
+
+        this.updateNamePro();
+    },
+
+    updateNamePro: function()
+    {
+        var currPro = this.getCurrNikePro(this.totalLvNum);
+        var nextPro = this.getNextNikePro(this.totalLvNum);
+
+        var z = nextPro - currPro;
+        var c = this.totalLvNum - currPro;
+
+        var to = c/z;
+
+        var isMan = false;
+        if(this.lastCurrPro && this.lastCurrPro != currPro)
+        {
+            to = 1;
+            isMan = true;
+        }
+        this.lastCurrPro = currPro;
+
+        if(to != this.pro.progress)
+        {
+            var par1 = this.pro.node.getChildByName("jindu1");
+            var par2 = this.pro.node.getChildByName("jindu11");
+            par1.active = true;
+            par1.x = this.pro.progress*188-188/2;
+            var self = this;
+            var fun = function(){
+                var p = self.pro.progress;
+                if(p+0.01>to)
+                {
+                    self.pro.progress = to;
+                    par1.active = false;
+                    par2.active = true;
+                    par2.x = self.pro.progress*188-188/2;
+                    par2.getComponent(cc.ParticleSystem).resetSystem();
+                    par2.stopAllActions();
+                    par2.runAction(cc.sequence(
+                        cc.delayTime(2),
+                        cc.callFunc(function(){
+                            par2.active = false;
+                        })
+                    ));
+                    this.unschedule(fun);
+
+                    if(isMan)
+                    {
+                        self.updateNamePro();
+                    }
+                }
+                else
+                {
+                    self.pro.progress += 0.01;
+                    par1.x = self.pro.progress*188-188/2;
+                }
+            };
+            this.schedule(fun,0.05);
+        }
     },
 
     getNikeName: function(tlv)
@@ -246,6 +313,21 @@ cc.Class({
         return n;
     },
 
+    getCurrNikePro: function(tlv)
+    {
+        var n = -1;
+        for(var i=0;i<res.conf_achievement.length;i++)
+        {
+            if(parseInt(res.conf_achievement[i].condition)>tlv)
+            {
+                n = i-1;
+                break;
+            }
+        }
+        if(n == -1) n = res.conf_achievement.length-1;
+        return res.conf_achievement[n].condition;
+    },
+
     getNextNikePro: function(tlv)
     {
         var n = -1;
@@ -269,7 +351,7 @@ cc.Class({
             if(!this.coin_pos)
             {
                 var coinbg = cc.find("top/coinbg/num",this.node_main);
-                this.coin_pos = coinbg.convertToWorldSpace(coinbg.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+                this.coin_pos = coinbg.parent.convertToWorldSpaceAR(coinbg.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
             }
 
             var str = "+"+storage.castNum(add);
@@ -309,7 +391,7 @@ cc.Class({
             if(!this.diamond_pos)
             {
                 var coinbg = cc.find("top/diamondbg/num",this.node_main);
-                this.diamond_pos = coinbg.convertToWorldSpace(coinbg.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
+                this.diamond_pos = coinbg.parent.convertToWorldSpaceAR(coinbg.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
             }
 
             var str = "+"+storage.castNum(add);
@@ -451,7 +533,6 @@ cc.Class({
 
                 this.boxs.push(box);
                 this.scrollContent.height = box.height*this.boxs.length+487;
-                cc.log(this.boxs.length);
 
                 this.updateBox();
                 this.scheduleOnce(this.addBox.bind(this),0.1);
@@ -481,6 +562,8 @@ cc.Class({
                     box.toUnlock();
             }
         }
+
+        cc.res.hideHand();
     },
 
     carvup: function()
@@ -489,6 +572,8 @@ cc.Class({
         this.task.updateUI();
 
         this.carvup_num.string = "lv"+storage.getCarVLv();
+
+        cc.res.hideHand();
     },
 
     carhup: function()
@@ -497,6 +582,8 @@ cc.Class({
         this.task.updateUI();
 
         this.carhup_num.string = "lv"+storage.getCarHLv();
+
+        cc.res.hideHand();
     },
 
     judgeUnLock: function(lv)
@@ -612,12 +699,12 @@ cc.Class({
                 storage.setLixianTime(now);
                 var val = this.getSecVal()*t;
                 if(val>0)
-                    res.openUI("lixian",null,val);
+                    res.openUI("lixian",null,{val:val,time:now-time});
             }
         }
 
         //更新addmini 1022
-        var btn_addmini = cc.find("btn_addmini",this.node_main);
+        var btn_addmini = cc.find("top/buttons/btn_addmini",this.node_main);
         if(cc.GAME.addmini == 1)
         {
             btn_addmini.active = false;
@@ -988,6 +1075,17 @@ cc.Class({
         }
     },
 
+    destoryYindao: function()
+    {
+        var node = this.node.getChildByName("ui_yindao");
+        if(node)
+        {
+            node.destroy();
+        }
+    },
+
+
+
     updateFlyCoin: function()
     {
         var now = new Date().getTime();
@@ -1009,6 +1107,11 @@ cc.Class({
 
         if(b)
         {
+            if(this.unLock<4) b = false;
+        }
+
+        if(b)
+        {
             var flycoin = cc.find("top/flycoin",this.node_main);
             flycoin.active = true;
             flycoin.x = -cc.winSize.width/2-flycoin.width;
@@ -1017,7 +1120,10 @@ cc.Class({
                 cc.moveBy(8,cc.winSize.width+flycoin.width,0),
                 cc.moveBy(8,-cc.winSize.width-flycoin.width,0)
             ));
+
         }
+
+
     },
 
     touchBox: function(pos)
@@ -1026,6 +1132,166 @@ cc.Class({
         {
             this.boxs[i].sc.touchBox(pos);
         }
+    },
+
+    updateXiaotou: function(dt)
+    {
+        if(this.unLock>=3)
+        {
+            this.xiaotouDt+=dt;
+            if(this.xiaotouDt>60)
+            {
+                this.xiaotouDt = 0;
+                this.xiaotouTime += 60;
+
+                var num = storage.getOnlineXiaotouNum();
+
+                var rate = 0.2;
+                if(this.xiaotouTime>120)
+                    rate = 1;
+
+                if(num<30 && this.xiaotouIndex.length == 0 && Math.random()<=rate)
+                {
+                    this.openXiaotou();
+                }
+            }
+        }
+    },
+
+    openXiaotou: function(index)
+    {
+        if(!index)
+        {
+            var n = this.unLock-2;
+            index = Math.floor(Math.random()*3)+n;
+        }
+        this.xiaotouIndex.push(index);
+
+        var num = storage.getOnlineXiaotouNum();
+        storage.setOnlineXiaotouNum(num+1);
+
+        this.xiaotouTime = 0;
+
+
+        var self = this;
+
+        var alarm = cc.instantiate(cc.res["prefab_anim_alarm"]);
+        this.node_main.addChild(alarm);
+
+        var thief = cc.instantiate(cc.res["prefab_anim_thief"]);
+        thief.x = -170;
+        thief.y = -60;
+        this.boxs[index-1].addChild(thief);
+
+        var coinLabel = cc.find("coinbg/num",thief).getComponent(cc.Label);
+        coinLabel.coin = 0;
+        this.boxs[index-1].sc.addXiaotou(coinLabel);
+
+        var thiefAnim = cc.find("thief",thief).getComponent("sp.Skeleton");
+
+        this.thief_btn = thief;
+        this.thief_btn.coinLabel = coinLabel;
+
+        var num = Math.floor(Math.random()*6)+5;
+        var num2 = num;
+        var val = this.getSecVal();
+        thief.on('click', function (button) {
+            if(self.yindao == 8)
+            {
+                if(num2 == num)
+                    self.destoryYindao();
+                self.yindao = 9;
+            }
+
+            if(num2 == num)
+            {
+                self.boxs[index-1].sc.subXiaotou();
+                coinLabel.cost = coinLabel.coin/20.0;
+                thief.runAction(cc.sequence(
+                    //cc.blink(6,12),
+                    cc.delayTime(6),
+                    cc.callFunc(function(){
+
+                        cc.res.showToast("被偷了"+cc.storage.castNum(coinLabel.coin));
+
+                        thief.destroy();
+                        self.xiaotouIndex = [];
+
+                        if(alarm) alarm.destroy();
+
+                        cc.storage.playMusic(cc.res.audio_music);
+
+                        self.xiaotouDt = 0;
+                        self.xiaotouTime = 0;
+                    })
+                ));
+
+                cc.qianqista.event("在线小偷_点击小偷");
+            }
+
+            num--;
+            var cost = coinLabel.cost;
+            if(cost>0)
+            {
+                coinLabel.coin -= cost;
+                if(coinLabel.coin<0) coinLabel.coin = 0;
+                coinLabel.string = cc.storage.castNum(coinLabel.coin);
+                cc.res.showSubcoin(cc.v2(0,20), thief,cc.storage.castNum(cost));
+                self.addCoin(cost);
+                //cc.res.showCoinAni();
+            }
+
+            thiefAnim.setAnimation(0,"attacked",false);
+            thiefAnim.setCompleteListener(function(){
+                thiefAnim.setAnimation(0,"normal",true);
+            });
+        });
+
+
+
+        var btn = cc.find("alarm",alarm);
+        this.alarm_btn = btn;
+        btn.on('click', function (button) {
+            self.scrollBox(index);
+
+            //alarm.destroy();
+
+            if(self.yindao == 7)
+            {
+                self.destoryYindao();
+
+                self.scheduleOnce(function(){
+                    res.openUI("yindao",null,8);
+                },1);
+            }
+
+            cc.qianqista.event("在线小偷_点击警报");
+        });
+
+        alarm.runAction(cc.sequence(
+            cc.delayTime(15),
+            cc.callFunc(function(){
+                if(self.yindao == 7)
+                {
+                    self.scheduleOnce(function(){
+                        res.openUI("yindao",null,8);
+                    },1);
+                }
+                cc.storage.playMusic(cc.res.audio_music);
+            }),
+            cc.removeSelf()
+        ));
+
+        cc.storage.playMusic(cc.res.audio_alarm,1);
+        //cc.storage.playSound(cc.res.audio_choujiang);
+    },
+
+    scrollBox: function(index)
+    {
+        var ranchId = index-2;
+        var h = this.boxs[0].height;
+        var y = h*ranchId+487;
+        this.scroll.scrollToOffset(cc.v2(0,y),1);
     },
 
     scrollEvent: function(event,data)
@@ -1162,6 +1428,10 @@ cc.Class({
         {
             res.openUI("addmini");
         }
+        else if(data == "garglewool")
+        {
+            res.openUI("garglewool");
+        }
         storage.playSound(res.audio_button);
         cc.log(data);
     },
@@ -1201,5 +1471,6 @@ cc.Class({
     update: function(dt) {
         this.updateCoin(dt);
         this.updateShouYi(dt);
+        this.updateXiaotou(dt);
     }
 });

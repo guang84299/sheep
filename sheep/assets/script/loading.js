@@ -16,6 +16,7 @@ cc.myscene = "load";
 cc.res = res;
 cc.GAME = {};
 cc.GAME.control = [];
+cc.GAME.gwdatas = [];
 cc.gjiabeilist = [];
 
 cc.Class({
@@ -95,35 +96,45 @@ cc.Class({
             "prefab/ui/coinAni",
             "prefab/ui/diamondAni",
             "prefab/ui/toast",
+            "prefab/ui/hand",
 
-            "prefab/ui/addmini",
+            //"prefab/ui/addmini",
             "prefab/ui/carhup",
             "prefab/ui/carvup",
-            "prefab/ui/choujiang",
-            "prefab/ui/dog",
+            //"prefab/ui/choujiang",
+            //"prefab/ui/dog",
             "prefab/ui/freecoin",
-            "prefab/ui/freetili",
+            //"prefab/ui/freetili",
+            //"prefab/ui/garglewool",
+            //"prefab/ui/gwjudge",
+            //"prefab/ui/gwjiesuan",
+            //"prefab/ui/gwxiaotou",
+            //"prefab/ui/gwnotify",
+            //"prefab/ui/gwfanji",
             "prefab/ui/lixian",
             "prefab/ui/lvup",
             "prefab/ui/nameup",
             "prefab/ui/power",
             "prefab/ui/qiandao",
-            "prefab/ui/rank",
-            "prefab/ui/setting",
+            //"prefab/ui/rank",
+            //"prefab/ui/setting",
             "prefab/ui/shop",
-            "prefab/ui/shouyi",
-            "prefab/ui/shouyifanbei",
-            "prefab/ui/skill",
-            "prefab/ui/tanxian",
-            "prefab/ui/tanxiangame",
-            "prefab/ui/tanxianjiesuan",
-            "prefab/ui/tanxiantask",
+            //"prefab/ui/shouyi",
+            //"prefab/ui/shouyifanbei",
+            //"prefab/ui/skill",
+            //"prefab/ui/tanxian",
+            //"prefab/ui/tanxiangame",
+            //"prefab/ui/tanxianjiesuan",
+            //"prefab/ui/tanxiantask",
             "prefab/ui/unlockbox",
             "prefab/ui/unlockdog",
             "prefab/ui/yindao",
 
 
             "prefab/anim/coinani",
+            "prefab/anim/alarm",
+            "prefab/anim/thief",
+            "prefab/anim/carspeedup",
 
             //"prefab/particle/suijinbi",
             "scene/main"
@@ -167,7 +178,10 @@ cc.Class({
             storage.setSound(1);
             storage.setVibrate(1);
             storage.setCoin(10000);
-            storage.setDogCardLv(1,1)
+            storage.setDogCardLv(1,1);
+
+            storage.setGwtili(5);
+            storage.setGwhudun(3);
         }
     },
 
@@ -438,6 +452,12 @@ cc.Class({
             if(datas.hasOwnProperty("nameup"))
                 storage.setNameUp(Number(datas.nameup));
 
+            if(datas.hasOwnProperty("gwtili"))
+                storage.setGwtili(Number(datas.gwtili));
+
+            if(datas.hasOwnProperty("gwhudun"))
+                storage.setGwhudun(Number(datas.gwhudun));
+
             if(datas.hasOwnProperty("addmini"))
                 cc.GAME.addmini = Number(datas.addmini);
 
@@ -472,6 +492,12 @@ cc.Class({
                 storage.uploadJiabei();
 
                 storage.setFreeDiaNum(1);
+
+                storage.setGwtili(5);
+
+                storage.setGwxiaotou([]);
+
+                storage.setOnlineXiaotouNum(0);
             }
         }
         else
@@ -481,6 +507,8 @@ cc.Class({
             storage.setLoginTime(now);
             storage.setLoginDay(1);
             storage.setFreeDiaNum(1);
+
+
             this.uploadData();
         }
     },

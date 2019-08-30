@@ -1,0 +1,105 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "alarm",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 24,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "props": {
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 255
+        },
+        {
+          "frame": 0.5,
+          "value": 50
+        },
+        {
+          "frame": 1,
+          "value": 255
+        }
+      ]
+    },
+    "paths": {
+      "light1": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.1,
+                "y": 0.1
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                280,
+                0
+              ],
+              "motionPath": [
+                [
+                  274.7,
+                  6.7,
+                  277.1,
+                  6.7,
+                  272.1,
+                  6.7
+                ]
+              ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                270,
+                0
+              ],
+              "motionPath": [
+                [
+                  274.4,
+                  -7.4,
+                  272,
+                  -7.4,
+                  277,
+                  -7.4
+                ]
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                280,
+                0
+              ],
+              "motionPath": []
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

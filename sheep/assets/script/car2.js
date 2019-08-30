@@ -75,6 +75,12 @@ cc.Class({
             runCar.coinsp.active = false;
             runCar.lunzi1.active = false;
             runCar.lunzi2.active = false;
+
+            runCar.ani = cc.instantiate(cc.res["prefab_anim_carspeedup"]);
+            runCar.ani.scale = 1;
+            runCar.ani.parent = runCar;
+            runCar.ani.position = cc.v2(60,0);
+            runCar.ani.active = false;
         }
     },
 
@@ -120,6 +126,9 @@ cc.Class({
                 })
             ));
         }
+
+        car.ani.active = this.game.rate7 != 1 ? true : false;
+
     },
 
     carBack: function(car)
@@ -133,6 +142,8 @@ cc.Class({
         ));
         car.lunzi1.active = true;
         car.lunzi2.active = true;
+
+        car.ani.active = this.game.rate7 != 1 ? true : false;
     },
 
     addCoin: function(car)
@@ -221,6 +232,33 @@ cc.Class({
                 self.carGo(car);
             })
         ));
+
+        //判断升级提示
+        if(this.game.yindao>=6 && !cc.res.autoHand && this.game.unLock<5 && Math.random()<0.5)
+        {
+            var zcoin = this.game.faccoin;
+
+            if(zcoin > Number(this.conf.capacity)*this.cars.length)
+            {
+                //this.game.scrollBox(0);
+                cc.res.showHand(cc.find("head/carhup/shengji",this.game.scrollContent),4);
+            }
+            else
+            {
+                //判断牧场
+                for(var i=this.game.unLock;i>0;i--)
+                {
+                    var lv = cc.storage.getLevel(i);
+                    var cost = this.getCost(lv,i);
+                    if(cost != 0 && this.game.coin>cost)
+                    {
+                        //this.game.scrollBox(i);
+                        cc.res.showHand(cc.find("box_lvup/shengji",this.game.boxs[i-1]),5);
+                        break;
+                    }
+                }
+            }
+        }
     },
 
     lvup: function()
@@ -248,6 +286,17 @@ cc.Class({
 
         }
 
+    },
+
+    getCost: function(lv,index)
+    {
+        var cost = 0;
+        if(lv+1<cc.res.conf_cost.length)
+        {
+            var c = Number(cc.res.conf_cost[lv+1]["ranch"+index]);
+            cost += c;
+        }
+        return cost;
     },
 
     update: function(dt)

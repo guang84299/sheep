@@ -158,7 +158,21 @@ module.exports = {
 
                 console.error(res);
             });
+
+
+            //初始化插屏广告
+            this.interstitialAd = null;
+
+            // 创建插屏广告实例，提前初始化
+            if (wx.createInterstitialAd){
+                this.interstitialAd = wx.createInterstitialAd({
+                    adUnitId: 'adunit-116cf8bef9613451'
+                });
+            }
+
+
         }
+        this.bannerTime = 0;
     },
 
     showVedio: function(callback)
@@ -192,9 +206,18 @@ module.exports = {
 
     showBanner: function(node,callback,isHide)
     {
-        this.hideBanner();
+
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
+            if(this.bannerAd)
+            {
+                var now = new Date().getTime();
+                if(now - this.bannerTime<2000)
+                    return;
+            }
+
+            this.hideBanner();
+
             //var dpi = cc.view.getDevicePixelRatio();
             var s = cc.view.getFrameSize();
             var dpi = cc.winSize.width/s.width;
@@ -250,6 +273,8 @@ module.exports = {
                 console.error(res);
             });
             this.bannerAd.show();
+
+            this.bannerTime = new Date().getTime();
         }
     },
 
@@ -258,7 +283,11 @@ module.exports = {
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
             if(this.bannerAd)
+            {
                 this.bannerAd.destroy();
+                this.bannerAd = null;
+            }
+
         }
     },
 
@@ -286,6 +315,19 @@ module.exports = {
             {
                 var s = cc.view.getFrameSize();
                 this.bannerAd.style.top = s.height-this.bannerAd.res.height-1;
+            }
+        }
+    },
+
+    showSpot: function()
+    {
+        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        {
+            if (this.interstitialAd)
+            {
+                this.interstitialAd.show().catch(function(err) {
+                    console.error(err)
+                });
             }
         }
     },
