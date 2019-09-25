@@ -33,28 +33,13 @@ cc.Class({
         this.updateRed();
 
 
-        if(this.yindao < 6)//22
+        if(this.yindao < 2)
         {
-            //this.yindao = 14;
-            //if(this.yindao == 4) this.yindao = 3;
-            //else if(this.yindao == 5) this.yindao = 6;
-            //else if(this.yindao == 8) this.yindao = 7;
-            //else if(this.yindao == 9) this.yindao = 10;
-            //else if(this.yindao == 12) this.yindao = 11;
-            //else if(this.yindao == 13) this.yindao = 14;
+            this.scheduleOnce(function(){
+                res.openUI("yindao",null,1);
+            },0.1);
 
-            if(this.yindao < 2)
-            {
-                this.scheduleOnce(function(){
-                    res.openUI("yindao");
-                },0.5);
-
-                this.scroll.vertical = false;
-            }
-            else
-            {
-                this.yindao = 6;
-            }
+            this.scroll.vertical = false;
         }
 
     },
@@ -143,6 +128,8 @@ cc.Class({
         this.scrollControlUp.active = false;
 
         this.btn_garglewool = cc.find("btn_garglewool",this.node_main);
+        this.btn_tanxian = cc.find("top/buttons/tanxian",this.node_main);
+        this.btn_dog = cc.find("top/buttons/dog",this.node_main);
 
         //res.loadPic(qianqista.avatarUrl,this.headIcon);
 
@@ -211,18 +198,25 @@ cc.Class({
         if(!this.lastName)this.lastName = nickName;
         else
         {
-            if(this.yindao>=6 && this.lastName != nickName)
+            if(this.yindao>=5 && this.lastName != nickName)
             {
                 res.openUI("nameup");
             }
             this.lastName = nickName;
         }
 
-        this.btn_garglewool.active = this.unLock>=4 ? true : false;
 
+        this.updateBtnUnlock();
         this.task.updateUI();
 
         this.updateNamePro();
+    },
+
+    updateBtnUnlock: function()
+    {
+        this.btn_garglewool.active = this.unLock>=6 ? true : false;
+        this.btn_tanxian.active = this.unLock>=5 ? true : false;
+        this.btn_dog.active = this.unLock>=4 ? true : false;
     },
 
     updateNamePro: function()
@@ -362,6 +356,7 @@ cc.Class({
             }
 
             res.showCoin(str,this.coin_pos,this.node_main);
+            res.showCoinGetAni(this.coin_pos);
             this.toalcoin += add;
         }
         this.coin += add;
@@ -538,7 +533,10 @@ cc.Class({
                 this.scheduleOnce(this.addBox.bind(this),0.1);
 
                 if(this.boxs.length == lock)
+                {
                     this.updateLixian();
+                }
+
             }
 
         }
@@ -566,6 +564,12 @@ cc.Class({
         cc.res.hideHand();
     },
 
+    lvupBoxAni: function(index)
+    {
+        var box = this.boxs[index-1];
+        box.getComponent("box").addSheep(true);
+    },
+
     carvup: function()
     {
         this.car.lvup();
@@ -576,6 +580,11 @@ cc.Class({
         cc.res.hideHand();
     },
 
+    carvupAni: function()
+    {
+        this.car.lvupAni();
+    },
+
     carhup: function()
     {
         this.car2.lvup();
@@ -584,6 +593,11 @@ cc.Class({
         this.carhup_num.string = "lv"+storage.getCarHLv();
 
         cc.res.hideHand();
+    },
+
+    carhupAni: function()
+    {
+        this.car2.lvupAni();
     },
 
     judgeUnLock: function(lv)
@@ -688,7 +702,7 @@ cc.Class({
 
     updateLixian: function(scene)
     {
-        if(this.yindao >= 6)
+        if(this.yindao >= 5)
         {
             var now = new Date().getTime();
             var time = storage.getLixianTime();
@@ -1042,37 +1056,9 @@ cc.Class({
         cc.find("top/buttons/shop/red",this.node_main).active = showShop;
     },
 
-    updateYindao: function()
+    updateYindao: function(yindao)
     {
-        if(this.yindao<6)
-        {
-            this.yindao += 1;
-            storage.setYinDao(this.yindao);
-
-            storage.uploadYinDao();
-
-            var node = this.node.getChildByName("ui_yindao");
-            if(node)
-            {
-                node.active = true;
-                if(node.zIndex != 999) node.zIndex = 999;
-                node.getComponent("yindao").updateYindao();
-            }
-
-            if(this.yindao>=6) this.scroll.vertical = true;
-        }
-    },
-
-    hideYindao: function()
-    {
-        if(this.yindao<6)
-        {
-            var node = this.node.getChildByName("ui_yindao");
-            if(node)
-            {
-                node.active = false;
-            }
-        }
+        res.openUI("yindao",null,yindao);
     },
 
     destoryYindao: function()
@@ -1196,11 +1182,11 @@ cc.Class({
         var num2 = num;
         var val = this.getSecVal();
         thief.on('click', function (button) {
-            if(self.yindao == 8)
+            if(self.yindao == 9)
             {
                 if(num2 == num)
                     self.destoryYindao();
-                self.yindao = 9;
+                self.yindao = 10;
             }
 
             if(num2 == num)
@@ -1256,12 +1242,12 @@ cc.Class({
 
             //alarm.destroy();
 
-            if(self.yindao == 7)
+            if(self.yindao == 8)
             {
                 self.destoryYindao();
 
                 self.scheduleOnce(function(){
-                    res.openUI("yindao",null,8);
+                    res.openUI("yindao",null,9);
                 },1);
             }
 
@@ -1271,10 +1257,10 @@ cc.Class({
         alarm.runAction(cc.sequence(
             cc.delayTime(15),
             cc.callFunc(function(){
-                if(self.yindao == 7)
+                if(self.yindao == 8)
                 {
                     self.scheduleOnce(function(){
-                        res.openUI("yindao",null,8);
+                        res.openUI("yindao",null,9);
                     },1);
                 }
                 cc.storage.playMusic(cc.res.audio_music);
@@ -1320,7 +1306,7 @@ cc.Class({
     click: function(event,data)
     {
         var self = this;
-        if(this.yindao < 6)
+        if(this.yindao < 5)
         {
             if(data == "carhup")
             {
@@ -1432,6 +1418,10 @@ cc.Class({
         {
             res.openUI("garglewool");
         }
+        else if(data == "kefu")
+        {
+            sdk.openKefu();
+        }
         storage.playSound(res.audio_button);
         cc.log(data);
     },
@@ -1449,10 +1439,10 @@ cc.Class({
             //
             //}
 
-            var node = cc.res.playPlistAnim3(cc.res["TouchParti.plist"],0.04,1,null,true);
-            node.position = pos.sub(cc.v2(s.width/2, s.height/2));
-            node.scale = 2;
-            this.node.addChild(node);
+            //var node = cc.res.playPlistAnim3(cc.res["TouchParti.plist"],0.04,1,null,true);
+            //node.position = pos.sub(cc.v2(s.width/2, s.height/2));
+            //node.scale = 2;
+            //this.node.addChild(node);
 
         }, this);
         //this.scrollContent.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
@@ -1460,10 +1450,10 @@ cc.Class({
         //}, this);
         this.scrollContent.on(cc.Node.EventType.TOUCH_END, function (event) {
             var pos = event.getLocation();
-            if(pos.sub(this.lastTouchPos).mag()<20)
-            {
-                this.touchBox(pos.sub(cc.v2(s.width/2,s.height/2)));
-            }
+            //if(pos.sub(this.lastTouchPos).mag()<20)
+            //{
+            //    this.touchBox(pos.sub(cc.v2(s.width/2,s.height/2)));
+            //}
         }, this);
     },
 

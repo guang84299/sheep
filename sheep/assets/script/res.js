@@ -14,6 +14,7 @@ module.exports = {
     audio_sheep:"audio/sheep",
     audio_alarm:"audio/alarm",
     audio_choujiang:"audio/choujiang",
+    audio_coin:"audio/coin",
 
 
     initPools: function()
@@ -337,12 +338,30 @@ module.exports = {
 
     showCoinAni: function()
     {
-        var toast = cc.instantiate(this["prefab_anim_coinani"]);
-        cc.find("Canvas").addChild(toast,10000);
+        //var toast = cc.instantiate(this["prefab_anim_coinani"]);
+        //cc.find("Canvas").addChild(toast,10000);
+        //toast.runAction(cc.sequence(
+        //    cc.delayTime(1),
+        //    cc.removeSelf()
+        //));
+
+        //this.showCoinGetAni(cc.v2(0,0));
+    },
+
+    showCoinGetAni: function(pos,parent)
+    {
+        var toast = cc.instantiate(this["prefab_anim_coinget"]);
+        toast.position = cc.v2(200,pos.y-200);
+        if(!parent) parent = cc.find("Canvas");
+        parent.addChild(toast,10000);
         toast.runAction(cc.sequence(
+            cc.moveTo(1.5,pos).easing(cc.easeSineOut()),
             cc.delayTime(1),
             cc.removeSelf()
         ));
+
+        cc.storage.playSound(this.audio_coin);
+        //console.log("---1---",pos);
     },
 
     showHand: function(parent,num)

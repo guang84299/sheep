@@ -125,7 +125,8 @@ cc.Class({
                 storage.uploadCarVLv();
                 this.updateUI();
                 this.game.carvup();
-                this.game.updateYindao();
+
+                this.isUpLevel = true;
             }
             else
             {
@@ -156,7 +157,7 @@ cc.Class({
             ));
 
 
-        if(this.game.yindao == 3)
+        if(this.game.yindao == 2)
         {
             this.node.opacity = 0;
             this.lvup(10);
@@ -169,6 +170,8 @@ cc.Class({
                     self.bg.y -= dis;
             });
         }
+
+
 
         //storage.playSound(res.audio_win);
     },
@@ -186,14 +189,19 @@ cc.Class({
             ));
 
 
-        if(this.game.yindao == 3)
+        if(this.game.yindao == 2)
         {
-            this.game.updateYindao();
+            this.game.updateYindao(3);
             this.node.destroy();
         }
         else
         {
             cc.sdk.hideBanner();
+        }
+
+        if(this.isUpLevel)
+        {
+            this.game.carvupAni();
         }
     },
 

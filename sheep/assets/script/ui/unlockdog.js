@@ -143,7 +143,7 @@ cc.Class({
 
 
 
-        if(this.game.yindao == 2)
+        if(this.game.yindao == 6)
         {
             this.node.opacity = 0;
             this.lingqu();
@@ -181,9 +181,9 @@ cc.Class({
             ));
 
 
-        if(this.game.yindao == 2)
+        if(this.game.yindao == 6)
         {
-            this.game.updateYindao();
+            this.game.updateYindao(7);
             this.node.destroy();
         }
         else

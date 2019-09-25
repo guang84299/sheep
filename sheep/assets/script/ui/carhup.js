@@ -134,7 +134,8 @@ cc.Class({
                 storage.uploadCarHLv();
                 this.updateUI();
                 this.game.carhup();
-                this.game.updateYindao();
+
+                this.isUpLevel = true;
             }
             else
             {
@@ -164,7 +165,7 @@ cc.Class({
                 //})
             ));
 
-        if(this.game.yindao == 4)
+        if(this.game.yindao == 3)
         {
             this.node.opacity = 0;
             this.lvup(10);
@@ -194,14 +195,19 @@ cc.Class({
             ));
 
 
-        if(this.game.yindao == 4)
+        if(this.game.yindao == 3)
         {
-            this.game.updateYindao();
+            this.game.updateYindao(4);
             this.node.destroy();
         }
         else
         {
             cc.sdk.hideBanner();
+        }
+
+        if(this.isUpLevel)
+        {
+            this.game.carhupAni();
         }
     },
 

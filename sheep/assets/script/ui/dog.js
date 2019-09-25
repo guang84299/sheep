@@ -311,6 +311,10 @@ cc.Class({
         });
         cc.qianqista.event("牧羊犬_打开");
 
+        if(this.game.yindao == 10)
+        {
+            this.game.destoryYindao();
+        }
     },
 
     hide: function()

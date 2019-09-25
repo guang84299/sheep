@@ -573,6 +573,14 @@ module.exports = {
             this.clubBtn.hide()
     },
 
+    openKefu: function()
+    {
+        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        {
+            wx.openCustomerServiceConversation({});
+        }
+    },
+
     getNicks: function()
     {
         return ["惜爱","符号","GA","Wu","Vincent","刚","世界","Mr","Dick","陈俊士","虾仁","袁伟","misty","逆水寒"];

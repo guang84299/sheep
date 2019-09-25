@@ -17,81 +17,70 @@ cc.Class({
     {
         this.bg = cc.find("bg",this.node);
 
-        //this.title = cc.find("title",this.bg).getComponent(cc.Label);
+        this.title = cc.find("biaoti/titlebg/num",this.bg).getComponent(cc.Label);
         //this.yang = cc.find("box/yang",this.bg).getComponent(cc.Label);
         //this.dao = cc.find("box/dao",this.bg).getComponent(cc.Label);
-        this.yangIcon = cc.find("box/yangIcon",this.bg);
-        this.daoIcon = cc.find("box/daoIcon",this.bg);
-        this.awards = cc.find("box/awards",this.bg).children;
-        this.btn_lingqu2 = cc.find("btns/lingqu2",this.bg).getComponent(cc.Button);
+        this.yangIcon = cc.find("box7/yangIcon",this.bg);
+        this.daoIcon = cc.find("box7/daoIcon",this.bg);
 
-        this.btn_lingqu2.mcolor = this.btn_lingqu2.node.color;
+        var boxIndex = this.index;
+        if(boxIndex<2) boxIndex = 2;
+        if(boxIndex>7) boxIndex = 7;
 
+        this.box = cc.find("box"+boxIndex,this.bg);
+        this.box.active = true;
     },
 
     updateUI: function()
     {
-        //this.title.string = "恭喜解锁牧场"+this.index;
+        this.title.string = this.index;
         //this.yang.string = "牧场"+this.index+"可培育新羊";
         //this.dao.string = "牧场"+this.index+"可研发新刀";
 
+        var awardLabel = null;
         var data = cc.res.conf_compose[this.index-1];
-        var sheepConf = cc.config.sheepAnim[parseInt(data.newSheep)];
-        if(this.index == 1)
+        if(this.index>=7)
         {
-            this.btn_lingqu2.node.active = false;
-            res.setSpriteFrame("images/sheepIcon/sheepIcon1",this.yangIcon);
+            var sheepConf = cc.config.sheepAnim[parseInt(data.newSheep)];
+            res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,this.yangIcon);
+
+            var sp = this.daoIcon.getComponent("sp.Skeleton");
+            sp.setSkin("ani_"+data.newKnife);
         }
         else
-            res.setSpriteFrame("images/sheepIcon/sheepIcon"+sheepConf.lv,this.yangIcon);
+         awardLabel = cc.find("ditu/award",this.box).getComponent(cc.Label);
 
         //var sp = cc.res["sheep_buoy.plist"].getSpriteFrame("buoyIcon"+data.newKnife+"_1");
         //this.daoIcon.getComponent(cc.Sprite).spriteFrame = sp;
 
-        var sp = this.daoIcon.getComponent("sp.Skeleton");
-        sp.setSkin("ani_"+data.newKnife);
-
-
         var now = new Date().getTime();
 
-        for(var i=0;i<this.awards.length;i++)
+        for(var i=0;i<6;i++)
         {
-            var item = this.awards[i];
             var num = parseInt(data["reward"+(i+1)]);
             if(num>0)
             {
-                if(i == 0 || i == 5)
-                    item.active = true;
-                var icon = cc.find("icon",item);
-                var award = cc.find("award",item).getComponent(cc.Label);
                 var cailiaoId = 0;
                 if(i==1)
                 {
-                    award.string = "新羊毛*"+num;
                     cailiaoId = parseInt(data.wool);
-                    cc.res.setSpriteFrameAtlas("images/main","car_mao"+(parseInt(data.woolImage)+1),icon);
                 }
                 else if(i==2)
                 {
-                    award.string = "新饲料*"+num;
                     cailiaoId = parseInt(data.feed);
-                    cc.res.setSpriteFrame("images/cailiao/sl/"+data.feedImage,icon);
                 }
                 else if(i==3)
                 {
-                    award.string = "新矿石*"+num;
                     cailiaoId = parseInt(data.ore);
-                    cc.res.setSpriteFrame("images/cailiao/ks/"+data.oreImage,icon);
                 }
                 else if(i==4)
                 {
-                    award.string = "新图纸*"+num;
                     cailiaoId = parseInt(data.chart);
-                    cc.res.setSpriteFrame("images/cailiao/tz/"+data.chartImage,icon);
                 }
                 else if(i==5)
                 {
-                    award.string = "金币*"+storage.castNum(num);
+                    if(awardLabel)
+                        awardLabel.string = parseInt(num);
                 }
                 if(i>0 && i<5)
                 {
@@ -110,10 +99,7 @@ cc.Class({
                     }
                 }
             }
-            else
-            {
-                item.active = false;
-            }
+
         }
     },
 
@@ -143,7 +129,6 @@ cc.Class({
         if(this.game.yindao == 1)
         {
             this.node.opacity = 0;
-            this.game.hideYindao();
             this.hide();
         }
         else
@@ -180,14 +165,20 @@ cc.Class({
             ));
 
 
-
         if(this.game.yindao == 1)
         {
-            this.game.updateYindao();
+            this.game.updateYindao(2);
         }
-        else
+        else if(this.game.yindao == 5)
         {
-
+            if(!this.isClickLvup)
+            {
+                this.game.updateYindao(6);
+            }
+            else
+            {
+                this.game.needYindaodoglock = true;
+            }
         }
 
         if(this.index>2)
@@ -197,8 +188,8 @@ cc.Class({
         {
             this.game.openXiaotou(3);
             this.game.scheduleOnce(function(){
-                res.openUI("yindao",null,7);
-            },0.5);
+                res.openUI("yindao",null,8);
+            },0.2);
 
         }
         else
@@ -207,8 +198,41 @@ cc.Class({
                 this.game.needYindaoxiaotou = true;
         }
 
+        if(this.index == 4 && !this.isClickLvup)
+        {
+            res.openUI("yindao",null,10);
+        }
+        else
+        {
+            if(this.index == 4)
+                this.game.needYindaodog = true;
+        }
+
+        if(this.index == 5 && !this.isClickLvup)
+        {
+            res.openUI("yindao",null,11);
+        }
+        else
+        {
+            if(this.index == 5)
+                this.game.needYindaotanxian = true;
+        }
+
+        if(this.index == 6 && !this.isClickLvup)
+        {
+            res.openUI("yindao",null,12);
+        }
+        else
+        {
+            if(this.index == 6)
+                this.game.needYindaogarglewool = true;
+        }
+
         if(this.index<=4)
+        {
             cc.sdk.hideBanner();
+        }
+
     },
 
     click: function(event,data)

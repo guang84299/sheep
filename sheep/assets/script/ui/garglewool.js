@@ -382,6 +382,11 @@ cc.Class({
         this.node.active = true;
 
         cc.qianqista.event("薅羊毛_打开");
+
+        if(this.game.yindao == 12)
+        {
+            this.game.destoryYindao();
+        }
     },
 
     hide: function()

@@ -163,6 +163,11 @@ cc.Class({
         }
 
         cc.qianqista.event("探险主界面_打开");
+
+        if(this.game.yindao == 11)
+        {
+            this.game.destoryYindao();
+        }
     },
 
     hide: function()

@@ -288,6 +288,29 @@ cc.Class({
 
     },
 
+    lvupAni: function()
+    {
+        for(var i=0;i<this.cars.length;i++)
+        {
+            var car = this.cars[i];
+
+            var anim = new cc.Node();
+            anim.addComponent(cc.Sprite);
+            anim.x = -8;
+            car.addChild(anim);
+
+            cc.res.setSpriteFrame("images/box/CarEfc1",anim);
+
+            anim.runAction(cc.sequence(
+                cc.repeat(cc.sequence(
+                    cc.fadeOut(0.2),
+                    cc.fadeIn(0.2)
+                ),10),
+                cc.removeSelf()
+            ));
+        }
+    },
+
     getCost: function(lv,index)
     {
         var cost = 0;

@@ -22,6 +22,7 @@ cc.Class({
     {
         this.game = cc.find("Canvas").getComponent("main");
         this.index = index;
+
         this.lv = cc.storage.getLevel(index);
         this.coin = cc.storage.getLevelCoin(index);
         this.dog = cc.storage.getLevelDog(index);
@@ -45,6 +46,10 @@ cc.Class({
         this.isUnLock = false;
         this.upDt = 0;
         this.saveDt = 0;
+
+        this.sheeps = [];
+        this.buoys = [];
+
         var lock = cc.storage.getLock();
         if(index<=lock)
         {
@@ -78,6 +83,8 @@ cc.Class({
         }
 
         this.initDog();
+
+
     },
 
     initUnlock: function(lock)
@@ -92,7 +99,7 @@ cc.Class({
         this.index_label.string = this.index;
     },
 
-    initSheep: function()
+    initSheep: function(isAni)
     {
         this.isUnLock = true;
         var box = cc.find("box",this.node);
@@ -101,21 +108,22 @@ cc.Class({
         cc.find("lock2",box).active = false;
 
         this.sheeps = [];
-        for(var i=0;i<6;i++)
-        {
-            for(var j=0;j<6;j++)
-            {
-                var sheep = cc.instantiate(cc.res["prefab_sheep"]);
-                sheep.x = (i-3)*60 + 30;
-                sheep.y = -50*j -40;
-                //sheep.zIndex = 2;
-                box.addChild(sheep);
-
-                if(Math.random()>0.5) sheep.scaleX = -1;
-
-                this.sheeps.push(sheep);
-            }
-        }
+        this.addSheep(isAni);
+        //for(var i=0;i<6;i++)
+        //{
+        //    for(var j=0;j<6;j++)
+        //    {
+        //        var sheep = cc.instantiate(cc.res["prefab_sheep"]);
+        //        sheep.x = (i-3)*60 + 30;
+        //        sheep.y = -50*j -40;
+        //        //sheep.zIndex = 2;
+        //        box.addChild(sheep);
+        //
+        //        if(Math.random()>0.5) sheep.scaleX = -1;
+        //
+        //        this.sheeps.push(sheep);
+        //    }
+        //}
 
         this.buoys = [];
         for(var i=0;i<this.conf.buoyNum;i++)
@@ -123,7 +131,7 @@ cc.Class({
             var buoy = cc.instantiate(cc.res["prefab_buoy"]);
             buoy.x =  (i-4)*70 + 30;
             buoy.y = -50 - 200*(i%2);
-            //buoy.zIndex = 1;
+            buoy.zIndex = 1;
             buoy.getComponent("buoy").initType(this,i+1);
             box.addChild(buoy);
 
@@ -139,6 +147,58 @@ cc.Class({
         this.coinnum.string = cc.storage.castNum(this.coin);
 
         this.proMao();
+    },
+
+    addSheep: function(isAni)
+    {
+        var num = Number(cc.res.conf_sheep[this.lv-1]["ranch"+this.index]);
+        if(this.sheeps.length<num)
+        {
+            var p = cc.config.sheepPos[this.sheeps.length];
+            p = cc.v2((p.x-4)*60 + 30,-50*(p.y-1) -40);
+
+            var box = cc.find("box",this.node);
+
+            var sheep = cc.instantiate(cc.res["prefab_sheep"]);
+            sheep.position = p;
+            sheep.scale = 3;
+            sheep.x += (Math.random()-0.5)*300;
+            sheep.y -= 200;
+            box.addChild(sheep);
+
+            var scaleX = 1;
+            if(Math.random()>0.5)
+            {
+                scaleX = -1;
+                sheep.scaleX = -3;
+            }
+
+            this.sheeps.push(sheep);
+
+            if(this.index>3 && !isAni)
+            {
+                sheep.position = p;
+                sheep.scaleX = scaleX;
+                sheep.scaleY = 1;
+                this.addSheep(isAni);
+            }
+            else
+            {
+                sheep.runAction(cc.spawn(
+                    cc.moveTo(0.5,p).easing(cc.easeSineInOut()),
+                    cc.scaleTo(0.5,scaleX,1).easing(cc.easeSineIn())
+                ));
+
+                var self = this;
+                sheep.runAction(cc.sequence(
+                    cc.delayTime(0.2),
+                    cc.callFunc(function(){
+                        self.addSheep(isAni);
+                    })
+                ));
+            }
+
+        }
     },
 
     proMao: function()
@@ -195,7 +255,7 @@ cc.Class({
             var buoy = cc.instantiate(cc.res["prefab_buoy"]);
             buoy.x =  (i-4)*70 + 30;
             buoy.y = -50 - 200*(i%2);
-            //buoy.zIndex = 1;
+            buoy.zIndex = 1;
             buoy.getComponent("buoy").initType(this,i+1);
             box.addChild(buoy);
 
@@ -269,7 +329,20 @@ cc.Class({
                 cc.storage.setLock(lock+1);
                 cc.storage.uploadLock();
 
-                this.initSheep();
+                if(this.index<=4)
+                {
+                    var compose = cc.res.conf_compose[this.index-1];
+                    cc.storage.setSheep(parseInt(compose.id),3);
+                    cc.storage.setBuoy(parseInt(compose.newKnife),3);
+
+                    cc.storage.uploadSheep(parseInt(compose.id));
+                    cc.storage.uploadBuoy(parseInt(compose.newKnife));
+
+                    this.useNewSheep();
+                    this.useNewBuoy();
+                }
+
+                this.initSheep(true);
                 this.game.updateUI();
                 if(lock+1>=3)
                 this.game.addBox();
@@ -609,7 +682,7 @@ cc.Class({
             var self = this;
             if(this.dog == 0)
             {
-                this.game.hideYindao();
+                //this.game.hideYindao();
                 cc.res.openUI("unlockdog",null,this.index);
             }
             else if(this.dog > 1)

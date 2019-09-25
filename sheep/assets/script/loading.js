@@ -77,6 +77,7 @@ cc.Class({
             "conf/cardText",
             "conf/compose",
             "conf/dogText",
+            "conf/sheep",
 
             "prefab/sheep",
             "prefab/buoy",
@@ -89,8 +90,8 @@ cc.Class({
             "images/sheep/sheep4",
             "images/sheep/sheep5",
             "images/sheep/sheep6",
+            "images/sheep/sheep7",
 
-            "anims/TouchParti",
             "anims/explosion",
 
             "prefab/ui/coinAni",
@@ -131,10 +132,11 @@ cc.Class({
             "prefab/ui/yindao",
 
 
-            "prefab/anim/coinani",
+            //"prefab/anim/coinani",
             "prefab/anim/alarm",
             "prefab/anim/thief",
             "prefab/anim/carspeedup",
+            "prefab/anim/coinget",
 
             //"prefab/particle/suijinbi",
             "scene/main"

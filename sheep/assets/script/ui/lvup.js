@@ -45,7 +45,7 @@ cc.Class({
         this.peiyangsuc = cc.find("peiyangsuc",this.node);
         this.peiyangsuc.active = false;
 
-        if(this.index == 1)
+        if(this.index < 5)
         {
             cc.find("toggles/toggle2",this.bg).active = false;
             cc.find("toggles/toggle3",this.bg).active = false;
@@ -216,6 +216,7 @@ cc.Class({
                 this.updateUI();
                 this.game.lvupBox(this.index);
 
+                this.isUpLevel = true;
                 if(!this.isPlaySheep)
                 {
                     this.isPlaySheep = true;
@@ -830,7 +831,7 @@ cc.Class({
             ));
 
 
-        if(this.game.yindao == 5)
+        if(this.game.yindao == 4)
         {
             this.node.opacity = 0;
             this.lvup(10);
@@ -860,9 +861,9 @@ cc.Class({
             ));
 
 
-        if(this.game.yindao == 5)
+        if(this.game.yindao == 4)
         {
-            this.game.updateYindao();
+            this.game.updateYindao(5);
             this.node.destroy();
         }
         else
@@ -870,14 +871,42 @@ cc.Class({
             cc.sdk.hideBanner();
         }
 
+        if(this.index == 2 && this.game.needYindaodoglock)
+        {
+            this.game.needYindaodoglock = false;
+            this.game.updateYindao(6);
+        }
+
         if(this.index == 3 && this.game.needYindaoxiaotou)
         {
             this.game.needYindaoxiaotou = false;
             this.game.openXiaotou(3);
             this.game.scheduleOnce(function(){
-                res.openUI("yindao",null,7);
-            },0.5);
+                res.openUI("yindao",null,8);
+            },0.2);
         }
+
+        if(this.index == 4 && this.game.needYindaodog)
+        {
+            this.game.needYindaodog = false;
+            res.openUI("yindao",null,10);
+        }
+
+        if(this.index == 5 && this.game.needYindaotanxian)
+        {
+            this.game.needYindaotanxian = false;
+            res.openUI("yindao",null,11);
+        }
+
+        if(this.index == 6 && this.game.needYindaogarglewool)
+        {
+            this.game.needYindaogarglewool = false;
+            res.openUI("yindao",null,12);
+        }
+
+        if(this.isUpLevel)
+            this.game.lvupBoxAni(this.index);
+
     },
 
     click: function(event,data)

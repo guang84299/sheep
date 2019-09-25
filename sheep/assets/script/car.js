@@ -42,6 +42,7 @@ cc.Class({
 
     back: function()
     {
+        this.isBack = true;
         var now = new Date().getTime();
         var carId = 0;
         for(var i=0;i<3;i++)
@@ -79,6 +80,7 @@ cc.Class({
 
     run: function()
     {
+        this.isBack = false;
         var now = new Date().getTime();
         var carId = 0;
         for(var i=0;i<3;i++)
@@ -258,6 +260,32 @@ cc.Class({
         this.lv = cc.storage.getCarVLv();
         this.conf = cc.res.conf_truckVic[this.lv-1];
         this.speed = 10/Number(this.conf.speed);
+    },
+
+    lvupAni: function()
+    {
+        var anim = new cc.Node();
+        anim.addComponent(cc.Sprite);
+        this.node.addChild(anim);
+
+        if(this.isBack)
+        {
+            anim.y = 10;
+            cc.res.setSpriteFrame("images/box/light4",anim);
+        }
+        else
+        {
+            anim.y = 4;
+            cc.res.setSpriteFrame("images/box/light3",anim);
+        }
+
+        anim.runAction(cc.sequence(
+            cc.repeat(cc.sequence(
+                cc.fadeOut(0.2),
+                cc.fadeIn(0.2)
+            ),10),
+            cc.removeSelf()
+        ));
     },
 
     update: function(dt)
