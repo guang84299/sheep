@@ -59,7 +59,7 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        cc.sdk.showBanner(20002);
 
         cc.qianqista.event("牧场提示_打开");
     },

@@ -88,7 +88,7 @@ cc.Class({
                 cc.scaleTo(0.2,1.1).easing(cc.easeSineOut()),
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
-        cc.sdk.showBanner();
+        cc.sdk.showBanner(20012);
 
         cc.qianqista.event("离线收益_打开");
     },
@@ -154,7 +154,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                });
+                },10012);
                 cc.qianqista.event("离线收益_视频领取");
             }
 

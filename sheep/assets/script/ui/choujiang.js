@@ -163,7 +163,7 @@ cc.Class({
             ));
 
         var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
+        cc.sdk.showBanner(20005,this.bg,function(dis){
             if(dis<0)
                 self.bg.y -= dis;
         });
@@ -444,7 +444,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                });
+                },10002);
             }
             cc.qianqista.event("抽奖_2倍领取");
         }
@@ -469,7 +469,7 @@ cc.Class({
                         storage.setChoujiangNum(2);
                         self.updateUI();
                     }
-                });
+                },10003);
 
             }
             cc.qianqista.event("抽奖_加次数");

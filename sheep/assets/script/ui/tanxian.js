@@ -152,7 +152,7 @@ cc.Class({
             ));
 
         var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
+        cc.sdk.showBanner(20022,this.bg,function(dis){
             if(dis<0)
                 self.bg.y -= dis;
         });
@@ -217,7 +217,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                });
+                },10026);
             }
 
         }

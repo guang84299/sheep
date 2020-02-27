@@ -364,7 +364,7 @@ cc.Class({
             ));
 
         var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
+        cc.sdk.showBanner(20018,this.bg,function(dis){
             if(dis<0)
                 self.bg.y -= dis;
         });
@@ -553,7 +553,7 @@ cc.Class({
                 {
                     self.video_dia();
                 }
-            });
+            },10021);
 
             cc.qianqista.event("商店_看视频获得钻石");
         }
@@ -574,7 +574,7 @@ cc.Class({
                 {
                     self.video_carv(event.target.tid);
                 }
-            });
+            },10022);
             cc.qianqista.event("商店_视频购买采集车");
         }
         else if(data == "buycarh")
@@ -589,7 +589,7 @@ cc.Class({
                 {
                     self.video_carh(event.target.tid);
                 }
-            });
+            },10023);
             cc.qianqista.event("商店_视频购买运输车");
         }
 

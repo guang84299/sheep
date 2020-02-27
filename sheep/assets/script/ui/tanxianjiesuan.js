@@ -131,7 +131,7 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
         var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
+        cc.sdk.showBanner(20024,this.bg,function(dis){
             if(dis<0)
                 self.bg.y -= dis;
         });
@@ -179,7 +179,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                });
+                },10028);
             }
 
         }

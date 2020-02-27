@@ -689,7 +689,7 @@ cc.Class({
             {
                 cc.sdk.showVedio(function(r){
                     if(r) self.unlockdog();
-                });
+                },10001);
             }
         }
         else if(data == "dog")

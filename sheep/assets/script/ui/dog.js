@@ -305,7 +305,7 @@ cc.Class({
             ));
 
         var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
+        cc.sdk.showBanner(20006,this.bg,function(dis){
             if(dis<0)
                 self.bg.y -= dis;
         });
@@ -735,7 +735,7 @@ cc.Class({
                 {
                     self.buy4();
                 }
-            });
+            },10004);
 
             cc.qianqista.event("牧羊犬_购买4");
         }
@@ -764,7 +764,7 @@ cc.Class({
                 {
                     self.jiesuo(4);
                 }
-            });
+            },10005);
         }
         else if(data == "jiesuo5")
         {
@@ -773,7 +773,7 @@ cc.Class({
                 {
                     self.jiesuo(5);
                 }
-            });
+            },10006);
         }
         else if(data == "use")
         {

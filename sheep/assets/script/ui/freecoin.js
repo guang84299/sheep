@@ -82,7 +82,7 @@ cc.Class({
                 cc.scaleTo(0.2,1).easing(cc.easeSineOut())
             ));
         var self = this;
-        cc.sdk.showBanner(this.bg,function(dis){
+        cc.sdk.showBanner(20007,this.bg,function(dis){
             if(dis<0)
                 self.bg.y -= dis;
         });
@@ -131,7 +131,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                });
+                },10007);
 
                 cc.qianqista.event("免费金币_视频领取");
             }

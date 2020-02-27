@@ -173,7 +173,7 @@ cc.Class({
         }
         else
         {
-            cc.sdk.showBanner(this.bg,function(dis){
+            cc.sdk.showBanner(20003,this.bg,function(dis){
                 if(dis<0)
                     self.bg.y -= dis;
             });

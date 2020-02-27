@@ -438,7 +438,7 @@ cc.Class({
                     {
                         self.addtili(true);
                     }
-                });
+                },10009);
 
                 cc.qianqista.event("薅羊毛_视频加体力");
             }
@@ -465,7 +465,7 @@ cc.Class({
                     {
                         self.addhudun(true);
                     }
-                });
+                },10010);
 
                 cc.qianqista.event("薅羊毛_视频加护盾");
             }

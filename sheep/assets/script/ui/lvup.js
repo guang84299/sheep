@@ -647,7 +647,7 @@ cc.Class({
                     self.sheepPeiyuState = 2;
                     //self.openpeiyangsuc(true);
                 }
-            });
+            },10013);
         }
         else if(this.sheepPeiyuState == 2)
         {
@@ -702,7 +702,7 @@ cc.Class({
                     self.buoyPeiyuState = 2;
                     //self.openpeiyangsuc();
                 }
-            });
+            },10014);
         }
         else if(this.buoyPeiyuState == 2)
         {
@@ -749,7 +749,7 @@ cc.Class({
                 storage.setCailiao(2,parseInt(data.feed),parseInt(data.feedCost));
                 self.updatePage2();
             }
-        });
+        },10015);
 
     },
 
@@ -764,7 +764,7 @@ cc.Class({
                 storage.setCailiao(4,parseInt(data.chart),parseInt(data.chartCost));
                 self.updatePage3();
             }
-        });
+        },10016);
 
     },
 
@@ -778,7 +778,7 @@ cc.Class({
                 storage.setCailiao(2,parseInt(data.feed),parseInt(data.feedCost));
                 self.updatePage2();
             }
-        });
+        },10017);
 
     },
 
@@ -792,7 +792,7 @@ cc.Class({
                 storage.setCailiao(4,parseInt(data.chart),parseInt(data.chartCost));
                 self.updatePage3();
             }
-        });
+        },10018);
 
     },
 
@@ -840,7 +840,7 @@ cc.Class({
         else
         {
             var self = this;
-            cc.sdk.showBanner(this.bg,function(dis){
+            cc.sdk.showBanner(20013,this.bg,function(dis){
                 if(dis<0)
                     self.bg.y -= dis;
             });
@@ -983,7 +983,7 @@ cc.Class({
                     {
                         self.lingqu(true);
                     }
-                });
+                },10019);
             }
         }
         storage.playSound(res.audio_button);

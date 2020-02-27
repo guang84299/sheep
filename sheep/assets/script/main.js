@@ -718,41 +718,41 @@ cc.Class({
         }
 
         //更新addmini 1022
-        var btn_addmini = cc.find("top/buttons/btn_addmini",this.node_main);
-        if(cc.GAME.addmini == 1)
-        {
-            btn_addmini.active = false;
-        }
-        else
-        {
-            btn_addmini.active = true;
-            var isadd = false;
-            if(scene)
-            {
-                if(scene == 1022 || scene == 1089 || scene == 1131) isadd = true;
-            }
-            else
-            {
-                if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
-                {
-                    var opts = wx.getLaunchOptionsSync();
-                    if (opts)
-                    {
-                        if(opts.scene == 1022 || opts.scene == 1089 || scene == 1131)
-                            isadd = true;
-                    }
-                }
-            }
+        // var btn_addmini = cc.find("top/buttons/btn_addmini",this.node_main);
+        // if(cc.GAME.addmini == 1)
+        // {
+        //     btn_addmini.active = false;
+        // }
+        // else
+        // {
+        //     btn_addmini.active = true;
+        //     var isadd = false;
+        //     if(scene)
+        //     {
+        //         if(scene == 1022 || scene == 1089 || scene == 1131) isadd = true;
+        //     }
+        //     else
+        //     {
+        //         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        //         {
+        //             var opts = wx.getLaunchOptionsSync();
+        //             if (opts)
+        //             {
+        //                 if(opts.scene == 1022 || opts.scene == 1089 || scene == 1131)
+        //                     isadd = true;
+        //             }
+        //         }
+        //     }
 
-            if(isadd)
-            {
-                btn_addmini.active = false;
-                cc.GAME.addmini = 1;
-                this.addDiamond(30);
-                storage.uploadAddmini();
-                cc.res.showToast("添加到小程序成功！钻石+30");
-            }
-        }
+        //     if(isadd)
+        //     {
+        //         btn_addmini.active = false;
+        //         cc.GAME.addmini = 1;
+        //         this.addDiamond(30);
+        //         storage.uploadAddmini();
+        //         cc.res.showToast("添加到小程序成功！钻石+30");
+        //     }
+        // }
     },
 
     updateDogcardShouyi: function()

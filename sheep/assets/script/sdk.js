@@ -25,22 +25,24 @@ module.exports = {
 
     vibrate: function(isLong)
     {
-        if(storage.getVibrate() == 1 && (cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS))
+        if(storage.getVibrate() == 1)
         {
-            if(isLong)
+            if(window["wx"])
             {
-                wx.vibrateLong({});
+                if(isLong)wx.vibrateLong({});
+                else wx.vibrateShort({});
             }
             else
             {
-                wx.vibrateShort({});
+                if(isLong) $SF.Ga.startVib (100);
+                else $SF.Ga.startVib (1000);
             }
         }
     },
 
     keepScreenOn: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             wx.setKeepScreenOn({
                 keepScreenOn: true
@@ -50,7 +52,7 @@ module.exports = {
 
     uploadScore: function(score,callback)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             wx.postMessage({ message: "updateScore",score:Math.floor(score) });
             if(callback)
@@ -65,14 +67,14 @@ module.exports = {
 
     openRank: function(worldrank)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             wx.postMessage({ message: "friendRank",worldrank:worldrank });
         }
     },
     closeRank: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             wx.postMessage({ message: "closeRank" });
         }
@@ -80,14 +82,14 @@ module.exports = {
 
     openFuhuoRank: function(score)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             //wx.postMessage({ message: "fuhuoRank",score:Math.floor(score) });
         }
     },
     closeFuhuoRank: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             //wx.postMessage({ message: "closeFuhuo" });
         }
@@ -95,7 +97,7 @@ module.exports = {
 
     getRankList: function(callback)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(callback)
                 callback(null);
@@ -110,7 +112,7 @@ module.exports = {
     getChaoyueRank: function(callback,score)
     {
         var self = this;
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(callback)
                 callback(null);
@@ -125,7 +127,7 @@ module.exports = {
     videoLoad: function()
     {
         var self = this;
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'adunit-f3f018f8225dd66b'});
             this.rewardedVideoAd.onLoad(function(){
@@ -175,11 +177,11 @@ module.exports = {
         this.bannerTime = 0;
     },
 
-    showVedio: function(callback)
+    showVedio: function(callback,postId)
     {
         var self = this;
         this.videocallback = callback;
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             cc.GAME.hasVideo = false;
             this.rewardedVideoAd.show().catch(function(err){
@@ -199,15 +201,33 @@ module.exports = {
         }
         else
         {
-            if(callback)
-                callback(true);
+            cc.GAME.hasVideo = true;
+            cc.res.openUI("vedio");
+            $SF.Ga.playRewardVideo(postId, function(r){
+                if(r == 2)
+                {
+                    if(callback)
+                        callback(true);
+                }
+                else
+                {
+                    if(callback)
+                        callback(false);
+                    cc.res.showToast("视频准备中...请稍后再试");
+                }
+
+                var comp  = cc.find("Canvas").getComponent("main");
+                comp.scheduleOnce(function(){
+                    cc.res.closeUI("vedio");
+                },0.2);
+            },false);
         }
     },
 
-    showBanner: function(node,callback,isHide)
+    showBanner: function(postId,node,callback,isHide)
     {
 
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(this.bannerAd)
             {
@@ -276,11 +296,15 @@ module.exports = {
 
             this.bannerTime = new Date().getTime();
         }
+        else
+        {
+            $SF.Ga.showBa(postId, false, function(r){});
+        }
     },
 
     hideBanner: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(this.bannerAd)
             {
@@ -289,11 +313,15 @@ module.exports = {
             }
 
         }
+        else
+        {
+            $SF.Ga.hideBa();
+        }
     },
 
     getBannerDis: function(node)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(this.bannerAd && node && this.bannerAd.res)
             {
@@ -309,7 +337,7 @@ module.exports = {
 
     moveBanner: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(this.bannerAd && this.bannerAd.res)
             {
@@ -321,7 +349,7 @@ module.exports = {
 
     showSpot: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if (this.interstitialAd)
             {
@@ -334,7 +362,7 @@ module.exports = {
 
     share: function(callback,channel)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             var query = "fromid="+cc.qianqista.openid+"&channel="+channel;
             var title = "我一夜暴富的秘诀竟然是招聘了一群绵羊员工。。。";
@@ -382,7 +410,7 @@ module.exports = {
 
     skipGame: function(gameId,url)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(gameId)
             {
@@ -408,7 +436,7 @@ module.exports = {
 
     shortcut: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             //var extendInfo = "shortcut";//扩展字段
             //BK.QQ.createShortCut(extendInfo)
@@ -417,7 +445,7 @@ module.exports = {
 
     getUserInfo: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             wx.getSetting({
                 success: function (res) {
@@ -479,7 +507,7 @@ module.exports = {
 
     judgePower: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             return cc.qianqista.power == 1 ? true : false;
         }
@@ -488,7 +516,7 @@ module.exports = {
 
     openSetting: function(callback)
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             //cc.sdk.main.openQuanXian();
             //var quan = self.node_quanxian.quan;
@@ -542,7 +570,7 @@ module.exports = {
 
     showClub: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             if(!this.clubBtn)
             {
@@ -575,7 +603,7 @@ module.exports = {
 
     openKefu: function()
     {
-        if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        if(window["wx"])
         {
             wx.openCustomerServiceConversation({});
         }
