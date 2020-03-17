@@ -18,7 +18,10 @@ cc.Class({
     onLoad: function() {
         cc.ginvitelist = [];
         cc.myscene = "main";
-
+        if(cc.winSize.width>cc.winSize.height)
+        {
+            this.node.getComponent(cc.Canvas).fitHeight = true;
+        }
         storage.playMusic(res.audio_music);
 
         //this.initPhysics();

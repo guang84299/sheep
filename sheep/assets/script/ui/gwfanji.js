@@ -113,6 +113,7 @@ cc.Class({
 
 
         this.node.sc = this;
+        this.node.zIndex = 10001;
         this.upDt = 0;
         this.dtime = 15;
         this.proDt = 0;

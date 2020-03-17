@@ -125,6 +125,7 @@ cc.Class({
         this.data = data;
         this.game = cc.find("Canvas").getComponent("main");
         this.node.sc = this;
+        this.node.zIndex = 10001;
         this.upDt = 0;
         this.dtime = 15;
         this.proDt = 0;

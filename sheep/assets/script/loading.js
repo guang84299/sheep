@@ -51,7 +51,10 @@ cc.Class({
 
 
     onLoad: function() {
-
+        if(cc.winSize.width>cc.winSize.height)
+        {
+            this.node.getComponent(cc.Canvas).fitHeight = true;
+        }
         //cc.sys.os = "web";
         this.resource = null;
         res.initPools();
@@ -189,6 +192,8 @@ cc.Class({
             storage.setGwtili(5);
             storage.setGwhudun(3);
         }
+
+        
     },
 
     loadres: function()

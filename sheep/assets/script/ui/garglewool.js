@@ -376,6 +376,7 @@ cc.Class({
 
         this.game = cc.find("Canvas").getComponent("main");
         this.node.sc = this;
+        this.node.zIndex = 10001;
         this.initUI();
         this.updateUI();
 

@@ -174,6 +174,10 @@ cc.Class({
 
     hide: function()
     {
+        if(this.btn_vedio_lingqu.node.active || this.btn_lingqu.node.active)
+        {
+            this.lingqu();
+        }
         this.game.updateRed();
         //this.main.wxQuanState(true);
         var self = this;
