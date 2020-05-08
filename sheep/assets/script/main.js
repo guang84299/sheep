@@ -718,41 +718,41 @@ cc.Class({
         }
 
         //更新addmini 1022
-        var btn_addmini = cc.find("top/buttons/btn_addmini",this.node_main);
-        if(cc.GAME.addmini == 1)
-        {
-            btn_addmini.active = false;
-        }
-        else
-        {
-            btn_addmini.active = true;
-            var isadd = false;
-            if(scene)
-            {
-                if(scene == 1022 || scene == 1089 || scene == 1131) isadd = true;
-            }
-            else
-            {
-                if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
-                {
-                    var opts = wx.getLaunchOptionsSync();
-                    if (opts)
-                    {
-                        if(opts.scene == 1022 || opts.scene == 1089 || scene == 1131)
-                            isadd = true;
-                    }
-                }
-            }
+        // var btn_addmini = cc.find("top/buttons/btn_addmini",this.node_main);
+        // if(cc.GAME.addmini == 1)
+        // {
+        //     btn_addmini.active = false;
+        // }
+        // else
+        // {
+        //     btn_addmini.active = true;
+        //     var isadd = false;
+        //     if(scene)
+        //     {
+        //         if(scene == 1022 || scene == 1089 || scene == 1131) isadd = true;
+        //     }
+        //     else
+        //     {
+        //         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
+        //         {
+        //             var opts = wx.getLaunchOptionsSync();
+        //             if (opts)
+        //             {
+        //                 if(opts.scene == 1022 || opts.scene == 1089 || scene == 1131)
+        //                     isadd = true;
+        //             }
+        //         }
+        //     }
 
-            if(isadd)
-            {
-                btn_addmini.active = false;
-                cc.GAME.addmini = 1;
-                this.addDiamond(30);
-                storage.uploadAddmini();
-                cc.res.showToast("添加到小程序成功！钻石+30");
-            }
-        }
+        //     if(isadd)
+        //     {
+        //         btn_addmini.active = false;
+        //         cc.GAME.addmini = 1;
+        //         this.addDiamond(30);
+        //         storage.uploadAddmini();
+        //         cc.res.showToast("添加到小程序成功！钻石+30");
+        //     }
+        // }
     },
 
     updateDogcardShouyi: function()
@@ -963,42 +963,42 @@ cc.Class({
     updateRed: function()
     {
         //排行
-        var maxRank = storage.getMaxRank();
-        var showRank = false;
-        for(var i=0;i<res.conf_rankUp.length;i++)
-        {
-            var data = res.conf_rankUp[i];
-            if(!storage.isRankUp(data.id))
-            {
-                if(maxRank!=0 && maxRank<=parseInt(data.back))
-                {
-                    showRank = true;
-                }
-            }
-        }
-        if(!showRank)
-        {
-            var yesRank = storage.getYesRank();
+        // var maxRank = storage.getMaxRank();
+        // var showRank = false;
+        // for(var i=0;i<res.conf_rankUp.length;i++)
+        // {
+        //     var data = res.conf_rankUp[i];
+        //     if(!storage.isRankUp(data.id))
+        //     {
+        //         if(maxRank!=0 && maxRank<=parseInt(data.back))
+        //         {
+        //             showRank = true;
+        //         }
+        //     }
+        // }
+        // if(!showRank)
+        // {
+        //     var yesRank = storage.getYesRank();
 
-            var awardId = -1;
-            var yestime = storage.getYesRankTime();
-            var now = new Date().getTime();
-            if(yesRank != 0 && res.isRestTime(yestime,now))
-            {
-                for(var i=0;i<res.conf_rankAward.length;i++)
-                {
-                    var data = res.conf_rankAward[i];
-                    if(yesRank>=parseInt(data.front) &&
-                        yesRank<=parseInt(data.back) )
-                    {
-                        awardId = i;
-                        break;
-                    }
-                }
-            }
-            if(awardId != -1)
-                showRank = true;
-        }
+        //     var awardId = -1;
+        //     var yestime = storage.getYesRankTime();
+        //     var now = new Date().getTime();
+        //     if(yesRank != 0 && res.isRestTime(yestime,now))
+        //     {
+        //         for(var i=0;i<res.conf_rankAward.length;i++)
+        //         {
+        //             var data = res.conf_rankAward[i];
+        //             if(yesRank>=parseInt(data.front) &&
+        //                 yesRank<=parseInt(data.back) )
+        //             {
+        //                 awardId = i;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     if(awardId != -1)
+        //         showRank = true;
+        // }
 
         //转盘
         var showChoujiang = false;
@@ -1049,7 +1049,7 @@ cc.Class({
         if(freeDiaNum == 1) showShop = true;
 
 
-        cc.find("top/buttons/rank/red",this.node_main).active = showRank;
+        // cc.find("top/buttons/rank/red",this.node_main).active = showRank;
         cc.find("top/buttons/zhuanpan/red",this.node_main).active = showChoujiang;
         cc.find("top/buttons/qiandao/red",this.node_main).active = showQiandao;
         cc.find("top/buttons/tanxian/red",this.node_main).active = showTanxian;

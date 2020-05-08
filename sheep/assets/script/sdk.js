@@ -13,7 +13,7 @@ module.exports = {
             if(true) {
                 var bl = (cc.view.getFrameSize().width / cc.view.getFrameSize().height);
                 var bt = cc.view.getFrameSize().height/cc.view.getFrameSize().width;
-                if (bl == (1125/2436) || bl == (1080/2280) || bl == (720/1520) || bl == (1080/2340) || bt > 2.0) {
+                if (bl == (1125/2436) || bl == (1080/2280) || bl == (720/1520) || bl == (1080/2340) || bt >= 1.96) {
                     this.isIphoneX = true;
                 } else {
                     this.isIphoneX = false;

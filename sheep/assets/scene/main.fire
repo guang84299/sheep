@@ -159,7 +159,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 213.0422493309719
+      "z": 284.92235784508034
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -2070,7 +2070,7 @@
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 0,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
@@ -2717,7 +2717,7 @@
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 0,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
@@ -5707,7 +5707,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 579,
+      "width": 395,
       "height": 80
     },
     "_anchorPoint": {
@@ -5782,7 +5782,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -545,
+      "x": -361,
       "y": 0,
       "z": 0
     },
@@ -6049,7 +6049,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -468,
+      "x": -284,
       "y": 0,
       "z": 0
     },
@@ -6228,7 +6228,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -389,
+      "x": -205,
       "y": 0,
       "z": 0
     },
@@ -6499,7 +6499,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -302,
+      "x": -118,
       "y": 0,
       "z": 0
     },
@@ -6739,7 +6739,7 @@
         "__id__": 144
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 5,
     "_components": [
       {
@@ -6770,7 +6770,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -211,
+      "x": -112,
       "y": 0,
       "z": 0
     },
@@ -7216,7 +7216,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -132.5,
+      "x": -33.5,
       "y": 0,
       "z": 0
     },
@@ -7452,7 +7452,7 @@
       "__id__": 120
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 5,
     "_components": [
       {
@@ -7655,7 +7655,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 579,
+      "width": 395,
       "height": 80
     },
     "_resize": 1,
@@ -10982,7 +10982,7 @@
         "__id__": 244
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
