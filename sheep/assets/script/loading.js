@@ -56,6 +56,77 @@ cc.Class({
         this.resource = null;
         res.initPools();
 
+        var self = this;
+        qianqista.init("1109807778","gQiPpT20smZuvXk9","全民剪羊毛-QQ",function(){
+            var score = storage.getLevel();
+            sdk.uploadScore(score,self.initNet.bind(self));
+        });
+        sdk.getUserInfo();
+        sdk.videoLoad();
+        sdk.closeRank();
+        sdk.keepScreenOn();
+
+
+        this.loadNode.runAction(cc.repeatForever(cc.rotateBy(1,180)));
+
+
+        this.loadingAnim.setCompleteListener(function(){
+            self.scheduleOnce(function(){
+                self.loadingAnim.setAnimation(0,"animation",false);
+            },2);
+        });
+
+        this.isFirst = false;
+        if(storage.getFirst() == 0)
+        {
+            this.isFirst = true;
+            storage.setFirst(1);
+            storage.setMusic(1);
+            storage.setSound(1);
+            storage.setVibrate(1);
+            storage.setCoin(10000);
+            storage.setDogCardLv(1,1);
+
+            storage.setGwtili(5);
+            storage.setGwhudun(3);
+        }
+
+        if(window["wx"])
+            this.loadSubpackage();
+        else 
+            this.loadAllRes();
+    },
+
+    loadSubpackage(){
+        this.suburls = [
+            "images",
+            "anims",
+            "audio",
+            "conf"
+        ];
+        this.subCount = 0;
+        this.subTotalCount = this.suburls.length;
+        this.loadSubpackageItem();
+    },
+
+    loadSubpackageItem(){
+        var self = this;
+        cc.loader.downloader.loadSubpackage(this.suburls[this.subCount],function(r){
+            console.log("加载子包："+self.suburls[self.subCount],r);
+            self.subCount ++;
+            if(self.subCount>=self.subTotalCount)
+            {
+                self.loadAllRes();
+            }
+            else{
+                self.progressBar.progress = self.subCount/self.subTotalCount;
+                self.progressTips.string = "加载中 " + Math.floor(self.subCount/self.subTotalCount*100)+"%";
+                self.loadSubpackageItem();
+            }
+        });
+    },
+
+    loadAllRes(){
         this.purls = [
             //"audio/button",
             "conf/base",
@@ -150,41 +221,6 @@ cc.Class({
         this.nowtime = new Date().getTime();
         for(var i=0;i<3;i++)
             this.loadres();
-
-        var self = this;
-        qianqista.init("wx37d536c56e3e73f7","19d75155c485a20eefe6b18064a2ab53","全民剪羊毛",function(){
-            var score = storage.getLevel();
-            sdk.uploadScore(score,self.initNet.bind(self));
-        });
-        sdk.getUserInfo();
-        sdk.videoLoad();
-        sdk.closeRank();
-        sdk.keepScreenOn();
-
-
-        this.loadNode.runAction(cc.repeatForever(cc.rotateBy(1,180)));
-
-
-        this.loadingAnim.setCompleteListener(function(){
-            self.scheduleOnce(function(){
-                self.loadingAnim.setAnimation(0,"animation",false);
-            },2);
-        });
-
-        this.isFirst = false;
-        if(storage.getFirst() == 0)
-        {
-            this.isFirst = true;
-            storage.setFirst(1);
-            storage.setMusic(1);
-            storage.setSound(1);
-            storage.setVibrate(1);
-            storage.setCoin(10000);
-            storage.setDogCardLv(1,1);
-
-            storage.setGwtili(5);
-            storage.setGwhudun(3);
-        }
     },
 
     loadres: function()

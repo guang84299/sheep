@@ -127,7 +127,7 @@ module.exports = {
         var self = this;
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
-            this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'adunit-f3f018f8225dd66b'});
+            this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'fc44675453ad4d4c824df42fe140173b'});
             this.rewardedVideoAd.onLoad(function(){
                 cc.GAME.hasVideo = true;
                 console.log('激励视频 广告加载成功')
@@ -164,11 +164,11 @@ module.exports = {
             this.interstitialAd = null;
 
             // 创建插屏广告实例，提前初始化
-            if (wx.createInterstitialAd){
-                this.interstitialAd = wx.createInterstitialAd({
-                    adUnitId: 'adunit-116cf8bef9613451'
-                });
-            }
+            // if (wx.createInterstitialAd){
+            //     this.interstitialAd = wx.createInterstitialAd({
+            //         adUnitId: 'adunit-116cf8bef9613451'
+            //     });
+            // }
 
 
         }
@@ -240,7 +240,7 @@ module.exports = {
             }
 
             this.bannerAd = wx.createBannerAd({
-                adUnitId: 'adunit-227021c411ca786f',
+                adUnitId: 'c3a25e6cc3348245fc055b3fa5b4759e',
                 style: {
                     left: 0,
                     top: s.height/dpi-300/3.5,
