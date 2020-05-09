@@ -90,6 +90,9 @@ cc.Class({
         this.xiaotouDt = 0;
         this.xiaotouTime = 0;
 
+        this.recorderAwardTime = 0;
+        this.isRecorderAward = false;
+
         qianqista.onshowmaincallback = this.updateLixian.bind(this);
 
         this.initShouYi();
@@ -127,7 +130,7 @@ cc.Class({
         this.scrollControlDown = cc.find("scrollControl/down",this.node_main);
         this.scrollControlUp.active = false;
 
-        this.btn_garglewool = cc.find("btn_garglewool",this.node_main);
+        this.btn_garglewool = cc.find("top/buttons/garglewool",this.node_main);
         this.btn_tanxian = cc.find("top/buttons/tanxian",this.node_main);
         this.btn_dog = cc.find("top/buttons/dog",this.node_main);
 
@@ -1300,7 +1303,46 @@ cc.Class({
         }
     },
 
+    startRecorder: function(){
+        var videoPath = storage.getVideoPath();
+        if(videoPath)
+        {
+            res.openUI("shareaward");
+            return;
+        }
+        if(this.isRecorderAward)
+        {
+            this.stopRecorder();
+            return;
+        }
+        if(!sdk.getRecordering())
+        {
+            sdk.gameRecorderStart();
+            this.recorderAwardTime = 0;
+            this.isRecorderAward = true;
+            cc.find("btn_shouyi/recorder/str",this.node_main).getComponent(cc.Label).string = "录制中...";
+        }
+    },
 
+    stopRecorder: function(){
+        this.isRecorderAward = false;
+        var is3s = this.recorderAwardTime<3?true:false;
+        sdk.setSaveRecorder(!is3s);
+
+        var self = this;
+        sdk.gameRecorderStop(function(){
+            cc.find("btn_shouyi/recorder/str",self.node_main).getComponent(cc.Label).string = "点击录屏";
+            if(is3s)
+            {
+                res.showToast("录屏小于3秒，发布失败");
+                sdk.setSaveRecorder(false);
+            }
+            else
+            {
+                res.openUI("shareaward");
+            }
+        });
+    },
 
 
     click: function(event,data)
@@ -1422,6 +1464,14 @@ cc.Class({
         {
             sdk.openKefu();
         }
+        else if(data == "recorderAward")
+        {
+            res.openUI("recorderaward");
+        }
+        else if(data == "recorder")
+        {
+            this.startRecorder();
+        }
         storage.playSound(res.audio_button);
         cc.log(data);
     },
@@ -1462,5 +1512,10 @@ cc.Class({
         this.updateCoin(dt);
         this.updateShouYi(dt);
         this.updateXiaotou(dt);
+        this.recorderAwardTime += dt;
+        if(this.isRecorderAward && this.recorderAwardTime>28)
+        {
+            this.stopRecorder();
+        }
     }
 });

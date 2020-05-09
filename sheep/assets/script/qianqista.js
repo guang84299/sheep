@@ -412,29 +412,57 @@ module.exports = {
             });
         }
     },
-
+    guid:function() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    },
     getOpenId: function(callback)
     {
         var self = this;
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
             wx.login({
+                force:  false,
                 success: function(res)
                 {
                     console.log('login:', res);
-                    self.sendRequest("jscode2sessionqq",{gameId:self.gameId,gameSecret:self.secret,jsCode:res.code},function(r){
+                    self.sendRequest("jscode2sessionzijie",{gameId:self.gameId,gameSecret:self.secret,jsCode:res.code},function(r){
                         if(r.state == 200)
                         {
                             var msg = JSON.parse(r.msg);
                             self.session_key = msg.session_key;
                             self.openid = msg.openid;
-
+                            if(!self.openid)
+                            {
+                                var openid = cc.sys.localStorage.getItem("sheep_openid");
+                                if(!openid)
+                                {
+                                    openid = self.guid();
+                                    cc.sys.localStorage.setItem("sheep_openid",openid);
+                                }
+                                self.openid = openid;
+                            }
                             console.error('openid:', self.openid);
                             if(callback)
                                 callback();
                         }
                         console.log('jscode2session:', r);
                     });
+                },
+                fail: function(){
+                    var openid = cc.sys.localStorage.getItem("sheep_openid");
+                    if(!openid)
+                    {
+                        openid = self.guid();
+                        cc.sys.localStorage.setItem("sheep_openid",openid);
+                    }
+                    self.openid = openid;
+                    console.error('openid:', self.openid);
+                    if(callback)
+                            callback();
                 }
             });
         }

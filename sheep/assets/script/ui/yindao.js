@@ -114,7 +114,7 @@ cc.Class({
         else if(this.yindao == 12)
         {
             this.descbg.active = false;
-            box = this.game.btn_garglewool.getChildByName("garglewool");
+            box = this.game.btn_garglewool;//.getChildByName("garglewool");
             pos = box.parent.convertToWorldSpaceAR(box.position).sub(cc.v2(cc.winSize.width/2,cc.winSize.height/2));
         }
 

@@ -57,7 +57,7 @@ cc.Class({
         res.initPools();
 
         var self = this;
-        qianqista.init("1109807778","gQiPpT20smZuvXk9","全民剪羊毛-QQ",function(){
+        qianqista.init("ttc02eb6935f0b25b1","1ca80c88e24681fe808265330e4e46a083c0f1a5","全民剪羊毛-TT",function(){
             var score = storage.getLevel();
             sdk.uploadScore(score,self.initNet.bind(self));
         });
@@ -91,9 +91,9 @@ cc.Class({
             storage.setGwhudun(3);
         }
 
-        if(window["wx"])
-            this.loadSubpackage();
-        else 
+        // if(window["wx"])
+        //     this.loadSubpackage();
+        // else 
             this.loadAllRes();
     },
 

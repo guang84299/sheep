@@ -2,9 +2,12 @@
  * Created by guang on 18/7/18.
  */
 var storage = require("storage");
+var tt = window["tt"];
+
 module.exports = {
     isConec: true,
-
+    bannerNum:0,
+    isShowBanner: false,
     is_iphonex: function()
     {
         if(!this._initiphonex)
@@ -127,7 +130,7 @@ module.exports = {
         var self = this;
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
-            this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'fc44675453ad4d4c824df42fe140173b'});
+            this.rewardedVideoAd = wx.createRewardedVideoAd({ adUnitId:'4aicos48sfvyiuyv04'});
             this.rewardedVideoAd.onLoad(function(){
                 cc.GAME.hasVideo = true;
                 console.log('激励视频 广告加载成功')
@@ -209,42 +212,33 @@ module.exports = {
 
         if(cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.OS_IOS)
         {
-            if(this.bannerAd)
+            if(this.bannerAd && this.bannerNum<5)
             {
-                var now = new Date().getTime();
-                if(now - this.bannerTime<2000)
-                    return;
+                this.bannerNum ++;
+                this.bannerAd.show();
+                this.isShowBanner = true;
+                return;
             }
-
-            this.hideBanner();
+            this.bannerNum  = 0;
+            this.isShowBanner = true;
+            // this.hideBanner();
+            if(this.bannerAd) this.bannerAd.destroy();
 
             //var dpi = cc.view.getDevicePixelRatio();
             var s = cc.view.getFrameSize();
-            var dpi = cc.winSize.width/s.width;
+            // var dpi = cc.winSize.width/s.width;
 
-            var w = s.width;
-
-            var isMoveAd = true;
-            if(cc.GAME.adCheck && !this.is_iphonex())
-            {
-                isMoveAd = false;
-                if(node && callback)
-                {
-                    node.runAction(cc.sequence(
-                        cc.delayTime(0.01),
-                        cc.callFunc(function(){
-                            callback(-30*dpi);
-                        })
-                    ));
-                }
-            }
-
+            var w = s.width*0.9;
+            var h = 100/337*w;
+            var self = this;
+           
             this.bannerAd = wx.createBannerAd({
-                adUnitId: 'c3a25e6cc3348245fc055b3fa5b4759e',
+                adUnitId: "42ocp6qjc9i1i7ulfu",
                 style: {
                     left: 0,
-                    top: s.height/dpi-300/3.5,
-                    width: w
+                    top: s.height-h,
+                    width: w,
+                    height:h,
                 }
             });
             var bannerAd = this.bannerAd;
@@ -252,29 +246,25 @@ module.exports = {
                 bannerAd.style.left = s.width/2-res.width/2;
                 bannerAd.style.top = s.height-res.height-1;
                 bannerAd.res = res;
-                if(isMoveAd && node && callback)
-                {
-                    node.runAction(cc.sequence(
-                        cc.delayTime(0.4),
-                        cc.callFunc(function(){
-                            var y = node.parent.convertToWorldSpaceAR(node.position).y-(node.height*node.anchorY);
-                            var dis = y - res.height*dpi;
-                            //console.log(dis,y,res.height,dpi,node.y,node.height,cc.winSize.height/2);
-                            callback(dis);
-                        })
-                    ));
-                }
+                
                 if(isHide)
                 {
                     bannerAd.style.top = s.height+20;
+                }
+                if(!self.isShowBanner)
+                {
+                    self.hideBanner();
                 }
             });
             this.bannerAd.onError(function(res){
                 console.error(res);
             });
-            this.bannerAd.show();
+            this.bannerAd.onLoad(function(res){
+                bannerAd.show();
+            });
+            
 
-            this.bannerTime = new Date().getTime();
+            this.bannerTime = new Date().getTime();   
         }
     },
 
@@ -284,8 +274,8 @@ module.exports = {
         {
             if(this.bannerAd)
             {
-                this.bannerAd.destroy();
-                this.bannerAd = null;
+                this.bannerAd.hide();
+                this.isShowBanner = false;
             }
 
         }
@@ -349,23 +339,53 @@ module.exports = {
                     imageUrl = sdata.imageUrl;
                 }
             }
-            wx.shareAppMessage({
-                query:query,
+            var videoPath = storage.getVideoPath();
+            if(!videoPath){
+                cc.res.showToast("暂未录制视频!");
+                return;
+            }
+            tt.shareAppMessage({
+                channel: 'video',
                 title: title,
+                desc: title,
                 imageUrl: imageUrl,
-                success: function(res)
-                {
-                    if(callback)
-                        callback(true);
-                    cc.log(res);
+                templateId: '', // 替换成通过审核的分享ID
+                query: query,
+                extra: {
+                  videoPath: videoPath, // 可替换成录屏得到的视频地址
+                  videoTopics: ['全民剪羊毛','全民剪羊毛小游戏','抖音小游戏']
                 },
-                fail: function()
-                {
+                success() {
+                    console.log('分享视频成功');
+                    if(callback) callback(true);
+                  },
+                  fail(e) {
+                    console.log('分享视频失败');
                     if(callback)
+                    {
                         callback(false);
-                }
-            });
-            this.shareJudge(callback);
+                        cc.res.showToast("分享视频失败!");
+                    }
+
+                }  
+            }); 
+            // wx.shareAppMessage({
+            //     query:query,
+            //     title: title,
+            //     imageUrl: imageUrl,
+            //     success: function(res)
+            //     {
+            //         if(callback)
+            //             callback(true);
+            //         cc.log(res);
+            //     },
+            //     fail: function()
+            //     {
+            //         if(callback)
+            //             callback(false);
+            //     }
+            // });
+            // this.shareJudge(callback);
         }
         else
         {
@@ -579,6 +599,73 @@ module.exports = {
         {
             wx.openCustomerServiceConversation({});
         }
+    },
+
+    gameRecorderStart: function(){
+        if(tt)
+        {
+            if(this.recordering) return;
+            if(!this.recorderManage)
+            {
+                var self = this;
+                const recorder = tt.getGameRecorderManager();
+                this.recorderManage =  recorder;
+                recorder.onStart(res =>{
+                    console.log('录屏开始');
+                    // do somethine;
+                })
+
+                recorder.onStop(res =>{
+                    if(self.isSaveRecorder)
+                    storage.setVideoPath(res.videoPath);
+                    console.log(res.videoPath);
+                    if(this.recordercallback) this.recordercallback();
+                    this.recordering = false;
+                    // do somethine;
+                })
+                recorder.onError(errMsg =>{
+                    console.log(errMsg);
+                    if(this.recordercallback) this.recordercallback();
+                    this.recordering = false;
+                    // do somethine;
+                })
+            }
+            this.recorderManage.start({
+                duration: 300,
+            })
+            this.recordercallback = null;
+            this.recordering = true;
+            this.isSaveRecorder = true;
+            storage.setVideoPath("");
+        }
+        
+    },
+    gameRecorderStop: function(callback){
+        if(tt)
+        {
+            this.recordercallback = callback;
+            if(this.recorderManage)this.recorderManage.stop();
+            // if(this.recordering)
+            // {
+            //     this.recordering = false;
+            //     if(this.recorderManage)this.recorderManage.stop();
+            // }
+            // else
+            // {
+            //     if(callback) callback();
+            // }
+        }
+        else
+        {
+            if(callback) callback();
+        }
+    },
+    setSaveRecorder: function(isSaveRecorder){
+        this.isSaveRecorder = isSaveRecorder;
+    },
+
+    getRecordering: function(){
+        return this.recordering;
     },
 
     getNicks: function()
